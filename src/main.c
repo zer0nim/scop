@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/08 12:28:01 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/08 14:59:52 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ layout (location = 0) in vec3 aPos;\n\
 \n\
 void main()\n\
 {\n\
-    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n\
+    gl_Position = vec4(aPos, 1.0);\n\
 }";
 
 const char *FRAGMENT_SHADER_SRC = "\
@@ -38,22 +38,31 @@ void main()\n\
 
 void	initVao(unsigned int *vao) {
 	float vertices[] = {
-		-0.5f, -0.5f, 0.0f,
-		0.5f, -0.5f, 0.0f,
-		0.0f,  0.5f, 0.0f
+		0.5f,  0.5f, 0.0f,  // top right
+		0.5f, -0.5f, 0.0f,  // bottom right
+		-0.5f, -0.5f, 0.0f,  // bottom left
+		-0.5f,  0.5f, 0.0f   // top left
+	};
+	unsigned int indices[] = {  // note that we start from 0!
+		0, 1, 3,   // first triangle
+		1, 2, 3    // second triangle
 	};
 
-	unsigned int vbo;
 	glGenVertexArrays(1, vao);
+	unsigned int ebo;
+	glGenBuffers(1, &ebo);
+	unsigned int vbo;
 	glGenBuffers(1, &vbo);
-	// bind vertex array object, then bind and set vertex buffers
-	//, and then configure vertex attributess
+
 	glBindVertexArray(*vao);
 
-	// copy our vertices array in a buffer for OpenGL to use
+	// copy our vertices array in a vertex buffer for OpenGL to use
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	// store the vertex data within memory on the graphics card
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	// copy our index array in a element buffer for OpenGL to use
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// then set our vertex attributes pointers
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
@@ -68,6 +77,9 @@ void	initVao(unsigned int *vao) {
 	// Modifying other VAOs requires a call to glBindVertexArray anyways so we generally don't
 	// unbind VAOs (nor VBOs) when it's not directly necessary.
 	glBindVertexArray(0);
+
+	// to draw in wireframe mode
+	// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
 char	createShader(unsigned int *vertexShader, unsigned int *fragmentShader, unsigned int *shaderProgram) {
@@ -162,10 +174,11 @@ void	loopBody(GLFWwindow* window, unsigned int shaderProgram, unsigned int vao) 
 	glClearColor(0.15f, 0.16f, 0.21f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the buffers
 
-	// draw triangle
+	// drawing code
 	glUseProgram(shaderProgram);
 	glBindVertexArray(vao);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
 
 	// Swap front and back buffers
 	glfwSwapBuffers(window);
