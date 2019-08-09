@@ -6,7 +6,7 @@
 #    By: emarin <emarin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/06 15:40:25 by emarin            #+#    #+#              #
-#    Updated: 2019/08/07 16:43:48 by emarin           ###   ########.fr        #
+#    Updated: 2019/08/08 20:30:21 by emarin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,19 +16,23 @@ C		= gcc
 FLAGS	= -Wall -Wextra -Werror
 
 SRC_PATH	= src
-INC_PATH	=	include \
-				~/.brew/include
+INC_PATH	= include
+
 OBJ_PATH	= obj
 
-SRC		=	main.c
+SRC		=	main.c \
+			shader.c
 
-HEAD	=
+HEAD	=	define.h \
+			scop.h
 
 OBJ		= $(SRC:.c=.o)
 
 HEADP	= $(addprefix $(INC_PATH)/, $(HEAD))
 OBJP	= $(addprefix $(OBJ_PATH)/, $(OBJ))
 INCP	= $(foreach dir, $(INC_PATH), -I $(dir))
+
+INCP_BREW = -I ~/.brew/include
 
 LIBS_FLAGS = -L ~/.brew/lib -framework OpenGL -lglfw
 
@@ -53,7 +57,7 @@ $(NAME): $(OBJ_PATH) $(OBJP)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(HEADP)
 	@printf $(YELLOW)"-> $<\n"$(NORMAL)
-	@$(C) $(FLAGS) -c $< -o $@ $(INCP)
+	@$(C) $(FLAGS) -c $< -o $@ $(INCP) $(INCP_BREW)
 
 $(OBJ_PATH):
 	@mkdir -p $(dir $(OBJP))

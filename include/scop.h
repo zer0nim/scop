@@ -1,22 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   define.h                                           :+:      :+:    :+:   */
+/*   scop.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/08 12:29:08 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/09 11:59:36 by emarin           ###   ########.fr       */
+/*   Created: 2019/08/08 20:28:11 by emarin            #+#    #+#             */
+/*   Updated: 2019/08/08 20:28:19 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DEFINE_H
-# define DEFINE_H
+#ifndef SCOP_H
+# define SCOP_H
 
-# define TRUE 1
-# define FALSE 0
-
-# define SCREEN_W 1024
-# define SCREEN_H 576
+char	create_shader(unsigned int *shader_program);
 
 #endif
