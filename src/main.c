@@ -6,25 +6,56 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/09 15:56:51 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/10 18:23:46 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.h"
+#include "tga.h"
 
-void	initVao(unsigned int *vao) {
-	// pos			color:
-	// x, y, z,  	r, g, b
+int8_t	load_texture(const char *filename, unsigned int *texture)
+{
+	t_texture_info	*tga_tex;
+
+	if (!(tga_tex = read_tga_file(filename)))
+		return FALSE;
+	*texture = tga_tex->id;
+
+	// generate texture
+	glGenTextures(1, &tga_tex->id);
+	glBindTexture(GL_TEXTURE_2D, tga_tex->id);
+
+	// set texture wrapping/filtering options (on the currently bound texture object)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, tga_tex->format, tga_tex->width
+	, tga_tex->height, 0, tga_tex->format, GL_UNSIGNED_BYTE, tga_tex->texels);
+
+	free(tga_tex->texels);
+	free(tga_tex);
+
+	return TRUE;
+}
+
+int8_t	initVao(unsigned int *vao, unsigned int *texture) {
+	// pos			color		texture coords
+	// x, y, z,  	r, g, b		x, y
 	float vertices[] = {
-		0.5f,  0.5f, 0.0f,    0.0f, 1.0f, 0.0f,		// top right
-		0.5f, -0.5f, 0.0f,    0.0f, 0.0f, 1.0f,		// bottom right
-		-0.5f, -0.5f, 0.0f,   1.0f, 1.0f, 1.0f,		// bottom left
-		-0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f		// top left
+		0.5f,  0.5f, 0.0f,		0.0f, 1.0f, 0.0f,		1.0f, 1.0f,		// top right
+		0.5f, -0.5f, 0.0f,		0.0f, 0.0f, 1.0f,		1.0f, 0.0f,		// bottom right
+		-0.5f, -0.5f, 0.0f,		1.0f, 1.0f, 1.0f,		0.0f, 0.0f,		// bottom left
+		-0.5f,  0.5f, 0.0f,		1.0f, 0.0f, 0.0f,		0.0f, 1.0f		// top left
 	};
 	unsigned int indices[] = {
 		0, 1, 3,   // first triangle
 		1, 2, 3    // second triangle
 	};
+
+	if (!(load_texture("/Users/emarin/Downloads/wall.tga", texture)))
+		return FALSE;
 
 	unsigned int vbo;
 	glGenBuffers(1, &vbo);
@@ -42,12 +73,16 @@ void	initVao(unsigned int *vao) {
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	// then set our vertex attributes pointers
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
 	// then set our vertex colors attributes pointers
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3* sizeof(float)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3* sizeof(float)));
 	glEnableVertexAttribArray(1);
+
+	// then set our vertex texture coordinate attributes pointers
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6* sizeof(float)));
+	glEnableVertexAttribArray(2);
 
 	// note that this is allowed, the call to glVertexAttribPointer registered vbo as the vertex attribute's bound
 	// vertex buffer object so afterwards we can safely unbind
@@ -61,6 +96,8 @@ void	initVao(unsigned int *vao) {
 
 	// to draw in wireframe mode
 	// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	return TRUE;
 }
 
 void	processInput(GLFWwindow *window) {
@@ -76,7 +113,7 @@ void	framebufferResizeCb(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
-char	initWindows(GLFWwindow	**window) {
+int8_t	initWindows(GLFWwindow	**window) {
 	// start GL context and O/S window using the GLFW helper library
 	if (!glfwInit()) {
 		fprintf(stderr, "Could not start glfw3\n");
@@ -103,7 +140,7 @@ char	initWindows(GLFWwindow	**window) {
 	return TRUE;
 }
 
-void	loopBody(GLFWwindow* window, unsigned int shader_program, unsigned int vao) {
+void	loopBody(GLFWwindow* window, unsigned int shader_program, unsigned int vao, unsigned int texture) {
 	processInput(window);
 
 	// clear the screen
@@ -112,6 +149,8 @@ void	loopBody(GLFWwindow* window, unsigned int shader_program, unsigned int vao)
 
 	// drawing code
 	glUseProgram(shader_program);
+
+	glBindTexture(GL_TEXTURE_2D, texture);
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
@@ -132,10 +171,12 @@ int		main() {
 		return 1;
 
 	unsigned int vao;
-	initVao(&vao);
+	unsigned int texture;
+	if (!initVao(&vao, &texture))
+		return 1;
 
 	while (!glfwWindowShouldClose(window))
-		loopBody(window, shader_program, vao);
+		loopBody(window, shader_program, vao, texture);
 
 	glDeleteProgram(shader_program);
 
