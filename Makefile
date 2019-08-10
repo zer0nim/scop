@@ -6,7 +6,7 @@
 #    By: emarin <emarin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/06 15:40:25 by emarin            #+#    #+#              #
-#    Updated: 2019/08/08 20:30:21 by emarin           ###   ########.fr        #
+#    Updated: 2019/08/10 12:07:41 by emarin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,10 +21,12 @@ INC_PATH	= include
 OBJ_PATH	= obj
 
 SRC		=	main.c \
-			shader.c
+			shader.c \
+			tga.c
 
 HEAD	=	define.h \
-			scop.h
+			scop.h \
+			tga.h
 
 OBJ		= $(SRC:.c=.o)
 
