@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 19:08:34 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/10 14:44:42 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/10 17:09:38 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ const char	*file_to_string(char *filename)
 	return (buffer);
 }
 
-char		compile_shader(const char **src, unsigned int *shader, int type)
+int8_t		compile_shader(const char **src, unsigned int *shader, int type)
 {
 	int		success;
 	char	info_log[512];
@@ -76,7 +76,7 @@ char		compile_shader(const char **src, unsigned int *shader, int type)
 	return (TRUE);
 }
 
-char		link_shader(unsigned int *shader_program\
+int8_t		link_shader(unsigned int *shader_program\
 , unsigned int *fragment_shader, unsigned int *vertex_shader)
 {
 	int		success;
@@ -104,7 +104,7 @@ char		link_shader(unsigned int *shader_program\
 	return (TRUE);
 }
 
-char		create_shader(unsigned int *shader_program)
+int8_t		create_shader(unsigned int *shader_program)
 {
 	unsigned int	fragment_shader;
 	unsigned int	vertex_shader;

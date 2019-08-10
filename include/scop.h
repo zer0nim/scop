@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 20:28:11 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/09 15:57:06 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/10 17:09:43 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,6 @@
 # include <stdlib.h>
 # include <stdio.h>
 
-char	create_shader(unsigned int *shader_program);
+int8_t	create_shader(unsigned int *shader_program);
 
 #endif

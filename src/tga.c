@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/09 16:01:52 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/10 16:39:41 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/10 17:33:30 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,19 +203,16 @@ int8_t			get_texture_info(t_tga_header *header
 		return (FALSE);
 	}
 
-	if (header->data_type_code == T_BGR_16_24_32_BITS_RLE)
+	// 8 bits and 16 bits images will be converted to 24 bits
+	if (header->bits_per_pixel <= 24)
 	{
-		// 8 bits and 16 bits images will be converted to 24 bits
-		if (header->bits_per_pixel <= 24)
-		{
-			text_info->format = GL_RGB;
-			text_info->internal_format = 3;
-		}
-		else // 32 bits
-		{
-			text_info->format = GL_RGBA;
-			text_info->internal_format = 4;
-		}
+		text_info->format = GL_RGB;
+		text_info->internal_format = 3;
+	}
+	else // 32 bits
+	{
+		text_info->format = GL_RGBA;
+		text_info->internal_format = 4;
 	}
 	return (TRUE);
 }

@@ -6,23 +6,23 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/10 14:13:14 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/10 15:13:08 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/10 17:10:53 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TGA_H
 # define TGA_H
 
-# include "scop.h"
+#include "scop.h"
 
 typedef struct		s_texture_info
 {
-	int32_t	width;
-	int32_t	height;
-	int32_t	format;
-	int32_t	internal_format;
-	int32_t	id;
-	uint8_t	*texels;
+	int32_t		width;
+	int32_t		height;
+	int32_t		format;
+	int32_t		internal_format;
+	uint32_t	id;
+	uint8_t		*texels;
 }					t_texture_info;
 
 
@@ -50,5 +50,7 @@ typedef struct		s_tga_header
 
 # define T_BGR_16_24_32_BITS 2
 # define T_BGR_16_24_32_BITS_RLE 10
+
+t_texture_info	*read_tga_file(const char *filename);
 
 #endif
