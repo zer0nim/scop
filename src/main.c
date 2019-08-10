@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/10 18:23:46 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/10 19:46:12 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,23 @@ int8_t	load_texture(const char *filename, unsigned int *texture)
 
 	if (!(tga_tex = read_tga_file(filename)))
 		return FALSE;
-	*texture = tga_tex->id;
 
 	// generate texture
 	glGenTextures(1, &tga_tex->id);
 	glBindTexture(GL_TEXTURE_2D, tga_tex->id);
+	*texture = tga_tex->id;
 
-	// set texture wrapping/filtering options (on the currently bound texture object)
+	// set the texture wrapping parameters
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set the texture filtering parameters
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, tga_tex->format, tga_tex->width
 	, tga_tex->height, 0, tga_tex->format, GL_UNSIGNED_BYTE, tga_tex->texels);
+
+	glGenerateMipmap(GL_TEXTURE_2D);
 
 	free(tga_tex->texels);
 	free(tga_tex);
@@ -40,7 +43,7 @@ int8_t	load_texture(const char *filename, unsigned int *texture)
 	return TRUE;
 }
 
-int8_t	initVao(unsigned int *vao, unsigned int *texture) {
+int8_t	initVao(unsigned int *vao) {
 	// pos			color		texture coords
 	// x, y, z,  	r, g, b		x, y
 	float vertices[] = {
@@ -53,9 +56,6 @@ int8_t	initVao(unsigned int *vao, unsigned int *texture) {
 		0, 1, 3,   // first triangle
 		1, 2, 3    // second triangle
 	};
-
-	if (!(load_texture("/Users/emarin/Downloads/wall.tga", texture)))
-		return FALSE;
 
 	unsigned int vbo;
 	glGenBuffers(1, &vbo);
@@ -140,7 +140,7 @@ int8_t	initWindows(GLFWwindow	**window) {
 	return TRUE;
 }
 
-void	loopBody(GLFWwindow* window, unsigned int shader_program, unsigned int vao, unsigned int texture) {
+void	loopBody(GLFWwindow* window, unsigned int shader_program, unsigned int vao, unsigned int texture1, unsigned int texture2) {
 	processInput(window);
 
 	// clear the screen
@@ -150,7 +150,11 @@ void	loopBody(GLFWwindow* window, unsigned int shader_program, unsigned int vao,
 	// drawing code
 	glUseProgram(shader_program);
 
-	glBindTexture(GL_TEXTURE_2D, texture);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture1);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, texture2);
+
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
@@ -171,12 +175,23 @@ int		main() {
 		return 1;
 
 	unsigned int vao;
-	unsigned int texture;
-	if (!initVao(&vao, &texture))
+	if (!initVao(&vao))
 		return 1;
 
+	unsigned int texture1;
+	if (!(load_texture("/Users/emarin/Downloads/wall.tga", &texture1)))
+		return FALSE;
+
+	unsigned int texture2;
+	if (!(load_texture("/Users/emarin/Downloads/pepeTransparent.tga", &texture2)))
+		return FALSE;
+
+	glUseProgram(shader_program);
+	glUniform1i(glGetUniformLocation(shader_program, "texture1"), 0);
+	glUniform1i(glGetUniformLocation(shader_program, "texture2"), 1);
+
 	while (!glfwWindowShouldClose(window))
-		loopBody(window, shader_program, vao, texture);
+		loopBody(window, shader_program, vao, texture1, texture2);
 
 	glDeleteProgram(shader_program);
 
