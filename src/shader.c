@@ -6,14 +6,12 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 19:08:34 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/09 12:06:52 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/10 14:44:42 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "define.h"
-#define GLFW_INCLUDE_GLCOREARB
-#include <GLFW/glfw3.h>
-#include <stdlib.h>
+#include "scop.h"
+
 #include <stdio.h>
 
 const char	*file_to_string(char *filename)
@@ -25,7 +23,7 @@ const char	*file_to_string(char *filename)
 	fp = fopen(filename, "rb");
 	if (!fp)
 	{
-		fprintf(stderr, "Error while opening %s\n", filename);
+		fprintf(stderr, "Error while opening \"%s\"\n", filename);
 		return (NULL);
 	}
 
@@ -39,7 +37,7 @@ const char	*file_to_string(char *filename)
 		return (NULL);
 	}
 
-	/* copy the file into the buffer */
+	// copy the file into the buffer
 	if (fread(buffer, size, 1, fp) != 1)
 	{
 		fprintf(stderr, "file read failed\n");
@@ -114,13 +112,13 @@ char		create_shader(unsigned int *shader_program)
 	const char		*vertex_src;
 
 	// vertex shader
-	if (!(vertex_src = file_to_string("src/shaders/test_vs.glsl")))
+	if (!(vertex_src = file_to_string("../src/shaders/test_vs.glsl")))
 		return (FALSE);
 	if (!compile_shader(&vertex_src, &vertex_shader, GL_VERTEX_SHADER))
 		return (FALSE);
 
 	// fragment shader
-	if (!(fragment_src = file_to_string("src/shaders/test_fs.glsl")))
+	if (!(fragment_src = file_to_string("../src/shaders/test_fs.glsl")))
 		return (FALSE);
 	if (!compile_shader(&fragment_src, &fragment_shader, GL_FRAGMENT_SHADER))
 		return (FALSE);

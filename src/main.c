@@ -6,15 +6,11 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/09 12:01:42 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/09 15:56:51 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "define.h"
 #include "scop.h"
-#define GLFW_INCLUDE_GLCOREARB
-#include <GLFW/glfw3.h>
-#include <stdio.h>
 
 void	initVao(unsigned int *vao) {
 	// pos			color:
