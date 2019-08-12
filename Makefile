@@ -6,7 +6,7 @@
 #    By: emarin <emarin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/06 15:40:25 by emarin            #+#    #+#              #
-#    Updated: 2019/08/10 12:07:41 by emarin           ###   ########.fr        #
+#    Updated: 2019/08/12 17:25:47 by emarin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,11 +22,14 @@ OBJ_PATH	= obj
 
 SRC		=	main.c \
 			shader.c \
-			tga.c
+			tga.c \
+			matrix.c \
+			matrix_op.c
 
 HEAD	=	define.h \
 			scop.h \
-			tga.h
+			tga.h \
+			matrix.h
 
 OBJ		= $(SRC:.c=.o)
 
