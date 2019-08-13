@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/10 19:46:12 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/13 18:38:56 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int8_t	load_texture(const char *filename, unsigned int *texture)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, tga_tex->format, tga_tex->width
-	, tga_tex->height, 0, tga_tex->format, GL_UNSIGNED_BYTE, tga_tex->texels);
+	glTexImage2D(GL_TEXTURE_2D, 0, tga_tex->format, tga_tex->w
+	, tga_tex->h, 0, tga_tex->format, GL_UNSIGNED_BYTE, tga_tex->texels);
 
 	glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -179,11 +179,11 @@ int		main() {
 		return 1;
 
 	unsigned int texture1;
-	if (!(load_texture("/Users/emarin/Downloads/wall.tga", &texture1)))
+	if (!(load_texture("/Users/emarin/Downloads/container.tga", &texture1)))
 		return FALSE;
 
 	unsigned int texture2;
-	if (!(load_texture("/Users/emarin/Downloads/pepeTransparent.tga", &texture2)))
+	if (!(load_texture("/Users/emarin/Downloads/awesome_face.tga", &texture2)))
 		return FALSE;
 
 	glUseProgram(shader_program);

@@ -6,58 +6,91 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/09 16:01:52 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/10 17:33:30 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/13 20:28:45 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tga.h"
 
-void			read_tga16bits(FILE *fp, t_texture_info *text_info)
+int				next_index(t_tga_orig_info orig, int step, int8_t reset)
 {
-	int			i;
+	static int	y = -1;
+	static int	x = -1;
+	int			y_copy;
+	int			x_copy;
+
+	if (y == -1 || reset)
+		y = orig.y_start;
+	if (x == -1 || reset)
+		x = orig.x_start;
+	if (reset)
+		return -1;
+	if (y == orig.y_end)
+	{
+		y = orig.y_start;
+		x = orig.x_start;
+	}
+	if (x == orig.x_end)
+	{
+		x = orig.x_start;
+		y += orig.y_step;
+	}
+	y_copy = y;
+	x_copy = x;
+	x += orig.x_step;
+	return ((x_copy + orig.w * y_copy) * step);
+}
+
+void			read_tga16bits(t_tga_orig_info orig, FILE *fp
+, t_texture_info *text_info)
+{
+	int			y;
+	int			x;
 	u_int16_t	color;
 
-	i = 0;
-	while (i < (text_info->width * text_info->height))
+	printf("1\n");
+	y = orig.y_start;
+	while (y != orig.y_end)
 	{
-		// color is coded in two bytes
-		// each component is coded on 5 bits
-		// the first left bit of these two bytes is not used
-		color = fgetc(fp) + (fgetc(fp) << 8);
+		x = orig.x_start;
+		while (x != orig.x_end)
+		{
+			color = fgetc(fp) + (fgetc(fp) << 8);
+			text_info->texels[(x + orig.w * y) * 3 + 0] = (color & 0x7C00) >> 7;
+			text_info->texels[(x + orig.w * y) * 3 + 1] = (color & 0x03E0) >> 2;
+			text_info->texels[(x + orig.w * y) * 3 + 2] = (color & 0x001F) << 3;
 
-		// convert BGR to RGB
-		// "<< 3" is used to convert from 0-31 to 0-255
-		text_info->texels[(i * 3) + 0] = (uint8_t)(((color & 0x7C00) >> 10)
-		<< 3);
-		text_info->texels[(i * 3) + 1] = (uint8_t)(((color & 0x03E0) >> 5)
-		<< 3);
-		text_info->texels[(i * 3) + 2] = (uint8_t)(((color & 0x001F) >> 0)
-		<< 3);
-		++i;
+			x += orig.x_step;
+		}
+		y += orig.y_step;
 	}
 }
 
-void			read_tga24_32bits(FILE *fp, t_texture_info *text_info
-, int8_t is_32)
+void			read_tga24_32bits(t_tga_orig_info orig, FILE *fp
+, t_texture_info *text_info, int8_t is_32)
 {
-	int		i;
-	int8_t	step;
+	int			i;
+	int			index;
+	int8_t		step;
 
+	printf("2\n");
+	printf("is_32: %d\n", is_32);
 	step = (is_32) ? 4 : 3;
-	i = 0;
-	while (i < (text_info->width * text_info->height))
+	i = -1;
+	while (++i < (text_info->w * text_info->h))
 	{
-		// read and convert BGRA to RGBA
-		text_info->texels[(i * step) + 2] = (uint8_t)fgetc(fp);
-		text_info->texels[(i * step) + 1] = (uint8_t)fgetc(fp);
-		text_info->texels[(i * step) + 0] = (uint8_t)fgetc(fp);
+		index = next_index(orig, step, FALSE);
+		text_info->texels[index + 2] = (uint8_t)fgetc(fp);
+		text_info->texels[index + 1] = (uint8_t)fgetc(fp);
+		text_info->texels[index + 0] = (uint8_t)fgetc(fp);
 		if (is_32)
-			text_info->texels[(i * step) + 3] = (uint8_t)fgetc(fp);
-		++i;
+			text_info->texels[index + 3] = (uint8_t)fgetc(fp);
+		// printf("index: %d\n", index);
 	}
 }
 
-void			read_tga16bits_rle(FILE *fp, t_texture_info *text_info)
+void			read_tga16bits_rle(t_tga_orig_info orig, FILE *fp
+, t_texture_info *text_info)
 {
 	int			i;
 	int			size;
@@ -65,8 +98,10 @@ void			read_tga16bits_rle(FILE *fp, t_texture_info *text_info)
 	uint8_t		packet_header;
 	uint8_t		*ptr;
 
+	(void)orig;
+	printf("3\n");
 	ptr = text_info->texels;
-	while (ptr < text_info->texels + (text_info->width * text_info->height) * 3)
+	while (ptr < text_info->texels + (text_info->w * text_info->h) * 3)
 	{
 		// read the first byte
 		packet_header = fgetc(fp);
@@ -105,8 +140,8 @@ void			read_tga16bits_rle(FILE *fp, t_texture_info *text_info)
 	}
 }
 
-void			read_tga24_32bits_rle(FILE *fp, t_texture_info *text_info
-, int8_t is_32)
+void			read_tga24_32bits_rle(t_tga_orig_info orig, FILE *fp
+, t_texture_info *text_info, int8_t is_32)
 {
 	int		i;
 	int		size;
@@ -115,10 +150,13 @@ void			read_tga24_32bits_rle(FILE *fp, t_texture_info *text_info
 	uint8_t	*ptr;
 	int8_t	step;
 
+	int		index;
+
+	(void)orig;
+	printf("4\n");
 	ptr = text_info->texels;
 	step = (is_32) ? 4 : 3;
-	while (ptr < text_info->texels + (text_info->width * text_info->height)
-	* step)
+	while (ptr < text_info->texels + (text_info->w * text_info->h * step))
 	{
 		// read first byte
 		packet_header = (uint8_t)fgetc(fp);
@@ -133,11 +171,12 @@ void			read_tga24_32bits_rle(FILE *fp, t_texture_info *text_info
 			i = 0;
 			while (i < size)
 			{
-				ptr[0] = rgba[2];
-				ptr[1] = rgba[1];
-				ptr[2] = rgba[0];
+				index = next_index(orig, step, FALSE);
+				text_info->texels[index + 0] = rgba[2];
+				text_info->texels[index + 1] = rgba[1];
+				text_info->texels[index + 2] = rgba[0];
 				if (is_32)
-					ptr[3] = rgba[3];
+					text_info->texels[index + 3] = rgba[3];
 				++i;
 				ptr += step;
 			}
@@ -147,11 +186,12 @@ void			read_tga24_32bits_rle(FILE *fp, t_texture_info *text_info
 			i = 0;
 			while (i < size)
 			{
-				ptr[2] = (uint8_t)fgetc(fp);
-				ptr[1] = (uint8_t)fgetc(fp);
-				ptr[0] = (uint8_t)fgetc(fp);
+				index = next_index(orig, step, FALSE);
+				text_info->texels[index + 2] = (uint8_t)fgetc(fp);
+				text_info->texels[index + 1] = (uint8_t)fgetc(fp);
+				text_info->texels[index + 0] = (uint8_t)fgetc(fp);
 				if (is_32)
-					ptr[3] = (uint8_t)fgetc(fp);
+					text_info->texels[index + 3] = (uint8_t)fgetc(fp);
 				++i;
 				ptr += step;
 			}
@@ -159,30 +199,69 @@ void			read_tga24_32bits_rle(FILE *fp, t_texture_info *text_info
 	}
 }
 
+t_tga_orig_info	get_tga_read_info(t_tga_header *header) {
+	t_tga_orig_info	res;
+	int32_t			orig_flag;
+
+	res.w = header->w;
+	orig_flag = (header->image_descriptor & TGA_ORIG_MASK) >> TGA_ORIG_SHIFT;
+
+	if (orig_flag == TGA_ORIG_UR)
+		printf("TGA_ORIG_UR\n");
+	if (orig_flag == TGA_ORIG_BR)
+		printf("TGA_ORIG_BR\n");
+	if (orig_flag == TGA_ORIG_UL)
+		printf("TGA_ORIG_UL\n");
+	if (orig_flag == TGA_ORIG_BL)
+		printf("TGA_ORIG_BL\n");
+
+	if (orig_flag == TGA_ORIG_UR || orig_flag == TGA_ORIG_BR)
+	{
+		res.x_start = header->w - 1;
+		res.x_step = - 1;
+		res.x_end = - 1;
+		res.y_start = (orig_flag == TGA_ORIG_UR) ? header->h - 1 : 0;
+		res.y_step = (orig_flag == TGA_ORIG_UR) ? -1 : 1;
+		res.y_end = (orig_flag == TGA_ORIG_UR) ? -1 : header->h;
+		return (res);
+	}
+	res.x_start = 0;
+	res.x_step = 1;
+	res.x_end = header->w;
+	res.y_start = (orig_flag == TGA_ORIG_UL) ? header->h - 1 : 0;
+	res.y_step = (orig_flag == TGA_ORIG_UL) ? -1 : 1;
+	res.y_end = (orig_flag == TGA_ORIG_UL) ? -1 : header->h;
+	return (res);
+}
+
 int8_t			read_texels(t_texture_info *text_info, t_tga_header *header
 , FILE *fp)
 {
+	t_tga_orig_info	orig;
+
+	orig = get_tga_read_info(header);
+
 	if (!(text_info->texels = (uint8_t *)malloc(sizeof(uint8_t)
-	* text_info->width * text_info->height * text_info->internal_format)))
+	* text_info->w * text_info->h * text_info->internal_format)))
 		return (FALSE);
 
 	if (header->data_type_code == T_BGR_16_24_32_BITS)
 	{
 		if (header->bits_per_pixel == 16)
-			read_tga16bits(fp, text_info);
+			read_tga16bits(orig, fp, text_info);
 		else if (header->bits_per_pixel == 24
 		|| header->bits_per_pixel == 32)
-			read_tga24_32bits(fp, text_info, (header->bits_per_pixel == 32));
+			read_tga24_32bits(orig, fp, text_info, (header->bits_per_pixel == 32));
 		else
 			return (FALSE);
 	}
 	else if (header->data_type_code == T_BGR_16_24_32_BITS_RLE)
 	{
 		if (header->bits_per_pixel == 16)
-			read_tga16bits_rle(fp, text_info);
+			read_tga16bits_rle(orig, fp, text_info);
 		else if (header->bits_per_pixel == 24
 		|| header->bits_per_pixel == 32)
-			read_tga24_32bits_rle(fp, text_info, (header->bits_per_pixel
+			read_tga24_32bits_rle(orig, fp, text_info, (header->bits_per_pixel
 			== 32));
 		else
 			return (FALSE);
@@ -193,8 +272,8 @@ int8_t			read_texels(t_texture_info *text_info, t_tga_header *header
 int8_t			get_texture_info(t_tga_header *header
 , t_texture_info *text_info)
 {
-	text_info->width = header->width;
-	text_info->height = header->height;
+	text_info->w = header->w;
+	text_info->h = header->h;
 
 	if (header->data_type_code != T_BGR_16_24_32_BITS
 	&& header->data_type_code != T_BGR_16_24_32_BITS_RLE)
