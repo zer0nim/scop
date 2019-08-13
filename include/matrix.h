@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 15:09:07 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/12 18:31:42 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/13 12:08:42 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void		mt_print(t_matrix *mt);
 void		mt_free(t_matrix **m);
 
 t_matrix	*mt_mul(t_matrix *lhs, t_matrix *rhs);
+t_matrix	*mt_scale(t_matrix *mt, t_matrix *scale_vector);
 void		mt_add(t_matrix *mt, float add_v);
 void		mt_scalar_prod(t_matrix *mt, float scalar_v);
 
