@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 14:10:50 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/12 17:40:00 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/13 14:06:40 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void		mt_print(t_matrix *mt)
 	{
 		j = -1;
 		while (++j < mt->w)
-			printf("  %.2f", mt->cont[i][j]);
+			printf("\t%.2f", mt->cont[i][j]);
 		printf("\n");
 	}
 	printf(")\n");
