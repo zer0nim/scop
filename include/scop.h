@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 20:28:11 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/13 13:19:37 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/14 16:05:48 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 int8_t	create_shader(unsigned int *shader_program);
 
-float	deg_to_rad(float degree_angle);
-float	rad_to_deg(float radian_angle);
+float	radians(float degree_angle);
+float	degrees(float radian_angle);
 
 #endif
