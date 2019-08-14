@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 15:09:07 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/14 16:26:13 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/14 16:31:27 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ typedef struct	s_matrix
 {
 	int		w;
 	int		h;
-	float	**cont;
+	float	*cont;
 }				t_matrix;
 
 typedef struct	s_vect2
