@@ -6,12 +6,13 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/13 18:38:56 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/14 18:11:11 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.h"
 #include "tga.h"
+#include "matrix.h"
 
 int8_t	load_texture(const char *filename, unsigned int *texture)
 {
@@ -189,6 +190,16 @@ int		main() {
 	glUseProgram(shader_program);
 	glUniform1i(glGetUniformLocation(shader_program, "texture1"), 0);
 	glUniform1i(glGetUniformLocation(shader_program, "texture2"), 1);
+
+
+	t_matrix	*mt_id = mt_new(4, 4, TRUE);
+	t_matrix	*trans = mt_rotate(mt_id, radians(90.0f), vect3(0.0, 0.0, 1.0));
+	t_matrix	*trans_2 = mt_scale(trans, vect3(0.5, 0.5, 0.5));
+	mt_free(&mt_id);
+	mt_free(&trans);
+	unsigned int trans_loc = glGetUniformLocation(shader_program, "transform");
+	glUniformMatrix4fv(trans_loc, 1, GL_TRUE, trans_2->cont);
+	mt_free(&trans_2);
 
 	while (!glfwWindowShouldClose(window))
 		loopBody(window, shader_program, vao, texture1, texture2);

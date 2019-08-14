@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 12:29:08 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/14 15:17:40 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/14 18:10:30 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # define TRUE 1
 # define FALSE 0
 
-# define SCREEN_W 1024
-# define SCREEN_H 576
+# define SCREEN_W 800
+# define SCREEN_H 600
 
 #endif
