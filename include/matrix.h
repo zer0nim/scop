@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 15:09:07 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/14 16:31:27 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/15 20:13:54 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,14 @@ typedef struct	s_vect3
 	float	z;
 }				t_vect3;
 
+typedef struct	s_vect4
+{
+	float	x;
+	float	y;
+	float	z;
+	float	w;
+}				t_vect4;
+
 t_matrix		*mt_new(int h, int w, int8_t is_identity);
 void			mt_print(t_matrix *mt);
 void			mt_free(t_matrix **m);
@@ -46,8 +54,13 @@ t_matrix		*mt_rotate(t_matrix *mt, float angle, t_vect3 axis_v);
 void			mt_add(t_matrix *mt, float add_v);
 void			mt_scalar_prod(t_matrix *mt, float scalar_v);
 
+t_matrix		*mt_perspective(float fov_y, float aspect, float z_near\
+, float z_far);
+t_matrix		*mt_orthographic(t_vect4 l_r_b_t, float z_near, float z_far);
+
 t_vect2			vect2(float x, float y);
 t_vect3			vect3(float x, float y, float z);
+t_vect4			vect4(float x, float y, float z, float w);
 
 t_matrix		*vect2_m(float x, float y);
 t_matrix		*vect3_m(float x, float y, float z);
