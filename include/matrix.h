@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 15:09:07 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/15 20:13:54 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/16 15:02:28 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,10 @@ t_matrix		*mt_orthographic(t_vect4 l_r_b_t, float z_near, float z_far);
 t_vect2			vect2(float x, float y);
 t_vect3			vect3(float x, float y, float z);
 t_vect4			vect4(float x, float y, float z, float w);
+
+t_vect3			v3_normalize(t_vect3 v);
+float			v3_dot(t_vect3 lhs, t_vect3 rhs);
+t_vect3			v3_cross(t_vect3 lhs, t_vect3 rhs);
 
 t_matrix		*vect2_m(float x, float y);
 t_matrix		*vect3_m(float x, float y, float z);

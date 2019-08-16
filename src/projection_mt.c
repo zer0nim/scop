@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 19:48:20 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/16 13:40:14 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/16 15:06:49 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,5 @@ t_matrix	*mt_orthographic(t_vect4 l_r_b_t, float z_near, float z_far)
 	res->cont[0 * 4 + 3] = -(right + left) / (right - left);
 	res->cont[1 * 4 + 3] = -(top + bottom) / (top - bottom);
 	res->cont[2 * 4 + 3] = -(z_far + z_near) / (z_far - z_near);
-
 	return (res);
 }
