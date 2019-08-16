@@ -6,11 +6,10 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/13 13:14:00 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/14 16:05:28 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/15 20:01:45 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <math.h>
 #include "scop.h"
 
 float	radians(float degree_angle)
