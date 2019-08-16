@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/16 14:39:48 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/16 15:41:10 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,6 +232,8 @@ int		main() {
 	glUseProgram(shader_program);
 	glUniform1i(glGetUniformLocation(shader_program, "texture1"), 0);
 	glUniform1i(glGetUniformLocation(shader_program, "texture2"), 1);
+
+	glEnable(GL_DEPTH_TEST);
 
 	while (!glfwWindowShouldClose(window))
 		loopBody(window, shader_program, vao, texture1, texture2);
