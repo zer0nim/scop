@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/14 18:23:22 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/15 20:52:46 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,15 +156,34 @@ void	loopBody(GLFWwindow* window, unsigned int shader_program, unsigned int vao,
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, texture2);
 
-	// transform matrix
+	// // transform matrix
+	// t_matrix	*mt_id = mt_new(4, 4, TRUE);
+	// t_matrix	*trans_1 = mt_translate(mt_id, vect3(0.5f, -0.5f, 0.0f));
+	// t_matrix	*trans_2 = mt_rotate(trans_1, (float)glfwGetTime(), vect3(0.0, 0.0, 1.0));
+	// mt_free(&mt_id);
+	// mt_free(&trans_1);
+	// unsigned int trans_loc = glGetUniformLocation(shader_program, "transform");
+	// glUniformMatrix4fv(trans_loc, 1, GL_TRUE, trans_2->cont);
+	// mt_free(&trans_2);
+
+
 	t_matrix	*mt_id = mt_new(4, 4, TRUE);
-	t_matrix	*trans_1 = mt_translate(mt_id, vect3(0.5f, -0.5f, 0.0f));
-	t_matrix	*trans_2 = mt_rotate(trans_1, (float)glfwGetTime(), vect3(0.0, 0.0, 1.0));
+	t_matrix	*model = mt_rotate(mt_id, radians(-55.0f), vect3(1.0f, 0.0f, 0.0f));
+	// note that we're translating the scene in the reverse direction of where we want to move
+	t_matrix	*view = mt_translate(mt_id, vect3(0.0f, 0.0f, -3.0f));
+	t_matrix	*projection = mt_perspective(radians(45.0f), (float)SCREEN_W / (float)SCREEN_H, 0.1f, 100.0f);
+
+	unsigned int model_loc = glGetUniformLocation(shader_program, "model");
+	glUniformMatrix4fv(model_loc, 1, GL_TRUE, model->cont);
+	unsigned int view_loc = glGetUniformLocation(shader_program, "view");
+	glUniformMatrix4fv(view_loc, 1, GL_TRUE, view->cont);
+	unsigned int projection_loc = glGetUniformLocation(shader_program, "projection");
+	glUniformMatrix4fv(projection_loc, 1, GL_TRUE, projection->cont);
+
+	mt_free(&projection);
+	mt_free(&view);
+	mt_free(&model);
 	mt_free(&mt_id);
-	mt_free(&trans_1);
-	unsigned int trans_loc = glGetUniformLocation(shader_program, "transform");
-	glUniformMatrix4fv(trans_loc, 1, GL_TRUE, trans_2->cont);
-	mt_free(&trans_2);
 
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -205,6 +224,7 @@ int		main() {
 		loopBody(window, shader_program, vao, texture1, texture2);
 
 	glDeleteProgram(shader_program);
+	glDeleteVertexArrays(1, &vao);
 
 	glfwTerminate();
 	return 0;
