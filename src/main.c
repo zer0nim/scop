@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/16 15:41:10 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/16 15:57:29 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,49 +46,49 @@ int8_t	load_texture(const char *filename, unsigned int *texture)
 
 int8_t	initVao(unsigned int *vao) {
 	// pos			texture coords
-	// x, y, z,  	x, y
+	// x, y, z, 	x, y
 	float vertices[] = {
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-		0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+		-0.5f,	-0.5f,	-0.5f,	0.0f,	0.0f,
+		0.5f,	-0.5f,	-0.5f,	1.0f,	0.0f,
+		0.5f,	0.5f,	-0.5f,	1.0f,	1.0f,
+		0.5f,	0.5f,	-0.5f,	1.0f,	1.0f,
+		-0.5f,	0.5f,	-0.5f,	0.0f,	1.0f,
+		-0.5f,	-0.5f,	-0.5f,	0.0f,	0.0f,
 
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f,	-0.5f,	0.5f,	0.0f,	0.0f,
+		0.5f,	-0.5f,	0.5f,	1.0f,	0.0f,
+		0.5f,	0.5f,	0.5f,	1.0f,	1.0f,
+		0.5f,	0.5f,	0.5f,	1.0f,	1.0f,
+		-0.5f,	0.5f,	0.5f,	0.0f,	1.0f,
+		-0.5f,	-0.5f,	0.5f,	0.0f,	0.0f,
 
-		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,	0.5f,	0.5f,	1.0f,	0.0f,
+		-0.5f,	0.5f,	-0.5f,	1.0f,	1.0f,
+		-0.5f,	-0.5f,	-0.5f,	0.0f,	1.0f,
+		-0.5f,	-0.5f,	-0.5f,	0.0f,	1.0f,
+		-0.5f,	-0.5f,	0.5f,	0.0f,	0.0f,
+		-0.5f,	0.5f,	0.5f,	1.0f,	0.0f,
 
-		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		0.5f,	0.5f,	0.5f,	1.0f,	0.0f,
+		0.5f,	0.5f,	-0.5f,	1.0f,	1.0f,
+		0.5f,	-0.5f,	-0.5f,	0.0f,	1.0f,
+		0.5f,	-0.5f,	-0.5f,	0.0f,	1.0f,
+		0.5f,	-0.5f,	0.5f,	0.0f,	0.0f,
+		0.5f,	0.5f,	0.5f,	1.0f,	0.0f,
 
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f,	-0.5f,	-0.5f,	0.0f,	1.0f,
+		0.5f,	-0.5f,	-0.5f,	1.0f,	1.0f,
+		0.5f,	-0.5f,	0.5f,	1.0f,	0.0f,
+		0.5f,	-0.5f,	0.5f,	1.0f,	0.0f,
+		-0.5f,	-0.5f,	0.5f,	0.0f,	0.0f,
+		-0.5f,	-0.5f,	-0.5f,	0.0f,	1.0f,
 
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+		-0.5f,	0.5f,	-0.5f,	0.0f,	1.0f,
+		0.5f,	0.5f,	-0.5f,	1.0f,	1.0f,
+		0.5f,	0.5f,	0.5f,	1.0f,	0.0f,
+		0.5f,	0.5f,	0.5f,	1.0f,	0.0f,
+		-0.5f,	0.5f,	0.5f,	0.0f,	0.0f,
+		-0.5f,	0.5f,	-0.5f,	0.0f,	1.0f
 	};
 
 	unsigned int vbo;
@@ -181,25 +181,47 @@ void	loopBody(GLFWwindow* window, unsigned int shader_program, unsigned int vao,
 	glBindTexture(GL_TEXTURE_2D, texture2);
 
 	t_matrix	*mt_id = mt_new(4, 4, TRUE);
-	t_matrix	*model = mt_rotate(mt_id, (float)glfwGetTime() * radians(50.0f), vect3(0.5f, 1.0f, 0.0f));
 	// note that we're translating the scene in the reverse direction of where we want to move
 	t_matrix	*view = mt_translate(mt_id, vect3(0.0f, 0.0f, -3.0f));
 	t_matrix	*projection = mt_perspective(radians(45.0f), (float)SCREEN_W / (float)SCREEN_H, 0.1f, 100.0f);
 
-	unsigned int model_loc = glGetUniformLocation(shader_program, "model");
-	glUniformMatrix4fv(model_loc, 1, GL_TRUE, model->cont);
 	unsigned int view_loc = glGetUniformLocation(shader_program, "view");
 	glUniformMatrix4fv(view_loc, 1, GL_TRUE, view->cont);
 	unsigned int projection_loc = glGetUniformLocation(shader_program, "projection");
 	glUniformMatrix4fv(projection_loc, 1, GL_TRUE, projection->cont);
 
+
+	t_vect3 cube_pos[] = {
+		vect3(0.0f,		0.0f,	0.0f),
+		vect3(2.0f,		5.0f,	-15.0f),
+		vect3(-1.5f,	-2.2f,	-2.5f),
+		vect3(-3.8f,	-2.0f,	-12.3f),
+		vect3(2.4f,		-0.4f,	-3.5f),
+		vect3(-1.7f,	3.0f,	-7.5f),
+		vect3(1.3f,		-2.0f,	-2.5f),
+		vect3(1.5f,		2.0f,	-2.5f),
+		vect3(1.5f,		0.2f,	-1.5f),
+		vect3(-1.3f,	1.0f,	-1.5f)
+	};
+	glBindVertexArray(vao);
+	t_matrix	*model = NULL;
+	int			i = -1;
+	while (++i < 10)
+	{
+		t_matrix	*trans_m = mt_translate(mt_id, cube_pos[i]);
+		float angle = 20.0f * i;
+		model = mt_rotate(trans_m, radians(angle), vect3(1.0f, 0.3f, 0.5f));
+		mt_free(&trans_m);
+		unsigned int model_loc = glGetUniformLocation(shader_program, "model");
+		glUniformMatrix4fv(model_loc, 1, GL_TRUE, model->cont);
+
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+	}
 	mt_free(&projection);
 	mt_free(&view);
 	mt_free(&model);
 	mt_free(&mt_id);
 
-	glBindVertexArray(vao);
-	glDrawArrays(GL_TRIANGLES, 0, 36);
 	glBindVertexArray(0);
 
 	// Swap front and back buffers
