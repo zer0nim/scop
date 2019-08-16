@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 16:52:59 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/15 20:01:38 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/16 15:03:04 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ t_matrix	*mt_rotate(t_matrix *mt, float angle, t_vect3 axis_v)
 	}
 	if (!(trans_mt = mt_new(mt->h, mt->w, TRUE)))
 		return (NULL);
-	mt_rotate_transform(trans_mt, angle, axis_v);
+	mt_rotate_transform(trans_mt, angle, v3_normalize(axis_v));
 	if (!(res = mt_mul(mt, trans_mt)))
 		return (NULL);
 	mt_free(&trans_mt);
