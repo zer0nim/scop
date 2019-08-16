@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/15 20:52:46 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/16 14:29:51 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,13 @@ int8_t	load_texture(const char *filename, unsigned int *texture)
 }
 
 int8_t	initVao(unsigned int *vao) {
-	// pos			color		texture coords
-	// x, y, z,  	r, g, b		x, y
+	// pos			texture coords
+	// x, y, z,  	x, y
 	float vertices[] = {
-		0.5f,  0.5f, 0.0f,		0.0f, 1.0f, 0.0f,		1.0f, 1.0f,		// top right
-		0.5f, -0.5f, 0.0f,		0.0f, 0.0f, 1.0f,		1.0f, 0.0f,		// bottom right
-		-0.5f, -0.5f, 0.0f,		1.0f, 1.0f, 1.0f,		0.0f, 0.0f,		// bottom left
-		-0.5f,  0.5f, 0.0f,		1.0f, 0.0f, 0.0f,		0.0f, 1.0f		// top left
+		0.5f,  0.5f, 0.0f,		1.0f, 1.0f,		// top right
+		0.5f, -0.5f, 0.0f,		1.0f, 0.0f,		// bottom right
+		-0.5f, -0.5f, 0.0f,		0.0f, 0.0f,		// bottom left
+		-0.5f,  0.5f, 0.0f,		0.0f, 1.0f		// top left
 	};
 	unsigned int indices[] = {
 		0, 1, 3,   // first triangle
@@ -74,16 +74,12 @@ int8_t	initVao(unsigned int *vao) {
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	// then set our vertex attributes pointers
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	// then set our vertex colors attributes pointers
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3* sizeof(float)));
-	glEnableVertexAttribArray(1);
-
 	// then set our vertex texture coordinate attributes pointers
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6* sizeof(float)));
-	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3* sizeof(float)));
+	glEnableVertexAttribArray(1);
 
 	// note that this is allowed, the call to glVertexAttribPointer registered vbo as the vertex attribute's bound
 	// vertex buffer object so afterwards we can safely unbind
@@ -155,17 +151,6 @@ void	loopBody(GLFWwindow* window, unsigned int shader_program, unsigned int vao,
 	glBindTexture(GL_TEXTURE_2D, texture1);
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, texture2);
-
-	// // transform matrix
-	// t_matrix	*mt_id = mt_new(4, 4, TRUE);
-	// t_matrix	*trans_1 = mt_translate(mt_id, vect3(0.5f, -0.5f, 0.0f));
-	// t_matrix	*trans_2 = mt_rotate(trans_1, (float)glfwGetTime(), vect3(0.0, 0.0, 1.0));
-	// mt_free(&mt_id);
-	// mt_free(&trans_1);
-	// unsigned int trans_loc = glGetUniformLocation(shader_program, "transform");
-	// glUniformMatrix4fv(trans_loc, 1, GL_TRUE, trans_2->cont);
-	// mt_free(&trans_2);
-
 
 	t_matrix	*mt_id = mt_new(4, 4, TRUE);
 	t_matrix	*model = mt_rotate(mt_id, radians(-55.0f), vect3(1.0f, 0.0f, 0.0f));
