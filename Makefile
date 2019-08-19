@@ -6,7 +6,7 @@
 #    By: emarin <emarin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/06 15:40:25 by emarin            #+#    #+#              #
-#    Updated: 2019/08/16 15:03:25 by emarin           ###   ########.fr        #
+#    Updated: 2019/08/19 13:54:30 by emarin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ SRC		=	main.c \
 			projection_mt.c \
 			vector.c \
 			vector_op.c \
+			vector_op_2.c \
 			vector_m.c \
 			utils.c
 

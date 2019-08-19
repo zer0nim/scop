@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/16 14:55:55 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/19 13:26:24 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/19 14:09:49 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ t_vect3	v3_add(t_vect3 lhs, t_vect3 rhs)
 	t_vect3	res;
 
 	res.x = lhs.x + rhs.x;
-	res.y = lhs.x + rhs.y;
-	res.z = lhs.x + rhs.z;
+	res.y = lhs.y + rhs.y;
+	res.z = lhs.z + rhs.z;
 	return (res);
 }
 
@@ -59,7 +59,7 @@ t_vect3	v3_sub(t_vect3 lhs, t_vect3 rhs)
 	t_vect3	res;
 
 	res.x = lhs.x - rhs.x;
-	res.y = lhs.x - rhs.y;
-	res.z = lhs.x - rhs.z;
+	res.y = lhs.y - rhs.y;
+	res.z = lhs.z - rhs.z;
 	return (res);
 }

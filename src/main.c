@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/19 13:35:39 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/19 14:04:22 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,10 +125,23 @@ int8_t	initVao(unsigned int *vao) {
 	return TRUE;
 }
 
-void	processInput(GLFWwindow *window) {
+void	processInput(GLFWwindow *window, t_vect3 *cam_pos, t_vect3 *cam_front, t_vect3 *cam_up) {
 	// close windows on escape
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, TRUE);
+
+	// wasd move
+	float speed = 0.05f;
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		*cam_pos = v3_add(*cam_pos, v3_scal_mul(*cam_front, speed));
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		*cam_pos = v3_sub(*cam_pos, v3_scal_mul(*cam_front, speed));
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		*cam_pos = v3_sub(*cam_pos, \
+		v3_scal_mul(v3_normalize(v3_cross(*cam_front, *cam_up)), speed));
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		*cam_pos = v3_add(*cam_pos, \
+		v3_scal_mul(v3_normalize(v3_cross(*cam_front, *cam_up)), speed));
 }
 
 // called on windows resize
@@ -165,8 +178,9 @@ int8_t	initWindows(GLFWwindow	**window) {
 	return TRUE;
 }
 
-void	loopBody(GLFWwindow* window, unsigned int shader_program, unsigned int vao, unsigned int texture1, unsigned int texture2) {
-	processInput(window);
+void	loopBody(GLFWwindow* window, unsigned int shader_program, unsigned int vao, \
+unsigned int texture1, unsigned int texture2, t_vect3 *cam_pos, t_vect3 *cam_front, t_vect3 *cam_up) {
+	processInput(window, cam_pos, cam_front, cam_up);
 
 	// clear the screen
 	glClearColor(0.15f, 0.16f, 0.21f, 1.0f);
@@ -181,13 +195,7 @@ void	loopBody(GLFWwindow* window, unsigned int shader_program, unsigned int vao,
 	glBindTexture(GL_TEXTURE_2D, texture2);
 
 	t_matrix	*mt_id = mt_new(4, 4, TRUE);
-
-	float radius = 10.0f;
-	float cam_x = sin(glfwGetTime()) * radius;
-	float cam_z = cos(glfwGetTime()) * radius;
-	t_matrix	*view = mt_look_at(vect3(cam_x, 0.0, cam_z), \
-	vect3(0.0, 0.0, 0.0), vect3(0.0, 1.0, 0.0));
-
+	t_matrix	*view = mt_look_at(*cam_pos, v3_add(*cam_pos, *cam_front), *cam_up);
 	t_matrix	*projection = mt_perspective(radians(45.0f), (float)SCREEN_W / (float)SCREEN_H, 0.1f, 100.0f);
 
 	unsigned int view_loc = glGetUniformLocation(shader_program, "view");
@@ -236,7 +244,11 @@ void	loopBody(GLFWwindow* window, unsigned int shader_program, unsigned int vao,
 }
 
 int		main() {
-	GLFWwindow* window;
+	GLFWwindow*	window;
+	t_vect3		cam_pos = vect3(0.0f, 0.0f,  3.0f);
+	t_vect3		cam_front = vect3(0.0f, 0.0f, -1.0f);
+	t_vect3		cam_up = vect3(0.0f, 1.0f,  0.0f);
+
 	if (!initWindows(&window))
 		return 1;
 
@@ -263,7 +275,7 @@ int		main() {
 	glEnable(GL_DEPTH_TEST);
 
 	while (!glfwWindowShouldClose(window))
-		loopBody(window, shader_program, vao, texture1, texture2);
+		loopBody(window, shader_program, vao, texture1, texture2, &cam_pos, &cam_front, &cam_up);
 
 	glDeleteProgram(shader_program);
 	glDeleteVertexArrays(1, &vao);
