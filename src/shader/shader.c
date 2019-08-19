@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 19:08:34 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/16 15:12:21 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/19 19:54:40 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,11 +96,11 @@ int8_t		create_shader(unsigned int *shader_program)
 	const char		*fragment_src;
 	const char		*vertex_src;
 
-	if (!(vertex_src = file_to_string("../src/shaders/test_vs.glsl")))
+	if (!(vertex_src = file_to_string("../src/shader/test_vs.glsl")))
 		return (FALSE);
 	if (!compile_shader(&vertex_src, &vertex_shader, GL_VERTEX_SHADER))
 		return (FALSE);
-	if (!(fragment_src = file_to_string("../src/shaders/test_fs.glsl")))
+	if (!(fragment_src = file_to_string("../src/shader/test_fs.glsl")))
 		return (FALSE);
 	if (!compile_shader(&fragment_src, &fragment_shader, GL_FRAGMENT_SHADER))
 		return (FALSE);
