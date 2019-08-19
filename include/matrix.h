@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 15:09:07 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/19 13:30:36 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/19 14:01:36 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,9 @@ float			v3_dot(t_vect3 lhs, t_vect3 rhs);
 t_vect3			v3_cross(t_vect3 lhs, t_vect3 rhs);
 t_vect3			v3_add(t_vect3 lhs, t_vect3 rhs);
 t_vect3			v3_sub(t_vect3 lhs, t_vect3 rhs);
+t_vect3			v3_scal_mul(t_vect3 v3, float sc);
+t_vect3			v3_scal_add(t_vect3 v3, float sc);
+
 
 t_matrix		*vect2_m(float x, float y);
 t_matrix		*vect3_m(float x, float y, float z);
