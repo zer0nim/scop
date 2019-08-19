@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 15:09:07 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/19 14:01:36 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/19 17:00:11 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,14 @@ typedef struct	s_vect4
 	float	w;
 }				t_vect4;
 
+typedef struct	s_win_user
+{
+	float	yaw;
+	float	pitch;
+	int8_t	first_mouse;
+	t_vect3	*cam_front;
+}				t_win_user;
+
 t_matrix		*mt_new(int h, int w, int8_t is_identity);
 void			mt_print(t_matrix *mt);
 void			mt_free(t_matrix **m);
@@ -70,7 +78,6 @@ t_vect3			v3_add(t_vect3 lhs, t_vect3 rhs);
 t_vect3			v3_sub(t_vect3 lhs, t_vect3 rhs);
 t_vect3			v3_scal_mul(t_vect3 v3, float sc);
 t_vect3			v3_scal_add(t_vect3 v3, float sc);
-
 
 t_matrix		*vect2_m(float x, float y);
 t_matrix		*vect3_m(float x, float y, float z);
