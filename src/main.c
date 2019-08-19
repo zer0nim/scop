@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/16 15:57:29 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/19 13:29:21 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,8 +181,10 @@ void	loopBody(GLFWwindow* window, unsigned int shader_program, unsigned int vao,
 	glBindTexture(GL_TEXTURE_2D, texture2);
 
 	t_matrix	*mt_id = mt_new(4, 4, TRUE);
-	// note that we're translating the scene in the reverse direction of where we want to move
-	t_matrix	*view = mt_translate(mt_id, vect3(0.0f, 0.0f, -3.0f));
+	t_matrix	*view = mt_look_at(vect3(0.0f, 0.0f, 3.0f), \
+	vect3(0.0f, 0.0f, 0.0f), vect3(0.0f, 1.0f, 0.0f));
+
+
 	t_matrix	*projection = mt_perspective(radians(45.0f), (float)SCREEN_W / (float)SCREEN_H, 0.1f, 100.0f);
 
 	unsigned int view_loc = glGetUniformLocation(shader_program, "view");

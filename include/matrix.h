@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 15:09:07 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/16 15:02:28 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/19 13:30:36 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void			mt_scalar_prod(t_matrix *mt, float scalar_v);
 t_matrix		*mt_perspective(float fov_y, float aspect, float z_near\
 , float z_far);
 t_matrix		*mt_orthographic(t_vect4 l_r_b_t, float z_near, float z_far);
+t_matrix		*mt_look_at(t_vect3 pos, t_vect3 target, t_vect3 up);
 
 t_vect2			vect2(float x, float y);
 t_vect3			vect3(float x, float y, float z);
@@ -65,6 +66,8 @@ t_vect4			vect4(float x, float y, float z, float w);
 t_vect3			v3_normalize(t_vect3 v);
 float			v3_dot(t_vect3 lhs, t_vect3 rhs);
 t_vect3			v3_cross(t_vect3 lhs, t_vect3 rhs);
+t_vect3			v3_add(t_vect3 lhs, t_vect3 rhs);
+t_vect3			v3_sub(t_vect3 lhs, t_vect3 rhs);
 
 t_matrix		*vect2_m(float x, float y);
 t_matrix		*vect3_m(float x, float y, float z);
