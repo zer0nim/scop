@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/19 14:04:22 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/19 15:05:56 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,13 +125,19 @@ int8_t	initVao(unsigned int *vao) {
 	return TRUE;
 }
 
-void	processInput(GLFWwindow *window, t_vect3 *cam_pos, t_vect3 *cam_front, t_vect3 *cam_up) {
+void	processInput(GLFWwindow *window, t_vect3 *cam_pos, t_vect3 *cam_front, \
+t_vect3 *cam_up, float *delta_time, float *last_frame) {
 	// close windows on escape
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, TRUE);
 
+	// update delta_time
+	float currentFrame = glfwGetTime();
+	*delta_time = currentFrame - *last_frame;
+	*last_frame = currentFrame;
+
 	// wasd move
-	float speed = 0.05f;
+	float speed = 10.0f * *delta_time;
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		*cam_pos = v3_add(*cam_pos, v3_scal_mul(*cam_front, speed));
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -179,8 +185,9 @@ int8_t	initWindows(GLFWwindow	**window) {
 }
 
 void	loopBody(GLFWwindow* window, unsigned int shader_program, unsigned int vao, \
-unsigned int texture1, unsigned int texture2, t_vect3 *cam_pos, t_vect3 *cam_front, t_vect3 *cam_up) {
-	processInput(window, cam_pos, cam_front, cam_up);
+unsigned int texture1, unsigned int texture2, t_vect3 *cam_pos, t_vect3 *cam_front, \
+t_vect3 *cam_up, float *delta_time, float *last_frame) {
+	processInput(window, cam_pos, cam_front, cam_up, delta_time, last_frame);
 
 	// clear the screen
 	glClearColor(0.15f, 0.16f, 0.21f, 1.0f);
@@ -248,6 +255,8 @@ int		main() {
 	t_vect3		cam_pos = vect3(0.0f, 0.0f,  3.0f);
 	t_vect3		cam_front = vect3(0.0f, 0.0f, -1.0f);
 	t_vect3		cam_up = vect3(0.0f, 1.0f,  0.0f);
+	float		delta_time = 0.0f;
+	float		last_frame = 0.0f;
 
 	if (!initWindows(&window))
 		return 1;
@@ -275,7 +284,8 @@ int		main() {
 	glEnable(GL_DEPTH_TEST);
 
 	while (!glfwWindowShouldClose(window))
-		loopBody(window, shader_program, vao, texture1, texture2, &cam_pos, &cam_front, &cam_up);
+		loopBody(window, shader_program, vao, texture1, texture2, &cam_pos, \
+		&cam_front, &cam_up, &delta_time, &last_frame);
 
 	glDeleteProgram(shader_program);
 	glDeleteVertexArrays(1, &vao);
