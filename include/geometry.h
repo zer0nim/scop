@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   matrix.h                                           :+:      :+:    :+:   */
+/*   geometry.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 15:09:07 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/19 20:03:25 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/19 20:31:26 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,15 @@ typedef struct	s_vect4
 	float	z;
 	float	w;
 }				t_vect4;
+
+typedef struct	s_camera
+{
+	t_vect3	cam_pos;
+	t_vect3	cam_front;
+	t_vect3	cam_up;
+	float	yaw;
+	float	pitch;
+}				t_camera;
 
 t_matrix		*mt_new(int h, int w, int8_t is_identity);
 void			mt_print(t_matrix *mt);

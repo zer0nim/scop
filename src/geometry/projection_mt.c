@@ -6,11 +6,11 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 19:48:20 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/19 19:49:44 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/19 20:31:24 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "matrix.h"
+#include "geometry.h"
 
 t_matrix	*mt_perspective(float fov_y, float aspect, float z_near
 , float z_far)
