@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/19 13:29:21 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/19 13:35:39 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,9 +181,12 @@ void	loopBody(GLFWwindow* window, unsigned int shader_program, unsigned int vao,
 	glBindTexture(GL_TEXTURE_2D, texture2);
 
 	t_matrix	*mt_id = mt_new(4, 4, TRUE);
-	t_matrix	*view = mt_look_at(vect3(0.0f, 0.0f, 3.0f), \
-	vect3(0.0f, 0.0f, 0.0f), vect3(0.0f, 1.0f, 0.0f));
 
+	float radius = 10.0f;
+	float cam_x = sin(glfwGetTime()) * radius;
+	float cam_z = cos(glfwGetTime()) * radius;
+	t_matrix	*view = mt_look_at(vect3(cam_x, 0.0, cam_z), \
+	vect3(0.0, 0.0, 0.0), vect3(0.0, 1.0, 0.0));
 
 	t_matrix	*projection = mt_perspective(radians(45.0f), (float)SCREEN_W / (float)SCREEN_H, 0.1f, 100.0f);
 
