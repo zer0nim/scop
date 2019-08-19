@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/19 15:05:56 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/19 16:58:15 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,39 @@ t_vect3 *cam_up, float *delta_time, float *last_frame) {
 		v3_scal_mul(v3_normalize(v3_cross(*cam_front, *cam_up)), speed));
 }
 
+void mouse_cb(GLFWwindow* window, double x_pos, double y_pos)
+{
+	t_win_user		*win_user;
+	t_vect3			front;
+	static float	last_x = SCREEN_W / 2.0;
+	static float	last_y = SCREEN_H / 2.0;
+
+	win_user = (t_win_user *)glfwGetWindowUserPointer(window);
+	if (win_user->first_mouse)
+	{
+		last_x = x_pos;
+		last_y = y_pos;
+		win_user->first_mouse = FALSE;
+	}
+	float x_offset = x_pos - last_x;
+	float y_offset = last_y - y_pos;
+	last_x = x_pos;
+	last_y = y_pos;
+	float sensitivity = 0.1;
+	x_offset *= sensitivity;
+	y_offset *= sensitivity;
+	win_user->yaw = win_user->yaw + x_offset;
+	win_user->pitch += y_offset;
+	if (win_user->pitch > 89.0f)
+		win_user->pitch = 89.0f;
+	if (win_user->pitch < -89.0f)
+		win_user->pitch = -89.0f;
+	front.x = cos(radians(win_user->yaw)) * cos(radians(win_user->pitch));
+	front.y = sin(radians(win_user->pitch));
+	front.z = sin(radians(win_user->yaw)) * cos(radians(win_user->pitch));
+	*(win_user->cam_front) = v3_normalize(front);
+}
+
 // called on windows resize
 void	framebufferResizeCb(GLFWwindow* window, int width, int height) {
 	(void)window;
@@ -179,8 +212,9 @@ int8_t	initWindows(GLFWwindow	**window) {
 		return FALSE;
 	}
 	glfwMakeContextCurrent(*window);
-	// call framebufferResizeCb func on windows resize
 	glfwSetFramebufferSizeCallback(*window, framebufferResizeCb);
+	glfwSetCursorPosCallback(*window, mouse_cb);
+	glfwSetInputMode(*window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	return TRUE;
 }
 
@@ -257,9 +291,17 @@ int		main() {
 	t_vect3		cam_up = vect3(0.0f, 1.0f,  0.0f);
 	float		delta_time = 0.0f;
 	float		last_frame = 0.0f;
+	t_win_user	win_user;
 
 	if (!initWindows(&window))
 		return 1;
+
+	// set WindowUserPointer to pass param to event cb
+	win_user.yaw = -90.0f;
+	win_user.pitch = 0.0f;
+	win_user.first_mouse = TRUE;
+	win_user.cam_front = &cam_front;
+	glfwSetWindowUserPointer(window, &win_user);
 
 	unsigned int shader_program = 0;
 	if (!create_shader(&shader_program))
