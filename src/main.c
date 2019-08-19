@@ -6,13 +6,12 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/19 17:17:56 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/19 19:51:42 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.h"
 #include "tga.h"
-#include "matrix.h"
 
 int8_t	load_texture(const char *filename, unsigned int *texture)
 {

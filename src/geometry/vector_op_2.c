@@ -1,44 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector.c                                           :+:      :+:    :+:   */
+/*   vector_op_2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/12 18:03:31 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/16 15:05:50 by emarin           ###   ########.fr       */
+/*   Created: 2019/08/16 14:55:55 by emarin            #+#    #+#             */
+/*   Updated: 2019/08/19 19:50:19 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "scop.h"
 #include "matrix.h"
 
-t_vect2			vect2(float x, float y)
-{
-	t_vect2	res;
-
-	res.x = x;
-	res.y = y;
-	return (res);
-}
-
-t_vect3			vect3(float x, float y, float z)
+t_vect3	v3_scal_mul(t_vect3 v3, float sc)
 {
 	t_vect3	res;
 
-	res.x = x;
-	res.y = y;
-	res.z = z;
+	res.x = v3.x * sc;
+	res.y = v3.y * sc;
+	res.z = v3.z * sc;
 	return (res);
 }
 
-t_vect4			vect4(float x, float y, float z, float w)
+t_vect3	v3_scal_add(t_vect3 v3, float sc)
 {
-	t_vect4	res;
+	t_vect3	res;
 
-	res.x = x;
-	res.y = y;
-	res.z = z;
-	res.w = w;
+	res.x = v3.x + sc;
+	res.y = v3.y + sc;
+	res.z = v3.z + sc;
 	return (res);
 }

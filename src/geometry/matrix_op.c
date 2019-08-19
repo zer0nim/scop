@@ -6,11 +6,10 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 16:52:59 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/16 15:03:04 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/19 19:49:41 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "scop.h"
 #include "matrix.h"
 
 t_matrix	*mt_mul(t_matrix *lhs, t_matrix *rhs)

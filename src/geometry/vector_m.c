@@ -6,11 +6,10 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 20:08:03 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/15 20:08:16 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/19 19:49:46 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "scop.h"
 #include "matrix.h"
 
 t_matrix	*vect2_m(float x, float y)

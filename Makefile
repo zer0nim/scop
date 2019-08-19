@@ -6,7 +6,7 @@
 #    By: emarin <emarin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/06 15:40:25 by emarin            #+#    #+#              #
-#    Updated: 2019/08/19 13:54:30 by emarin           ###   ########.fr        #
+#    Updated: 2019/08/19 20:01:04 by emarin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,18 +21,21 @@ INC_PATH	= include
 OBJ_PATH	= obj
 
 SRC		=	main.c \
-			shader.c \
-			tga.c \
-			tga_read.c \
-			matrix.c \
-			matrix_op.c \
-			matrix_op_2.c \
-			projection_mt.c \
-			vector.c \
-			vector_op.c \
-			vector_op_2.c \
-			vector_m.c \
-			utils.c
+\
+			geometry/matrix.c \
+			geometry/matrix_op.c \
+			geometry/matrix_op_2.c \
+			geometry/projection_mt.c \
+			geometry/vector_m.c \
+			geometry/vector.c \
+			geometry/vector_op.c \
+			geometry/vector_op_2.c \
+			geometry/utils.c \
+\
+			shader/shader.c \
+\
+			utils/tga.c \
+			utils/tga_read.c \
 
 HEAD	=	define.h \
 			scop.h \
