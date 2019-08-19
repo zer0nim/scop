@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/19 16:58:15 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/19 17:17:56 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,10 +270,10 @@ t_vect3 *cam_up, float *delta_time, float *last_frame) {
 		glUniformMatrix4fv(model_loc, 1, GL_TRUE, model->cont);
 
 		glDrawArrays(GL_TRIANGLES, 0, 36);
+		mt_free(&model);
 	}
 	mt_free(&projection);
 	mt_free(&view);
-	mt_free(&model);
 	mt_free(&mt_id);
 
 	glBindVertexArray(0);
