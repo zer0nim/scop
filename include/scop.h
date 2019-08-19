@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 20:28:11 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/19 20:03:32 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/19 20:31:24 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define SCOP_H
 
 # include "define.h"
-# include "matrix.h"
+# include "geometry.h"
 # define GLFW_INCLUDE_GLCOREARB
 # include <GLFW/glfw3.h>
 # include <stdlib.h>
