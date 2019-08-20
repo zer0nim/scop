@@ -6,12 +6,12 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 15:09:07 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/19 20:31:26 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/20 15:29:56 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MATRIX_H
-# define MATRIX_H
+#ifndef GEOMETRY_H
+# define GEOMETRY_H
 
 # include "define.h"
 # include <stdlib.h>
@@ -48,12 +48,20 @@ typedef struct	s_vect4
 
 typedef struct	s_camera
 {
-	t_vect3	cam_pos;
-	t_vect3	cam_front;
-	t_vect3	cam_up;
+	t_vect3	pos;
+	t_vect3	front;
+	t_vect3	up;
 	float	yaw;
 	float	pitch;
 }				t_camera;
+
+typedef enum	e_cam_mov
+{
+	e_forward,
+	e_backward,
+	e_left,
+	e_right
+}				t_cam_mov;
 
 t_matrix		*mt_new(int h, int w, int8_t is_identity);
 void			mt_print(t_matrix *mt);
@@ -86,5 +94,10 @@ t_vect3			v3_scal_add(t_vect3 v3, float sc);
 t_matrix		*vect2_m(float x, float y);
 t_matrix		*vect3_m(float x, float y, float z);
 t_matrix		*vect4_m(float x, float y, float z, float w);
+
+void			cam_init(t_camera *cam);
+void			cam_process_move(t_camera *cam, t_cam_mov mov, float dt_time);
+void			cam_process_mouse(t_camera *cam, float x_offset
+, float y_offset);
 
 #endif

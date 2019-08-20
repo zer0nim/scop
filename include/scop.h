@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 20:28:11 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/19 20:31:24 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/20 15:32:19 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,19 @@
 # include <stdio.h>
 # include <math.h>
 
-int8_t	create_shader(unsigned int *shader_program);
+int8_t			create_shader(unsigned int *shader_program);
+int8_t			load_texture(const char *filename, unsigned int *texture);
+int8_t			init_window(GLFWwindow	**window, const char *name);
+void			process_input(GLFWwindow *window);
 
-float	radians(float degree_angle);
-float	degrees(float radian_angle);
+float			radians(float degree_angle);
+float			degrees(float radian_angle);
 
 typedef struct	s_win_user
 {
-	float	yaw;
-	float	pitch;
-	int8_t	first_mouse;
-	t_vect3	*cam_front;
+	t_camera	cam;
+	float		dt_time;
+	float		last_frame;
 }				t_win_user;
 
 #endif
