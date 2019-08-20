@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/20 18:41:31 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/20 18:48:41 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,15 +87,14 @@ void	draw_cube(unsigned int shader, t_vect3 pos, t_vect3 scale)
 	t_matrix		*mt_id;
 	t_matrix		*trans_m;
 	t_matrix		*model;
-	unsigned int	model_loc;
 
 	glUseProgram(shader);
 	mt_id = mt_new(4, 4, TRUE);
 	trans_m = mt_translate(mt_id, pos);
 	model = mt_scale(trans_m, scale);
 	mt_free(&trans_m);
-	model_loc = glGetUniformLocation(shader, "model");
-	glUniformMatrix4fv(model_loc, 1, GL_TRUE, model->cont);
+	glUniformMatrix4fv(glGetUniformLocation(shader, "model"), 1, GL_TRUE, \
+	model->cont);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	mt_free(&model);
 	mt_free(&mt_id);
@@ -104,17 +103,16 @@ void	draw_cube(unsigned int shader, t_vect3 pos, t_vect3 scale)
 void	set_shader_mt(unsigned int shader, t_camera *cam)
 {
 	t_matrix		*mt;
-	unsigned int	mt_loc;
 
 	glUseProgram(shader);
 	mt = mt_look_at(cam->pos, v3_add(cam->pos, cam->front), cam->up);
-	mt_loc = glGetUniformLocation(shader, "view");
-	glUniformMatrix4fv(mt_loc, 1, GL_TRUE, mt->cont);
+	glUniformMatrix4fv(glGetUniformLocation(shader, "view"), 1, GL_TRUE, \
+	mt->cont);
 	mt_free(&mt);
 	mt = mt_perspective(radians(45.0f), (float)SCREEN_W / \
 	(float)SCREEN_H, 0.1f, 100.0f);
-	mt_loc = glGetUniformLocation(shader, "projection");
-	glUniformMatrix4fv(mt_loc, 1, GL_TRUE, mt->cont);
+	glUniformMatrix4fv(glGetUniformLocation(shader, "projection"), 1, GL_TRUE, \
+	mt->cont);
 	mt_free(&mt);
 }
 
