@@ -6,7 +6,7 @@
 #    By: emarin <emarin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/06 15:40:25 by emarin            #+#    #+#              #
-#    Updated: 2019/08/19 20:31:24 by emarin           ###   ########.fr        #
+#    Updated: 2019/08/20 14:17:44 by emarin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ INC_PATH	= include
 OBJ_PATH	= obj
 
 SRC		=	main.c \
+			opengl_tools.c \
 \
 			geometry/matrix.c \
 			geometry/matrix_op.c \
