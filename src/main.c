@@ -6,54 +6,54 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/20 18:48:41 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/21 16:39:48 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.h"
 
 const float		g_verts[] = {
-	-0.5f, -0.5f, -0.5f,
-	0.5f, -0.5f, -0.5f,
-	0.5f, 0.5f, -0.5f,
-	0.5f, 0.5f, -0.5f,
-	-0.5f, 0.5f, -0.5f,
-	-0.5f, -0.5f, -0.5f,
+	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+	0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+	0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+	0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+	-0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
 \
-	-0.5f, -0.5f, 0.5f,
-	0.5f, -0.5f, 0.5f,
-	0.5f, 0.5f, 0.5f,
-	0.5f, 0.5f, 0.5f,
-	-0.5f, 0.5f, 0.5f,
-	-0.5f, -0.5f, 0.5f,
+	-0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+	0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+	0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+	0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+	-0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+	-0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
 \
-	-0.5f, 0.5f, 0.5f,
-	-0.5f, 0.5f, -0.5f,
-	-0.5f, -0.5f, -0.5f,
-	-0.5f, -0.5f, -0.5f,
-	-0.5f, -0.5f, 0.5f,
-	-0.5f, 0.5f, 0.5f,
+	-0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+	-0.5f, 0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+	-0.5f, -0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+	-0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
 \
-	0.5f, 0.5f, 0.5f,
-	0.5f, 0.5f, -0.5f,
-	0.5f, -0.5f, -0.5f,
-	0.5f, -0.5f, -0.5f,
-	0.5f, -0.5f, 0.5f,
-	0.5f, 0.5f, 0.5f,
+	0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+	0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+	0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+	0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+	0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+	0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
 \
-	-0.5f, -0.5f, -0.5f,
-	0.5f, -0.5f, -0.5f,
-	0.5f, -0.5f, 0.5f,
-	0.5f, -0.5f, 0.5f,
-	-0.5f, -0.5f, 0.5f,
-	-0.5f, -0.5f, -0.5f,
+	-0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
+	0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
+	0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+	0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+	-0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
 \
-	-0.5f, 0.5f, -0.5f,
-	0.5f, 0.5f, -0.5f,
-	0.5f, 0.5f, 0.5f,
-	0.5f, 0.5f, 0.5f,
-	-0.5f, 0.5f, 0.5f,
-	-0.5f, 0.5f, -0.5f
+	-0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+	0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+	0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+	0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+	-0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+	-0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f
 };
 
 void	init_vao(unsigned int *vao_ol)
@@ -68,13 +68,16 @@ void	init_vao(unsigned int *vao_ol)
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_verts), g_verts, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo);
 \
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), \
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), \
 	(void*)0);
 	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), \
+	(void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
 \
 	glBindVertexArray(vao_ol[1]);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), \
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), \
 	(void*)0);
 	glEnableVertexAttribArray(0);
 \
@@ -120,20 +123,26 @@ void	loop_body(GLFWwindow *window, unsigned int *shader_ol, \
 unsigned int *vao_ol)
 {
 	t_camera		*cam;
+	t_vect3			ligh_pos;
 
 	cam = &(((t_win_user *)glfwGetWindowUserPointer(window))->cam);
+	ligh_pos = vect3(1.2f, 1.0f, -2.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glBindVertexArray(vao_ol[0]);
 	glUniform3f(glGetUniformLocation(shader_ol[0], "objectColor"), \
 	1.0f, 0.5f, 0.31f);
 	glUniform3f(glGetUniformLocation(shader_ol[0], "lightColor"), \
 	1.0f, 1.0f, 1.0f);
+	glUniform3f(glGetUniformLocation(shader_ol[0], "lightPos"), \
+	1.0f, 1.0f, 1.0f);
+	glUniform3fv(glGetUniformLocation(shader_ol[0], "lightPos"), 1, \
+	&(ligh_pos.x));
 \
 	set_shader_mt(shader_ol[0], cam);
 	draw_cube(shader_ol[0], vect3(0.0f, 0.0f, 0.0f), vect3(1.0f, 1.0f, 1.0f));
 	glBindVertexArray(vao_ol[1]);
 	set_shader_mt(shader_ol[1], cam);
-	draw_cube(shader_ol[1], vect3(1.2f, 1.0f, -2.0f), vect3(0.2f, 0.2f, 0.2f));
+	draw_cube(shader_ol[1], ligh_pos, vect3(0.2f, 0.2f, 0.2f));
 \
 	glBindVertexArray(0);
 	glfwSwapBuffers(window);
