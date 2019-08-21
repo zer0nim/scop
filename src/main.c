@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/21 16:39:48 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/21 17:48:31 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,22 +125,24 @@ unsigned int *vao_ol)
 	t_camera		*cam;
 	t_vect3			ligh_pos;
 
+	glUseProgram(shader_ol[0]);
+	ligh_pos = vect3(2.0f * sin(glfwGetTime()), 0, 1.5f * cos(glfwGetTime()));
 	cam = &(((t_win_user *)glfwGetWindowUserPointer(window))->cam);
-	ligh_pos = vect3(1.2f, 1.0f, -2.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glBindVertexArray(vao_ol[0]);
 	glUniform3f(glGetUniformLocation(shader_ol[0], "objectColor"), \
 	1.0f, 0.5f, 0.31f);
 	glUniform3f(glGetUniformLocation(shader_ol[0], "lightColor"), \
 	1.0f, 1.0f, 1.0f);
-	glUniform3f(glGetUniformLocation(shader_ol[0], "lightPos"), \
-	1.0f, 1.0f, 1.0f);
 	glUniform3fv(glGetUniformLocation(shader_ol[0], "lightPos"), 1, \
 	&(ligh_pos.x));
+	glUniform3fv(glGetUniformLocation(shader_ol[0], "viewPos"), 1, \
+	&(cam->pos.x));
 \
 	set_shader_mt(shader_ol[0], cam);
 	draw_cube(shader_ol[0], vect3(0.0f, 0.0f, 0.0f), vect3(1.0f, 1.0f, 1.0f));
 	glBindVertexArray(vao_ol[1]);
+	glUseProgram(shader_ol[1]);
 	set_shader_mt(shader_ol[1], cam);
 	draw_cube(shader_ol[1], ligh_pos, vect3(0.2f, 0.2f, 0.2f));
 \
