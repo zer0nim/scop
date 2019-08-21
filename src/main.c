@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/21 18:52:47 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/21 19:03:37 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,9 @@ unsigned int *vao_ol)
 {
 	t_camera		*cam;
 	t_vect3			ligh_pos;
+	t_vect3			light_color;
+	t_vect3			diffuse_color;
+	t_vect3			ambient_color;
 
 	glUseProgram(shader_ol[0]);
 	ligh_pos = vect3(0.5f, -0.1f, 2.0f);
@@ -141,12 +144,18 @@ unsigned int *vao_ol)
 	glUniform1f(glGetUniformLocation(shader_ol[0], "material.shininess"), \
 	32.0f);
 \
+	light_color.x = sin(glfwGetTime() * 2.0f);
+	light_color.y = sin(glfwGetTime() * 0.7f);
+	light_color.z = sin(glfwGetTime() * 1.3f);
+	diffuse_color = v3_scal_mul(light_color, 0.5f);
+	ambient_color = v3_scal_mul(diffuse_color, 0.5f);
+\
 	glUniform3fv(glGetUniformLocation(shader_ol[0], "light.position"), 1, \
 	&(ligh_pos.x));
-	glUniform3f(glGetUniformLocation(shader_ol[0], "light.ambient"), \
-	0.2f, 0.2f, 0.2f);
-	glUniform3f(glGetUniformLocation(shader_ol[0], "light.diffuse"), \
-	0.5f, 0.5f, 0.5f);
+	glUniform3fv(glGetUniformLocation(shader_ol[0], "light.ambient"), 1, \
+	&(ambient_color.x));
+	glUniform3fv(glGetUniformLocation(shader_ol[0], "light.diffuse"), 1, \
+	&(diffuse_color.x));
 	glUniform3f(glGetUniformLocation(shader_ol[0], "light.specular"), \
 	1.0f, 1.0f, 1.0f);
 \
