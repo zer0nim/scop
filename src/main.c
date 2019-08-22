@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/22 12:35:24 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/22 12:59:49 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void	set_shader_mt(unsigned int shader, t_camera *cam)
 }
 
 void	loop_body(GLFWwindow *window, unsigned int *shader_ol, \
-unsigned int *vao_ol, unsigned int *diffuse_map)
+unsigned int *vao_ol, unsigned int *dif_spec_map)
 {
 	t_camera		*cam;
 	t_vect3			ligh_pos;
@@ -154,7 +154,9 @@ unsigned int *vao_ol, unsigned int *diffuse_map)
 	1.0f, 1.0f, 1.0f);
 \
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, *diffuse_map);
+	glBindTexture(GL_TEXTURE_2D, dif_spec_map[0]);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, dif_spec_map[1]);
 \
 	set_shader_mt(shader_ol[0], cam);
 	draw_cube(shader_ol[0], vect3(0.0f, 0.0f, 0.0f), vect3(1.0f, 1.0f, 1.0f));
@@ -169,7 +171,7 @@ unsigned int *vao_ol, unsigned int *diffuse_map)
 }
 
 int8_t	init(GLFWwindow *window, unsigned int *shader_ol, \
-unsigned int *vao_ol, unsigned int *diffuse_map)
+unsigned int *vao_ol, unsigned int *dif_spec_map)
 {
 	t_win_user		*win_u;
 
@@ -184,10 +186,14 @@ unsigned int *vao_ol, unsigned int *diffuse_map)
 	"../src/shader/light_fs.glsl"))
 		return (FALSE);
 	init_vao(vao_ol);
-	if (!(load_texture("/Users/emarin/Downloads/container2.tga", diffuse_map)))
+	if (!(load_texture("/Users/emarin/Downloads/container2.tga", dif_spec_map)))
+		return (FALSE);
+	if (!(load_texture("/Users/emarin/Downloads/container2_specular.tga", \
+	dif_spec_map + 1)))
 		return (FALSE);
 	glUseProgram(shader_ol[0]);
 	glUniform1i(glGetUniformLocation(shader_ol[0], "material.diffuse"), 0);
+	glUniform1i(glGetUniformLocation(shader_ol[0], "material.specular"), 1);
 	return (TRUE);
 }
 
@@ -197,18 +203,18 @@ int		main(void)
 	t_win_user		win_u;
 	GLFWwindow		*window;
 	unsigned int	shader_ol[2];
-	unsigned int	diffuse_map;
+	unsigned int	dif_spec_map[2];
 
 	if (!init_window(&window, "Scop"))
 		return (FALSE);
 	glfwSetWindowUserPointer(window, &win_u);
-	if (!init(window, shader_ol, vao_obj_light, &diffuse_map))
+	if (!init(window, shader_ol, vao_obj_light, dif_spec_map))
 		return (1);
 	glClearColor(0.15f, 0.16f, 0.21f, 1.0f);
 	while (!glfwWindowShouldClose(window))
 	{
 		process_input(window);
-		loop_body(window, shader_ol, vao_obj_light, &diffuse_map);
+		loop_body(window, shader_ol, vao_obj_light, dif_spec_map);
 	}
 	glDeleteProgram(shader_ol[0]);
 	glDeleteProgram(shader_ol[1]);
