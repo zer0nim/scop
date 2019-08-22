@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/21 20:40:49 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/22 12:35:24 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,10 +131,10 @@ unsigned int *vao_ol, unsigned int *diffuse_map)
 	t_camera		*cam;
 	t_vect3			ligh_pos;
 
-	glUseProgram(shader_ol[0]);
 	ligh_pos = vect3(0.5f, -0.1f, 2.0f);
 	cam = &(((t_win_user *)glfwGetWindowUserPointer(window))->cam);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glUseProgram(shader_ol[0]);
 	glBindVertexArray(vao_ol[0]);
 	glUniform3fv(glGetUniformLocation(shader_ol[0], "viewPos"), 1, \
 	&(cam->pos.x));
@@ -158,8 +158,8 @@ unsigned int *vao_ol, unsigned int *diffuse_map)
 \
 	set_shader_mt(shader_ol[0], cam);
 	draw_cube(shader_ol[0], vect3(0.0f, 0.0f, 0.0f), vect3(1.0f, 1.0f, 1.0f));
-	glBindVertexArray(vao_ol[1]);
 	glUseProgram(shader_ol[1]);
+	glBindVertexArray(vao_ol[1]);
 	set_shader_mt(shader_ol[1], cam);
 	draw_cube(shader_ol[1], ligh_pos, vect3(0.2f, 0.2f, 0.2f));
 \
@@ -186,6 +186,7 @@ unsigned int *vao_ol, unsigned int *diffuse_map)
 	init_vao(vao_ol);
 	if (!(load_texture("/Users/emarin/Downloads/container2.tga", diffuse_map)))
 		return (FALSE);
+	glUseProgram(shader_ol[0]);
 	glUniform1i(glGetUniformLocation(shader_ol[0], "material.diffuse"), 0);
 	return (TRUE);
 }
@@ -201,7 +202,6 @@ int		main(void)
 	if (!init_window(&window, "Scop"))
 		return (FALSE);
 	glfwSetWindowUserPointer(window, &win_u);
-	glUseProgram(shader_ol[0]);
 	if (!init(window, shader_ol, vao_obj_light, &diffuse_map))
 		return (1);
 	glClearColor(0.15f, 0.16f, 0.21f, 1.0f);
