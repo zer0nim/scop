@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/22 16:49:28 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/22 18:38:45 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,13 @@ unsigned int *vao_ol, unsigned int *dif_spec_map)
 	32.0f);
 \
 	glUniform3fv(glGetUniformLocation(shader_ol[0], "light.position"), 1, \
-	&(ligh_pos.x));
+	&(cam->pos.x));
+	glUniform3fv(glGetUniformLocation(shader_ol[0], "light.direction"), 1, \
+	&(cam->front.x));
+	glUniform1f(glGetUniformLocation(shader_ol[0], "light.cutOff"), \
+	cos(radians(12.5f)));
+	glUniform1f(glGetUniformLocation(shader_ol[0], "light.outerCutOff"), \
+	cos(radians(17.5f)));
 	glUniform3f(glGetUniformLocation(shader_ol[0], "light.ambient"), \
 	0.2f, 0.2f, 0.2f);
 	glUniform3f(glGetUniformLocation(shader_ol[0], "light.diffuse"), \
