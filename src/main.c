@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/22 12:59:49 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/22 14:32:59 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,8 @@ unsigned int *vao_ol, unsigned int *dif_spec_map)
 	t_vect3			ligh_pos;
 
 	ligh_pos = vect3(0.5f, -0.1f, 2.0f);
+	// uncomment for light rotation
+	// ligh_pos = vect3(2.0f * sin(glfwGetTime()), 0, 1.5f * cos(glfwGetTime()));
 	cam = &(((t_win_user *)glfwGetWindowUserPointer(window))->cam);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(shader_ol[0]);
@@ -157,6 +159,8 @@ unsigned int *vao_ol, unsigned int *dif_spec_map)
 	glBindTexture(GL_TEXTURE_2D, dif_spec_map[0]);
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, dif_spec_map[1]);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, dif_spec_map[2]);
 \
 	set_shader_mt(shader_ol[0], cam);
 	draw_cube(shader_ol[0], vect3(0.0f, 0.0f, 0.0f), vect3(1.0f, 1.0f, 1.0f));
@@ -191,9 +195,13 @@ unsigned int *vao_ol, unsigned int *dif_spec_map)
 	if (!(load_texture("/Users/emarin/Downloads/container2_specular.tga", \
 	dif_spec_map + 1)))
 		return (FALSE);
+	if (!(load_texture("/Users/emarin/Downloads/container2_emission.tga", \
+	dif_spec_map + 2)))
+		return (FALSE);
 	glUseProgram(shader_ol[0]);
 	glUniform1i(glGetUniformLocation(shader_ol[0], "material.diffuse"), 0);
 	glUniform1i(glGetUniformLocation(shader_ol[0], "material.specular"), 1);
+	glUniform1i(glGetUniformLocation(shader_ol[0], "material.emission"), 2);
 	return (TRUE);
 }
 
@@ -203,7 +211,7 @@ int		main(void)
 	t_win_user		win_u;
 	GLFWwindow		*window;
 	unsigned int	shader_ol[2];
-	unsigned int	dif_spec_map[2];
+	unsigned int	dif_spec_map[3];
 
 	if (!init_window(&window, "Scop"))
 		return (FALSE);
