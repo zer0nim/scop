@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/22 14:32:59 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/22 16:14:51 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,17 +91,21 @@ void	init_vao(unsigned int *vao_ol)
 	glBindVertexArray(0);
 }
 
-void	draw_cube(unsigned int shader, t_vect3 pos, t_vect3 scale)
+void	draw_cube(unsigned int shader, t_vect3 pos, t_vect3 scale, \
+float angle, t_vect3 axis_v)
 {
 	t_matrix		*mt_id;
 	t_matrix		*trans_m;
+	t_matrix		*trans_m2;
 	t_matrix		*model;
 
 	glUseProgram(shader);
 	mt_id = mt_new(4, 4, TRUE);
 	trans_m = mt_translate(mt_id, pos);
-	model = mt_scale(trans_m, scale);
+	trans_m2 = mt_rotate(trans_m, radians(angle), axis_v);
 	mt_free(&trans_m);
+	model = mt_scale(trans_m2, scale);
+	mt_free(&trans_m2);
 	glUniformMatrix4fv(glGetUniformLocation(shader, "model"), 1, GL_TRUE, \
 	model->cont);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -125,6 +129,26 @@ void	set_shader_mt(unsigned int shader, t_camera *cam)
 	mt_free(&mt);
 }
 
+void	draw_cubes(unsigned int *shader_ol)
+{
+	int				i;
+	t_vect3			cube_pos[7];
+
+	cube_pos[0] = vect3(0.0f, 0.0f, 0.0f);
+	cube_pos[1] = vect3(2.0f, 5.0f, -15.0f);
+	cube_pos[2] = vect3(-1.5f, -2.2f, -2.5f);
+	cube_pos[3] = vect3(-3.8f, -2.0f, -12.3f);
+	cube_pos[4] = vect3(2.4f, -0.4f, -3.5f);
+	cube_pos[5] = vect3(-1.7f, 3.0f, -7.5f);
+	cube_pos[6] = vect3(1.3f, -2.0f, -2.5f);
+	i = -1;
+	while (++i < 7)
+	{
+		draw_cube(shader_ol[0], cube_pos[i], vect3(1.0f, 1.0f, 1.0f), \
+		20.0f * i, vect3(1.0f, 0.3f, 0.5f));
+	}
+}
+
 void	loop_body(GLFWwindow *window, unsigned int *shader_ol, \
 unsigned int *vao_ol, unsigned int *dif_spec_map)
 {
@@ -146,8 +170,8 @@ unsigned int *vao_ol, unsigned int *dif_spec_map)
 	glUniform1f(glGetUniformLocation(shader_ol[0], "material.shininess"), \
 	32.0f);
 \
-	glUniform3fv(glGetUniformLocation(shader_ol[0], "light.position"), 1, \
-	&(ligh_pos.x));
+	glUniform3f(glGetUniformLocation(shader_ol[0], "light.direction"), \
+	-0.2f, -1.0f, -0.3f);
 	glUniform3f(glGetUniformLocation(shader_ol[0], "light.ambient"), \
 	0.2f, 0.2f, 0.2f);
 	glUniform3f(glGetUniformLocation(shader_ol[0], "light.diffuse"), \
@@ -159,15 +183,17 @@ unsigned int *vao_ol, unsigned int *dif_spec_map)
 	glBindTexture(GL_TEXTURE_2D, dif_spec_map[0]);
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, dif_spec_map[1]);
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, dif_spec_map[2]);
+	// glActiveTexture(GL_TEXTURE2);
+	// glBindTexture(GL_TEXTURE_2D, dif_spec_map[2]);
 \
 	set_shader_mt(shader_ol[0], cam);
-	draw_cube(shader_ol[0], vect3(0.0f, 0.0f, 0.0f), vect3(1.0f, 1.0f, 1.0f));
+	draw_cubes(shader_ol);
+	// draw_cube(shader_ol[0], vect3(0.0f, 0.0f, 0.0f), vect3(1.0f, 1.0f, 1.0f));
 	glUseProgram(shader_ol[1]);
 	glBindVertexArray(vao_ol[1]);
 	set_shader_mt(shader_ol[1], cam);
-	draw_cube(shader_ol[1], ligh_pos, vect3(0.2f, 0.2f, 0.2f));
+	draw_cube(shader_ol[1], ligh_pos, vect3(0.2f, 0.2f, 0.2f), 0, \
+	vect3(1.0f, 0.0f, 0.0f));
 \
 	glBindVertexArray(0);
 	glfwSwapBuffers(window);
