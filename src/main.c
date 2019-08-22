@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/22 16:14:51 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/22 16:49:28 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,14 +170,20 @@ unsigned int *vao_ol, unsigned int *dif_spec_map)
 	glUniform1f(glGetUniformLocation(shader_ol[0], "material.shininess"), \
 	32.0f);
 \
-	glUniform3f(glGetUniformLocation(shader_ol[0], "light.direction"), \
-	-0.2f, -1.0f, -0.3f);
+	glUniform3fv(glGetUniformLocation(shader_ol[0], "light.position"), 1, \
+	&(ligh_pos.x));
 	glUniform3f(glGetUniformLocation(shader_ol[0], "light.ambient"), \
 	0.2f, 0.2f, 0.2f);
 	glUniform3f(glGetUniformLocation(shader_ol[0], "light.diffuse"), \
 	0.5f, 0.5f, 0.5f);
 	glUniform3f(glGetUniformLocation(shader_ol[0], "light.specular"), \
 	1.0f, 1.0f, 1.0f);
+	glUniform1f(glGetUniformLocation(shader_ol[0], "light.constant"), \
+	1.0f);
+	glUniform1f(glGetUniformLocation(shader_ol[0], "light.linear"), \
+	0.045f);
+	glUniform1f(glGetUniformLocation(shader_ol[0], "light.quadratic"), \
+	0.0075f);
 \
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, dif_spec_map[0]);
