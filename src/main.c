@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/22 18:38:45 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/22 21:02:59 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,11 +153,21 @@ void	loop_body(GLFWwindow *window, unsigned int *shader_ol, \
 unsigned int *vao_ol, unsigned int *dif_spec_map)
 {
 	t_camera		*cam;
-	t_vect3			ligh_pos;
+	int				i;
+	t_vect3			point_light_pos[] = {
+		vect3(0.7f, 0.2f, 2.0f),
+		vect3(2.3f, -3.3f, -4.0f),
+		vect3(-4.0f, 2.0f, -12.0f),
+		vect3(0.0f, 0.0f, -3.0f)
+	};
+	t_vect3			point_light_color[] = {
+		vect3(1.0f, 0.0f, 0.0f),
+		vect3(0.0f, 1.0f, 0.0f),
+		vect3(0.0f, 0.0f, 1.0f),
+		vect3(1.0f, 1.0f, 0.0f)
+	};
 
-	ligh_pos = vect3(0.5f, -0.1f, 2.0f);
-	// uncomment for light rotation
-	// ligh_pos = vect3(2.0f * sin(glfwGetTime()), 0, 1.5f * cos(glfwGetTime()));
+
 	cam = &(((t_win_user *)glfwGetWindowUserPointer(window))->cam);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(shader_ol[0]);
@@ -165,32 +175,36 @@ unsigned int *vao_ol, unsigned int *dif_spec_map)
 	glUniform3fv(glGetUniformLocation(shader_ol[0], "viewPos"), 1, \
 	&(cam->pos.x));
 \
-	glUniform3f(glGetUniformLocation(shader_ol[0], "material.specular"), \
-	0.5f, 0.5f, 0.5f);
 	glUniform1f(glGetUniformLocation(shader_ol[0], "material.shininess"), \
 	32.0f);
 \
-	glUniform3fv(glGetUniformLocation(shader_ol[0], "light.position"), 1, \
-	&(cam->pos.x));
-	glUniform3fv(glGetUniformLocation(shader_ol[0], "light.direction"), 1, \
-	&(cam->front.x));
-	glUniform1f(glGetUniformLocation(shader_ol[0], "light.cutOff"), \
-	cos(radians(12.5f)));
-	glUniform1f(glGetUniformLocation(shader_ol[0], "light.outerCutOff"), \
-	cos(radians(17.5f)));
-	glUniform3f(glGetUniformLocation(shader_ol[0], "light.ambient"), \
-	0.2f, 0.2f, 0.2f);
-	glUniform3f(glGetUniformLocation(shader_ol[0], "light.diffuse"), \
-	0.5f, 0.5f, 0.5f);
-	glUniform3f(glGetUniformLocation(shader_ol[0], "light.specular"), \
+	glUniform3f(glGetUniformLocation(shader_ol[0], "dirLight.direction"), \
+	-0.2f, -1.0f, -0.3f);
+	glUniform3f(glGetUniformLocation(shader_ol[0], "dirLight.ambient"), \
+	0.05, 0.05, 0.05);
+	glUniform3f(glGetUniformLocation(shader_ol[0], "dirLight.diffuse"), \
+	0.8f, 0.8f, 0.8f);
+	glUniform3f(glGetUniformLocation(shader_ol[0], "dirLight.specular"), \
 	1.0f, 1.0f, 1.0f);
-	glUniform1f(glGetUniformLocation(shader_ol[0], "light.constant"), \
-	1.0f);
-	glUniform1f(glGetUniformLocation(shader_ol[0], "light.linear"), \
-	0.045f);
-	glUniform1f(glGetUniformLocation(shader_ol[0], "light.quadratic"), \
-	0.0075f);
 \
+	i = -1;
+	while (++i < 4)
+	{
+		glUniform3fv(glGetUniformLocation(shader_ol[0], "pointLights[i].position"), 1, \
+		&(point_light_pos[i].x));
+		glUniform1f(glGetUniformLocation(shader_ol[0], "pointLights[i].constant"), \
+		1.0f);
+		glUniform1f(glGetUniformLocation(shader_ol[0], "pointLights[i].linear"), \
+		0.045f);
+		glUniform1f(glGetUniformLocation(shader_ol[0], "pointLights[i].quadratic"), \
+		0.0075f);
+		glUniform3f(glGetUniformLocation(shader_ol[0], "pointLights[i].ambient"), \
+		0.05, 0.05, 0.05);
+		glUniform3fv(glGetUniformLocation(shader_ol[0], "pointLights[i].diffuse"), 1, \
+		&(point_light_color[i].x));
+		glUniform3f(glGetUniformLocation(shader_ol[0], "pointLights[i].specular"), \
+		1.0f, 1.0f, 1.0f);
+	}
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, dif_spec_map[0]);
 	glActiveTexture(GL_TEXTURE1);
@@ -204,8 +218,12 @@ unsigned int *vao_ol, unsigned int *dif_spec_map)
 	glUseProgram(shader_ol[1]);
 	glBindVertexArray(vao_ol[1]);
 	set_shader_mt(shader_ol[1], cam);
-	draw_cube(shader_ol[1], ligh_pos, vect3(0.2f, 0.2f, 0.2f), 0, \
-	vect3(1.0f, 0.0f, 0.0f));
+	i = -1;
+	while (++i < 4)
+	{
+		draw_cube(shader_ol[1], point_light_pos[i], vect3(0.2f, 0.2f, 0.2f), 0, \
+		vect3(1.0f, 0.0f, 0.0f));
+	}
 \
 	glBindVertexArray(0);
 	glfwSwapBuffers(window);
