@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/22 21:02:59 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/24 14:21:00 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ unsigned int *vao_ol, unsigned int *dif_spec_map)
 		vect3(0.0f, 0.0f, 1.0f),
 		vect3(1.0f, 1.0f, 0.0f)
 	};
-
+	char			buff[128];
 
 	cam = &(((t_win_user *)glfwGetWindowUserPointer(window))->cam);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -190,20 +190,22 @@ unsigned int *vao_ol, unsigned int *dif_spec_map)
 	i = -1;
 	while (++i < 4)
 	{
-		glUniform3fv(glGetUniformLocation(shader_ol[0], "pointLights[i].position"), 1, \
+		snprintf(buff, sizeof(buff), "pointLights[%d].position", i);
+		glUniform3fv(glGetUniformLocation(shader_ol[0], buff), 1, \
 		&(point_light_pos[i].x));
-		glUniform1f(glGetUniformLocation(shader_ol[0], "pointLights[i].constant"), \
-		1.0f);
-		glUniform1f(glGetUniformLocation(shader_ol[0], "pointLights[i].linear"), \
-		0.045f);
-		glUniform1f(glGetUniformLocation(shader_ol[0], "pointLights[i].quadratic"), \
-		0.0075f);
-		glUniform3f(glGetUniformLocation(shader_ol[0], "pointLights[i].ambient"), \
-		0.05, 0.05, 0.05);
-		glUniform3fv(glGetUniformLocation(shader_ol[0], "pointLights[i].diffuse"), 1, \
+		snprintf(buff, sizeof(buff), "pointLights[%d].constant", i);
+		glUniform1f(glGetUniformLocation(shader_ol[0], buff), 1.0f);
+		snprintf(buff, sizeof(buff), "pointLights[%d].linear", i);
+		glUniform1f(glGetUniformLocation(shader_ol[0], buff), 0.045f);
+		snprintf(buff, sizeof(buff), "pointLights[%d].quadratic", i);
+		glUniform1f(glGetUniformLocation(shader_ol[0], buff), 0.0075f);
+		snprintf(buff, sizeof(buff), "pointLights[%d].ambient", i);
+		glUniform3f(glGetUniformLocation(shader_ol[0], buff), 0.05, 0.05, 0.05);
+		snprintf(buff, sizeof(buff), "pointLights[%d].diffuse", i);
+		glUniform3fv(glGetUniformLocation(shader_ol[0], buff), 1, \
 		&(point_light_color[i].x));
-		glUniform3f(glGetUniformLocation(shader_ol[0], "pointLights[i].specular"), \
-		1.0f, 1.0f, 1.0f);
+		snprintf(buff, sizeof(buff), "pointLights[%d].specular", i);
+		glUniform3f(glGetUniformLocation(shader_ol[0], buff), 1.0f, 1.0f, 1.0f);
 	}
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, dif_spec_map[0]);
@@ -214,7 +216,6 @@ unsigned int *vao_ol, unsigned int *dif_spec_map)
 \
 	set_shader_mt(shader_ol[0], cam);
 	draw_cubes(shader_ol);
-	// draw_cube(shader_ol[0], vect3(0.0f, 0.0f, 0.0f), vect3(1.0f, 1.0f, 1.0f));
 	glUseProgram(shader_ol[1]);
 	glBindVertexArray(vao_ol[1]);
 	set_shader_mt(shader_ol[1], cam);
