@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 15:09:07 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/20 15:29:56 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/21 16:27:07 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,15 @@ typedef struct	s_vect2
 	float	y;
 }				t_vect2;
 
+# pragma pack(push, 1)
+
 typedef struct	s_vect3
 {
 	float	x;
 	float	y;
 	float	z;
 }				t_vect3;
+# pragma pack(pop)
 
 typedef struct	s_vect4
 {
