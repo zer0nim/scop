@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 20:28:11 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/20 15:32:19 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/20 17:55:26 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@
 # include <stdio.h>
 # include <math.h>
 
-int8_t			create_shader(unsigned int *shader_program);
+int8_t			create_shader(unsigned int *shader_program, char *src_v, \
+char *src_f);
 int8_t			load_texture(const char *filename, unsigned int *texture);
 int8_t			init_window(GLFWwindow	**window, const char *name);
 void			process_input(GLFWwindow *window);
