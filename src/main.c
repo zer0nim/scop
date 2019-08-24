@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/24 14:21:00 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/24 14:34:34 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ unsigned int *vao_ol, unsigned int *dif_spec_map)
 		vect3(1.0f, 0.0f, 0.0f),
 		vect3(0.0f, 1.0f, 0.0f),
 		vect3(0.0f, 0.0f, 1.0f),
-		vect3(1.0f, 1.0f, 0.0f)
+		vect3(1.0f, 0.0f, 1.0f)
 	};
 	char			buff[128];
 
@@ -222,6 +222,8 @@ unsigned int *vao_ol, unsigned int *dif_spec_map)
 	i = -1;
 	while (++i < 4)
 	{
+		glUniform3fv(glGetUniformLocation(shader_ol[1], "color"), 1, \
+		&(point_light_color[i].x));
 		draw_cube(shader_ol[1], point_light_pos[i], vect3(0.2f, 0.2f, 0.2f), 0, \
 		vect3(1.0f, 0.0f, 0.0f));
 	}
