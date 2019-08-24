@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/24 14:34:34 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/24 14:59:08 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,6 +207,26 @@ unsigned int *vao_ol, unsigned int *dif_spec_map)
 		snprintf(buff, sizeof(buff), "pointLights[%d].specular", i);
 		glUniform3f(glGetUniformLocation(shader_ol[0], buff), 1.0f, 1.0f, 1.0f);
 	}
+\
+	glUniform3fv(glGetUniformLocation(shader_ol[0], "spotLight.position"), 1, \
+	&(cam->pos.x));
+	glUniform3fv(glGetUniformLocation(shader_ol[0], "spotLight.direction"), 1, \
+	&(cam->front.x));
+	glUniform1f(glGetUniformLocation(shader_ol[0], "spotLight.cutOff"), \
+	cos(radians(12.5f)));
+	glUniform1f(glGetUniformLocation(shader_ol[0], "spotLight.outerCutOff"), \
+	cos(radians(15.0f)));
+	glUniform1f(glGetUniformLocation(shader_ol[0], "spotLight.constant"), 1.0f);
+	glUniform1f(glGetUniformLocation(shader_ol[0], "spotLight.linear"), 0.045f);
+	glUniform1f(glGetUniformLocation(shader_ol[0], "spotLight.quadratic"), \
+	0.0075f);
+	glUniform3f(glGetUniformLocation(shader_ol[0], "spotLight.ambient"), \
+	0.05, 0.05, 0.05);
+	glUniform3f(glGetUniformLocation(shader_ol[0], "spotLight.diffuse"), \
+	0.8f, 0.8f, 0.8f);
+	glUniform3f(glGetUniformLocation(shader_ol[0], "spotLight.specular"), \
+	1.0f, 1.0f, 1.0f);
+\
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, dif_spec_map[0]);
 	glActiveTexture(GL_TEXTURE1);
