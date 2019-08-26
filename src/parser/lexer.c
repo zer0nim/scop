@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:47:48 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/26 17:09:27 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/26 18:08:09 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@ int8_t	lexer(const char *filename)
 	FILE	*fp;
 	char	*line;
 	size_t	len;
+	t_token	**tokens;
+
+	(void)tokens;
 
 	if (!(fp = fopen(filename, "r")))
 	{
@@ -30,8 +33,6 @@ int8_t	lexer(const char *filename)
 	{
 		printf("%s", line);
 	}
-
-	printf("_______________\nMax line size: %zd\n", len);
 
 	fclose(fp);
 	free(line);
