@@ -6,7 +6,7 @@
 #    By: emarin <emarin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/06 15:40:25 by emarin            #+#    #+#              #
-#    Updated: 2019/08/20 14:17:44 by emarin           ###   ########.fr        #
+#    Updated: 2019/08/26 14:49:01 by emarin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,11 +38,15 @@ SRC		=	main.c \
 \
 			utils/tga.c \
 			utils/tga_read.c \
+\
+			parser/lexer.c \
+			parser/parser.c
 
 HEAD	=	define.h \
 			scop.h \
 			tga.h \
-			geometry.h
+			geometry.h \
+			parser.h
 
 OBJ		= $(SRC:.c=.o)
 

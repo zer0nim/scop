@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 20:28:11 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/20 17:55:26 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/26 17:01:27 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "define.h"
 # include "geometry.h"
+# include "parser.h"
 # define GLFW_INCLUDE_GLCOREARB
 # include <GLFW/glfw3.h>
 # include <stdlib.h>

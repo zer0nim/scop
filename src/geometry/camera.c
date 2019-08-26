@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 20:25:56 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/20 14:08:36 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/26 17:32:32 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	cam_init(t_camera *cam)
 	cam->pitch = 0.0f;
 }
 
-void	cam_process_move(t_camera *cam, t_cam_mov mov, float dt_time)
+void	cam_process_move(t_camera *cam, t_cam_mov_e mov, float dt_time)
 {
 	float	speed;
 

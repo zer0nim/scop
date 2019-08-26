@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/24 14:59:08 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/26 17:07:34 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,26 +286,30 @@ unsigned int *vao_ol, unsigned int *dif_spec_map)
 
 int		main(void)
 {
-	unsigned int	vao_obj_light[2];
-	t_win_user		win_u;
-	GLFWwindow		*window;
-	unsigned int	shader_ol[2];
-	unsigned int	dif_spec_map[3];
+	// unsigned int	vao_obj_light[2];
+	// t_win_user		win_u;
+	// GLFWwindow		*window;
+	// unsigned int	shader_ol[2];
+	// unsigned int	dif_spec_map[3];
 
-	if (!init_window(&window, "Scop"))
-		return (FALSE);
-	glfwSetWindowUserPointer(window, &win_u);
-	if (!init(window, shader_ol, vao_obj_light, dif_spec_map))
+	// if (!init_window(&window, "Scop"))
+	// 	return (FALSE);
+	// glfwSetWindowUserPointer(window, &win_u);
+	// if (!init(window, shader_ol, vao_obj_light, dif_spec_map))
+	// 	return (1);
+	// glClearColor(0.15f, 0.16f, 0.21f, 1.0f);
+	// while (!glfwWindowShouldClose(window))
+	// {
+	// 	process_input(window);
+	// 	loop_body(window, shader_ol, vao_obj_light, dif_spec_map);
+	// }
+	// glDeleteProgram(shader_ol[0]);
+	// glDeleteProgram(shader_ol[1]);
+	// glDeleteVertexArrays(2, vao_obj_light);
+	// glfwTerminate();
+
+	if (!lexer("resources/exemple.obj"))
 		return (1);
-	glClearColor(0.15f, 0.16f, 0.21f, 1.0f);
-	while (!glfwWindowShouldClose(window))
-	{
-		process_input(window);
-		loop_body(window, shader_ol, vao_obj_light, dif_spec_map);
-	}
-	glDeleteProgram(shader_ol[0]);
-	glDeleteProgram(shader_ol[1]);
-	glDeleteVertexArrays(2, vao_obj_light);
-	glfwTerminate();
+
 	return (0);
 }
