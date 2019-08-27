@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:49:38 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/26 18:05:07 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/27 15:48:12 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <string.h>
+# include <regex.h>
 
 typedef enum			e_token
 {
@@ -47,10 +48,10 @@ static const t_token	g_token_reg[] =
 	{e_norm_vert_t, "^vn$"},
 	{e_usemtl_t, "^usemtl$"},
 	{e_mtllib_t, "^mtllib$"},
-	{e_coord_t, "^-?[0-9]+.[0-9]+?$"},
+	{e_coord_t, "^-?[0-9]+.[0-9]+$"},
 	{e_face_v_t, "^[1-9]+[0-9]*((\\/[1-9]+[0-9]*(\\/[1-9]+[0-9]*)?)"
 		"|(\\/\\/[1-9]+[0-9]*))?$"},
-	{e_name_t, "^\\S+$"}
+	{e_name_t, "^[^[:space:]]+$"}
 };
 
 int8_t					lexer(const char *filename);
