@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:49:38 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/27 15:48:12 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/27 18:46:16 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,22 @@ typedef enum			e_token
 	e_mtllib_t,
 	e_coord_t,
 	e_face_v_t,
-	e_name_t
+	e_name_t,
+	e_empty_t
 }						t_token_e;
 
 typedef struct			s_token
 {
 	t_token_e	type;
-	char		*data;
+	char		*regex;
 }						t_token;
+
+typedef struct			s_token_l
+{
+	t_token_e			type;
+	char				*data;
+	struct s_token_l	*next;
+}						t_token_l;
 
 static const t_token	g_token_reg[] =
 {
