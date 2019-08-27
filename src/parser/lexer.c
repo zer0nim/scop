@@ -6,56 +6,45 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:47:48 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/27 15:39:43 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/27 18:55:34 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-int8_t	reg_tk(t_token ***res, const char *word, int nb_reg)
+int8_t	reg_tk(t_token_l *res, const char *word, int nb_reg)
 {
 	regex_t	regex[nb_reg];
 	int		reti;
-	char	msgbuf[100];
 	int		i;
 
-	(void)reti;
-	(void)msgbuf;
-	(void)word;
 	(void)res;
-
-	printf("word: \"%s\"\n", word);
 
 	i = -1;
 	while (++i < nb_reg)
-		if (regcomp(regex + i, g_token_reg[i].data, REG_EXTENDED))
+		if (regcomp(regex + i, g_token_reg[i].regex, REG_EXTENDED | REG_NOSUB))
 		{
-			fprintf(stderr, "Could not compile: %s\n", g_token_reg[i].data);
+			fprintf(stderr, "Could not compile: %s\n", g_token_reg[i].regex);
 			while (--i >= 0)
 				regfree(regex + i);
 			return (FALSE);
 		}
 
 	i = -1;
-	while (++i < nb_reg)
-	{
-		reti = regexec(regex + i, word, 0, NULL, 0);
-		if (!reti)
+	while (++i < nb_reg && (reti = regexec(regex + i, word, 0, NULL, 0)))
+		if (reti != REG_NOMATCH)
 		{
-			printf("Match\n");
+			fprintf(stderr, "Regex exec failed\n");
+			i = -1;
+			while (++i < nb_reg)
+				regfree(regex + i);
+			return (FALSE);
 		}
-		else if (reti == REG_NOMATCH)
-		{
-			printf("Not match\n");
-		}
-		else
-		{
-			regerror(reti, regex, msgbuf, sizeof(msgbuf));
-			fprintf(stderr, "Regex match failed: %s\n", msgbuf);
-			exit(1);
-		}
-	}
-	printf("_________________\n");
+	// printf("word: \"%s\"\n", word);
+	if (!reti)
+		;//printf("Match id %d\n", i);
+	else
+		;//printf("No match\n");
 
 	i = -1;
 	while (++i < nb_reg)
@@ -64,11 +53,12 @@ int8_t	reg_tk(t_token ***res, const char *word, int nb_reg)
 	return (TRUE);
 }
 
-int8_t	fill_tokens(char *line, t_token ***res)
+int8_t	fill_tokens(char *line, t_token_l *res)
 {
 	int		s;
 	int		e;
 	char	word_end;
+	int		i;
 
 	e = 0;
 	while (line[e])
@@ -90,17 +80,61 @@ int8_t	fill_tokens(char *line, t_token ***res)
 			line[e] = word_end;
 		}
 	}
+
+	i = 0;
+	while (res[i].type != e_empty_t)
+		++i;
+	res[i].type = e_comments_t;
+	printf("----i = %d\n", i);
+
 	return (TRUE);
 }
 
+void	init_token_l(t_token_l *res, int res_size)
+{
+	int	i;
+
+	i = -1;
+	while (++i < res_size)
+	{
+		res[i].type = e_empty_t;
+		res[i].data = NULL;
+		res[i].next = NULL;
+	}
+}
+
+int8_t	realloc_tokens(t_token_l **res, int *res_size)
+{
+	t_token_l	*new_res;
+	int			old_size;
+
+	old_size = *res_size;
+	*res_size *= 2;
+	if (!(new_res = realloc(*res, sizeof(t_token_l) * *res_size)))
+	{
+		free(*res);
+		// need to free res content !
+		return (FALSE);
+	}
+	*res = new_res;
+	init_token_l(*res + old_size, old_size);
+	return (TRUE);
+}
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// I Need to move the realloc part because one line can have multiples tokens
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 int8_t	lexer(const char *filename)
 {
-	FILE	*fp;
-	char	*line;
-	size_t	len;
-	t_token	**res;
-
-	(void)res;
+	FILE		*fp;
+	char		*line;
+	t_token_l	*res;
+	int			res_size;
+	int			line_nb;
+	size_t		line_len;
 
 	if (!(fp = fopen(filename, "r")))
 	{
@@ -108,19 +142,32 @@ int8_t	lexer(const char *filename)
 		return (FALSE);
 	}
 
+	res_size = 32;
+	if (!(res = (t_token_l *)malloc(sizeof(t_token_l) * res_size)))
+		return (FALSE);
+	init_token_l(res, res_size);
+
+	line_nb = 0;
+	line_len = 0;
 	line = NULL;
-	len = 0;
-	while (getline(&line, &len, fp) != -1)
+	while (getline(&line, &line_len, fp) != -1)
 	{
-		if (!(fill_tokens(line, &res)))
+		printf("line %d\n", line_nb);
+		if (line_nb >= res_size)
+			if (!(realloc_tokens(&res, &res_size)))
+				return (FALSE);
+		if (!(fill_tokens(line, res)))
 		{
 			fclose(fp);
 			free(line);
+			free(res);
 			return (FALSE);
 		}
+		++line_nb;
 	}
 
 	fclose(fp);
 	free(line);
+	free(res);
 	return (TRUE);
 }
