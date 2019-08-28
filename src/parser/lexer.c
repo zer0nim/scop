@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:47:48 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/28 19:23:14 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/28 19:39:07 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,12 @@ int8_t	add_token(t_token_l *crnt, const char *word, int reti, int t)
 	return (TRUE);
 }
 
-int8_t	reg_tk(t_token_l **lst, const char *word, int *res_size, \
-regex_t *regex, int line_nb)
+int8_t	reg_tk(t_token_l **lst, const char *word, regex_t *regex, int line_nb)
 {
 	int			reti;
 	int			t;
 	int			nb_reg;
 
-	if (line_nb >= *res_size)
-		if (!(realloc_tokens(lst, res_size)))
-			return (FALSE);
 	nb_reg = sizeof(g_token_reg) / sizeof(t_token);
 	t = -1;
 	while (++t < nb_reg && (reti = regexec(regex + t, word, 0, NULL, 0)))
@@ -60,12 +56,11 @@ regex_t *regex, int line_nb)
 	return (TRUE);
 }
 
-int8_t	fill_tokens(char *line, t_token_l **lst, int *res_size, regex_t *regex)
+int8_t	fill_tokens(char *line, t_token_l **lst, int line_nb, regex_t *regex)
 {
 	int			s;
 	int			e;
 	char		word_end;
-	static int	line_nb = 0;
 
 	e = 0;
 	while (line[e])
@@ -82,12 +77,11 @@ int8_t	fill_tokens(char *line, t_token_l **lst, int *res_size, regex_t *regex)
 		{
 			word_end = line[e];
 			line[e] = '\0';
-			if (!(reg_tk(lst, line + s, res_size, regex, line_nb)))
+			if (!(reg_tk(lst, line + s, regex, line_nb)))
 				return (FALSE);
 			line[e] = word_end;
 		}
 	}
-	++line_nb;
 	return (TRUE);
 }
 
@@ -96,6 +90,7 @@ int8_t	lexer_loop(FILE *fp, t_token_l **lst, int *res_size)
 	char		*line;
 	size_t		line_len;
 	regex_t		regex[sizeof(g_token_reg) / sizeof(t_token)];
+	static int	line_nb = -1;
 
 	if (!(compile_reg(regex, sizeof(g_token_reg) / sizeof(t_token))))
 		return (FALSE);
@@ -103,7 +98,10 @@ int8_t	lexer_loop(FILE *fp, t_token_l **lst, int *res_size)
 	line = NULL;
 	while (getline(&line, &line_len, fp) != -1)
 	{
-		if (!(fill_tokens(line, lst, res_size, regex)))
+		++line_nb;
+		if (line_nb >= *res_size && !(realloc_tokens(lst, res_size)))
+			return (FALSE);
+		if (!(fill_tokens(line, lst, line_nb, regex)))
 		{
 			free(line);
 			free_token_list(lst, *res_size);
