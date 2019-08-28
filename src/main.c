@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/26 17:07:34 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/28 16:09:36 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -308,8 +308,7 @@ int		main(void)
 	// glDeleteVertexArrays(2, vao_obj_light);
 	// glfwTerminate();
 
-	if (!lexer("resources/exemple.obj"))
+	if (!parse_obj("resources/exemple.obj"))
 		return (1);
-
 	return (0);
 }

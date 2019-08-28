@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:49:38 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/28 15:42:35 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/28 19:13:21 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,14 @@ static const t_token	g_token_reg[] =
 	{e_name_t, "^[^[:space:]]+$", TRUE, "name"}
 };
 
-int8_t					lexer(const char *filename);
+int8_t					parse_obj(const char *filename);
+int8_t					lexer(const char *filename, t_token_l **lst, int \
+*res_size);
+void					free_reg(regex_t *regex, int nb_reg);
+int8_t					compile_reg(regex_t *regex, int nb_reg);
+void					init_token_l(t_token_l *lst, int res_size);
+int8_t					realloc_tokens(t_token_l **lst, int *res_size);
+void					free_token_list(t_token_l **lst, int res_size);
+void					print_token_list(t_token_l *lst, int res_size);
 
 #endif
