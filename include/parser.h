@@ -6,20 +6,21 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:49:38 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/29 12:27:18 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/29 16:41:50 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
 
+# include "geometry.h"
 # include "define.h"
 # include <stdlib.h>
 # include <stdio.h>
 # include <string.h>
 # include <regex.h>
 
-typedef enum			e_token
+typedef enum				e_token
 {
 	e_comments_t,
 	e_vert_t,
@@ -32,24 +33,31 @@ typedef enum			e_token
 	e_face_v_t,
 	e_name_t,
 	e_empty_t
-}						t_token_e;
+}							t_token_e;
 
-typedef struct			s_token
+typedef struct				s_token
 {
 	t_token_e	type;
 	char		*regex;
 	int8_t		need_data;
 	const char	*name;
-}						t_token;
+}							t_token;
 
-typedef struct			s_token_l
+typedef struct				s_obj
+{
+	t_vect3	*v;
+	t_vect2	*vt;
+	t_vect3	*vn;
+}							t_obj;
+
+typedef struct				s_token_l
 {
 	t_token_e			type;
 	char				*data;
 	struct s_token_l	*next;
-}						t_token_l;
+}							t_token_l;
 
-static const t_token	g_token_reg[] =
+static const t_token		g_token_reg[] =
 {
 	{e_comments_t, "^#.*$", FALSE, "comments"},
 	{e_vert_t, "^v$", FALSE, "vert"},
@@ -64,14 +72,38 @@ static const t_token	g_token_reg[] =
 	{e_name_t, "^[^[:space:]]+$", TRUE, "name"}
 };
 
-int8_t					parse_obj(const char *filename);
-int8_t					lexer(const char *filename, t_token_l **lst, int \
+typedef int8_t	(*t_parse_func)(t_token_l *lst, t_obj *obj);
+
+int8_t						parse_vert(t_token_l *lst, t_obj *obj);
+int8_t						parse_face(t_token_l *lst, t_obj *obj);
+int8_t						parse_text_vert(t_token_l *lst, t_obj *obj);
+int8_t						parse_norm_vert(t_token_l *lst, t_obj *obj);
+int8_t						parse_usemtl(t_token_l *lst, t_obj *obj);
+int8_t						parse_mtllib(t_token_l *lst, t_obj *obj);
+
+static const t_parse_func	g_token_func[] =
+{
+	NULL,
+	&parse_vert,
+	&parse_face,
+	&parse_text_vert,
+	&parse_norm_vert,
+	&parse_usemtl,
+	&parse_mtllib,
+	NULL,
+	NULL,
+	NULL,
+	NULL
+};
+
+int8_t						parse_obj(const char *filename);
+int8_t						lexer(const char *filename, t_token_l **lst, int \
 *res_size);
-void					free_reg(regex_t *regex, int nb_reg);
-int8_t					compile_reg(regex_t *regex, int nb_reg);
-void					init_token_l(t_token_l *lst, int res_size);
-int8_t					realloc_tokens(t_token_l **lst, int *res_size);
-void					free_token_list(t_token_l **lst, int res_size);
-void					print_token_list(t_token_l *lst, int res_size);
+void						free_reg(regex_t *regex, int nb_reg);
+int8_t						compile_reg(regex_t *regex, int nb_reg);
+void						init_token_l(t_token_l *lst, int res_size);
+int8_t						realloc_tokens(t_token_l **lst, int *res_size);
+void						free_token_list(t_token_l **lst, int res_size);
+void						print_token_list(t_token_l *lst, int res_size);
 
 #endif
