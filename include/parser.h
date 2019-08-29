@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:49:38 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/28 19:13:21 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/29 12:27:18 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,16 @@ typedef struct			s_token_l
 
 static const t_token	g_token_reg[] =
 {
-	{e_comments_t, "^#.*$", FALSE, "comments",},
-	{e_vert_t, "^v$", FALSE, "vert",},
-	{e_face_t, "^f$", FALSE, "face",},
-	{e_text_vert_t, "^vt$", FALSE, "text_vert",},
-	{e_norm_vert_t, "^vn$", FALSE, "norm_vert",},
-	{e_usemtl_t, "^usemtl$", FALSE, "usemtl",},
-	{e_mtllib_t, "^mtllib$", FALSE, "mtllib",},
-	{e_coord_t, "^-?[0-9]+.[0-9]+$", TRUE, "coord",},
+	{e_comments_t, "^#.*$", FALSE, "comments"},
+	{e_vert_t, "^v$", FALSE, "vert"},
+	{e_face_t, "^f$", FALSE, "face"},
+	{e_text_vert_t, "^vt$", FALSE, "text_vert"},
+	{e_norm_vert_t, "^vn$", FALSE, "norm_vert"},
+	{e_usemtl_t, "^usemtl$", FALSE, "usemtl"},
+	{e_mtllib_t, "^mtllib$", FALSE, "mtllib"},
+	{e_coord_t, "^-?[0-9]+.[0-9]+$", TRUE, "coord"},
 	{e_face_v_t, "^[1-9]+[0-9]*((\\/[1-9]+[0-9]*(\\/[1-9]+[0-9]*)?)"
-		"|(\\/\\/[1-9]+[0-9]*))?$", TRUE, "face_v",},
+		"|(\\/\\/[1-9]+[0-9]*))?$", TRUE, "face_v"},
 	{e_name_t, "^[^[:space:]]+$", TRUE, "name"}
 };
 
