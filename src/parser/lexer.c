@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:47:48 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/28 19:39:07 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/29 12:25:02 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int8_t	add_token(t_token_l *crnt, const char *word, int reti, int t)
 		}
 		crnt->next = NULL;
 		crnt->type = t;
+		crnt->data = NULL;
 		if (g_token_reg[t].need_data)
 			crnt->data = strdup(word);
 	}
@@ -69,9 +70,9 @@ int8_t	fill_tokens(char *line, t_token_l **lst, int line_nb, regex_t *regex)
 		while (line[s] && (line[s] == ' ' || line[s] == '\t' \
 		|| line[s] == '\n'))
 			++s;
-		e = s;
+		e = (line[s] != '#') ? s : strlen(line);
 		while (line[e] && (line[e] != ' ' && line[e] != '\t' \
-		&& line[e] != '\n'))
+		&& line[e] != '\n' && line[e] != '#'))
 			++e;
 		if (s != e)
 		{
