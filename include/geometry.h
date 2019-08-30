@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 15:09:07 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/26 17:35:48 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/30 14:43:30 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,24 @@
 # include <stdio.h>
 # include <math.h>
 
+# pragma pack(push, 1)
+
 typedef struct	s_matrix
 {
 	int		w;
 	int		h;
 	float	*cont;
 }				t_matrix;
+# pragma pack(pop)
+
+# pragma pack(push, 1)
 
 typedef struct	s_vect2
 {
 	float	x;
 	float	y;
 }				t_vect2;
+# pragma pack(pop)
 
 # pragma pack(push, 1)
 
@@ -41,6 +47,8 @@ typedef struct	s_vect3
 }				t_vect3;
 # pragma pack(pop)
 
+# pragma pack(push, 1)
+
 typedef struct	s_vect4
 {
 	float	x;
@@ -48,6 +56,7 @@ typedef struct	s_vect4
 	float	z;
 	float	w;
 }				t_vect4;
+# pragma pack(pop)
 
 typedef struct	s_camera
 {

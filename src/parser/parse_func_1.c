@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/29 16:12:37 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/30 14:11:26 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/30 15:01:07 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,11 @@ int8_t	parse_vert(t_token_l *lst, t_obj *obj)
 		return (FALSE);
 	i = 0;
 	crnt = lst->next;
-	while (crnt && ++i)
+	while (crnt && crnt->type != e_comments_t)
 	{
-		*(&(v.x) + i) = atol(crnt->data);
+		*(&(v.x) + i) = atof(crnt->data);
 		crnt = crnt->next;
+		++i;
 	}
 	++(obj->v_nb_item);
 	if (obj->v_nb_item > obj->v_max_size)
@@ -86,13 +87,32 @@ int8_t	parse_face(t_token_l *lst, t_obj *obj)
 
 int8_t	parse_text_vert(t_token_l *lst, t_obj *obj)
 {
-	int	count;
+	t_token_l		*crnt;
+	t_vect2			vt;
+	int				count;
+	int				i;
 
-	printf("text_vert\n");
-	(void)obj;
 	count = 0;
 	if (!(check_grammar(lst, &count)))
 		return (FALSE);
+	i = 0;
+	crnt = lst->next;
+	while (crnt && crnt->type != e_comments_t)
+	{
+		*(&(vt.x) + i) = atof(crnt->data);
+		crnt = crnt->next;
+		++i;
+	}
+
+	++(obj->vt_nb_item);
+	if (obj->vt_nb_item > obj->vt_max_size)
+	{
+		obj->vt_max_size *= 2;
+		if (!(obj->vt = (t_vect2 *)realloc(obj->vt, sizeof(t_vect2) * \
+		obj->vt_max_size)))
+			return (FALSE);
+	}
+	obj->vt[obj->vt_nb_item - 1] = vt;
 	return (TRUE);
 }
 
