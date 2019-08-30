@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/29 16:12:37 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/30 15:07:59 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/30 15:16:13 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,12 @@ int8_t	parse_vert(t_token_l *lst, t_obj *obj)
 	count = 0;
 	if (!(check_grammar(lst, &count)))
 		return (FALSE);
-	i = 0;
+	i = -1;
 	crnt = lst->next;
 	while (crnt && crnt->type != e_comments_t)
 	{
-		*(&(v.x) + i) = atof(crnt->data);
+		*(&(v.x) + ++i) = atof(crnt->data);
 		crnt = crnt->next;
-		++i;
 	}
 	++(obj->v_nb_item);
 	if (obj->v_nb_item > obj->v_max_size)
@@ -95,15 +94,13 @@ int8_t	parse_text_vert(t_token_l *lst, t_obj *obj)
 	count = 0;
 	if (!(check_grammar(lst, &count)))
 		return (FALSE);
-	i = 0;
+	i = -1;
 	crnt = lst->next;
 	while (crnt && crnt->type != e_comments_t)
 	{
-		*(&(vt.x) + i) = atof(crnt->data);
+		*(&(vt.x) + ++i) = atof(crnt->data);
 		crnt = crnt->next;
-		++i;
 	}
-
 	++(obj->vt_nb_item);
 	if (obj->vt_nb_item > obj->vt_max_size)
 	{
@@ -126,13 +123,12 @@ int8_t	parse_norm_vert(t_token_l *lst, t_obj *obj)
 	count = 0;
 	if (!(check_grammar(lst, &count)))
 		return (FALSE);
-	i = 0;
+	i = -1;
 	crnt = lst->next;
 	while (crnt && crnt->type != e_comments_t)
 	{
-		*(&(vn.x) + i) = atof(crnt->data);
+		*(&(vn.x) + ++i) = atof(crnt->data);
 		crnt = crnt->next;
-		++i;
 	}
 	++(obj->vn_nb_item);
 	if (obj->vn_nb_item > obj->vn_max_size)
