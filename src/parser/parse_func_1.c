@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/29 16:12:37 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/30 15:16:13 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/30 15:41:09 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,18 @@ int8_t	parse_vert(t_token_l *lst, t_obj *obj)
 // vertex normals for some vertices, but not all.
 // The following is an example of an illegal statement.
 // f 1/1/1 2/2/2 3//3 4//4
+//
+// f v1/vt1/vn1 v2/vt2/vn2 v3/vt3/vn3
+//
+// id start at 1 not 0
+//
+// v_id + '/' + vt_id + '/' + vn_id
+//
+// 1
+// 1/2
+// 1/2/3
+// 1//3
+//
 int8_t	parse_face(t_token_l *lst, t_obj *obj)
 {
 	int	count;
