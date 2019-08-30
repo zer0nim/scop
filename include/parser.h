@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:49:38 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/30 12:27:07 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/30 13:47:22 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ typedef struct				s_obj
 	t_vect3	*v;
 	t_vect2	*vt;
 	t_vect3	*vn;
+	int		v_max_size;
+	int		v_nb_item;
 }							t_obj;
 
 typedef struct				s_token_l
@@ -116,6 +118,6 @@ int8_t						realloc_tokens(t_token_l **lst, int *res_size);
 void						free_token_list(t_token_l **lst, int res_size);
 void						print_token_list(t_token_l *lst, int res_size);
 
-int8_t						check_grammar(t_token_l *lst);
+int8_t						check_grammar(t_token_l *lst, int *count);
 
 #endif
