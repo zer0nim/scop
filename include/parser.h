@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:49:38 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/29 16:41:50 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/30 12:27:07 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,6 @@ static const t_token		g_token_reg[] =
 	{e_name_t, "^[^[:space:]]+$", TRUE, "name"}
 };
 
-typedef int8_t	(*t_parse_func)(t_token_l *lst, t_obj *obj);
-
 int8_t						parse_vert(t_token_l *lst, t_obj *obj);
 int8_t						parse_face(t_token_l *lst, t_obj *obj);
 int8_t						parse_text_vert(t_token_l *lst, t_obj *obj);
@@ -81,20 +79,32 @@ int8_t						parse_norm_vert(t_token_l *lst, t_obj *obj);
 int8_t						parse_usemtl(t_token_l *lst, t_obj *obj);
 int8_t						parse_mtllib(t_token_l *lst, t_obj *obj);
 
-static const t_parse_func	g_token_func[] =
+typedef int8_t	(*t_parse_func)(t_token_l *lst, t_obj *obj);
+
+typedef struct				s_token_func
 {
-	NULL,
-	&parse_vert,
-	&parse_face,
-	&parse_text_vert,
-	&parse_norm_vert,
-	&parse_usemtl,
-	&parse_mtllib,
-	NULL,
-	NULL,
-	NULL,
-	NULL
+	t_parse_func	func;
+	t_token_e		arg_type;
+	int				min;
+	int8_t			accept_more;
+}							t_token_func;
+
+static const t_token_func	g_token_func[] =
+{
+	{NULL, e_empty_t, 0, FALSE},
+	{&parse_vert, e_coord_t, 3, FALSE},
+	{&parse_face, e_face_v_t, 3, TRUE},
+	{&parse_text_vert, e_coord_t, 2, FALSE},
+	{&parse_norm_vert, e_coord_t, 3, FALSE},
+	{&parse_usemtl, e_name_t, 1, FALSE},
+	{&parse_mtllib, e_name_t, 1, FALSE},
+	{NULL, e_empty_t, 0, FALSE},
+	{NULL, e_empty_t, 0, FALSE},
+	{NULL, e_empty_t, 0, FALSE},
+	{NULL, e_empty_t, 0, FALSE}
 };
+
+
 
 int8_t						parse_obj(const char *filename);
 int8_t						lexer(const char *filename, t_token_l **lst, int \
@@ -105,5 +115,7 @@ void						init_token_l(t_token_l *lst, int res_size);
 int8_t						realloc_tokens(t_token_l **lst, int *res_size);
 void						free_token_list(t_token_l **lst, int res_size);
 void						print_token_list(t_token_l *lst, int res_size);
+
+int8_t						check_grammar(t_token_l *lst);
 
 #endif
