@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/28 16:09:36 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/30 16:32:38 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -284,7 +284,7 @@ unsigned int *vao_ol, unsigned int *dif_spec_map)
 	return (TRUE);
 }
 
-int		main(void)
+int		main(int argc, char const *argv[])
 {
 	// unsigned int	vao_obj_light[2];
 	// t_win_user		win_u;
@@ -308,7 +308,12 @@ int		main(void)
 	// glDeleteVertexArrays(2, vao_obj_light);
 	// glfwTerminate();
 
-	if (!parse_obj("resources/exemple.obj"))
-		return (1);
+	if (argc > 1)
+	{
+		if (!parse_obj(argv[1]))
+			return (1);
+	}
+	else
+		printf("usage: ./scop file.obj\n");
 	return (0);
 }
