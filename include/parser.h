@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:49:38 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/30 13:47:22 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/30 14:18:23 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ typedef struct				s_obj
 	t_vect3	*vn;
 	int		v_max_size;
 	int		v_nb_item;
+	int		vt_max_size;
+	int		vt_nb_item;
 }							t_obj;
 
 typedef struct				s_token_l
