@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:47:54 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/30 15:05:37 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/30 15:35:03 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,13 @@ int8_t	parse_obj(const char *filename)
 	if (!(parser(lst, res_size, &obj)))
 	{
 		free(obj.v);
+		free(obj.vt);
+		free(obj.vn);
 		return (FALSE);
 	}
 	free(obj.v);
 	free(obj.vt);
+	free(obj.vn);
 	free_token_list(&lst, res_size);
 	return (TRUE);
 }
