@@ -6,22 +6,21 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/29 16:12:37 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/30 12:31:54 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/30 14:11:26 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-int8_t	check_grammar(t_token_l *lst)
+int8_t	check_grammar(t_token_l *lst, int *count)
 {
 	t_token_func	f_infos;
 	t_token_l		*crnt;
-	int				count;
 
 	f_infos = g_token_func[lst->type];
-	count = 0;
+	*count = 0;
 	crnt = lst->next;
-	while (crnt && crnt->type == f_infos.arg_type && ++count)
+	while (crnt && crnt->type == f_infos.arg_type && ++(*count))
 		crnt = crnt->next;
 	if (crnt && crnt->type != f_infos.arg_type && crnt->type != e_comments_t)
 	{
@@ -29,7 +28,7 @@ int8_t	check_grammar(t_token_l *lst)
 		g_token_reg[lst->type].name);
 		return (FALSE);
 	}
-	if (count < f_infos.min || (!f_infos.accept_more && count > f_infos.min))
+	if (*count < f_infos.min || (!f_infos.accept_more && *count > f_infos.min))
 	{
 		fprintf(stderr, "instr %s need %d%sarguments\n", \
 		g_token_reg[lst->type].name, f_infos.min, \
@@ -41,10 +40,30 @@ int8_t	check_grammar(t_token_l *lst)
 
 int8_t	parse_vert(t_token_l *lst, t_obj *obj)
 {
-	printf("vert\n");
-	(void)obj;
-	if (!(check_grammar(lst)))
+	t_token_l		*crnt;
+	t_vect3			v;
+	int				count;
+	int				i;
+
+	count = 0;
+	if (!(check_grammar(lst, &count)))
 		return (FALSE);
+	i = 0;
+	crnt = lst->next;
+	while (crnt && ++i)
+	{
+		*(&(v.x) + i) = atol(crnt->data);
+		crnt = crnt->next;
+	}
+	++(obj->v_nb_item);
+	if (obj->v_nb_item > obj->v_max_size)
+	{
+		obj->v_max_size *= 2;
+		if (!(obj->v = (t_vect3 *)realloc(obj->v, sizeof(t_vect3) * \
+		obj->v_max_size)))
+			return (FALSE);
+	}
+	obj->v[obj->v_nb_item - 1] = v;
 	return (TRUE);
 }
 
@@ -55,27 +74,36 @@ int8_t	parse_vert(t_token_l *lst, t_obj *obj)
 // f 1/1/1 2/2/2 3//3 4//4
 int8_t	parse_face(t_token_l *lst, t_obj *obj)
 {
+	int	count;
+
 	printf("face\n");
 	(void)obj;
-	if (!(check_grammar(lst)))
+	count = 0;
+	if (!(check_grammar(lst, &count)))
 		return (FALSE);
 	return (TRUE);
 }
 
 int8_t	parse_text_vert(t_token_l *lst, t_obj *obj)
 {
+	int	count;
+
 	printf("text_vert\n");
 	(void)obj;
-	if (!(check_grammar(lst)))
+	count = 0;
+	if (!(check_grammar(lst, &count)))
 		return (FALSE);
 	return (TRUE);
 }
 
 int8_t	parse_norm_vert(t_token_l *lst, t_obj *obj)
 {
+	int	count;
+
 	printf("norm_vert\n");
 	(void)obj;
-	if (!(check_grammar(lst)))
+	count = 0;
+	if (!(check_grammar(lst, &count)))
 		return (FALSE);
 	return (TRUE);
 }

@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:47:54 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/30 12:29:41 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/30 14:08:11 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,15 @@ int8_t	parser(t_token_l *lst, int res_size, t_obj *obj)
 	return (TRUE);
 }
 
+int8_t	init_obj(t_obj *obj)
+{
+	obj->v_max_size = 16;
+	if (!(obj->v = (t_vect3 *)malloc(sizeof(t_vect3) * obj->v_max_size)))
+		return (FALSE);
+	obj->v_nb_item = 0;
+	return (TRUE);
+}
+
 int8_t	parse_obj(const char *filename)
 {
 	t_token_l	*lst;
@@ -34,8 +43,14 @@ int8_t	parse_obj(const char *filename)
 	lst = NULL;
 	if (!lexer(filename, &lst, &res_size))
 		return (FALSE);
-	if (!(parser(lst, res_size, &obj)))
+	if (!init_obj(&obj))
 		return (FALSE);
+	if (!(parser(lst, res_size, &obj)))
+	{
+		free(obj.v);
+		return (FALSE);
+	}
+	free(obj.v);
 	free_token_list(&lst, res_size);
 	return (TRUE);
 }
