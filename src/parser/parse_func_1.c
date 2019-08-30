@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/29 16:12:37 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/30 15:01:07 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/30 15:07:59 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,12 +118,30 @@ int8_t	parse_text_vert(t_token_l *lst, t_obj *obj)
 
 int8_t	parse_norm_vert(t_token_l *lst, t_obj *obj)
 {
-	int	count;
+	t_token_l		*crnt;
+	t_vect3			vn;
+	int				count;
+	int				i;
 
-	printf("norm_vert\n");
-	(void)obj;
 	count = 0;
 	if (!(check_grammar(lst, &count)))
 		return (FALSE);
+	i = 0;
+	crnt = lst->next;
+	while (crnt && crnt->type != e_comments_t)
+	{
+		*(&(vn.x) + i) = atof(crnt->data);
+		crnt = crnt->next;
+		++i;
+	}
+	++(obj->vn_nb_item);
+	if (obj->vn_nb_item > obj->vn_max_size)
+	{
+		obj->vn_max_size *= 2;
+		if (!(obj->vn = (t_vect3 *)realloc(obj->vn, sizeof(t_vect3) * \
+		obj->vn_max_size)))
+			return (FALSE);
+	}
+	obj->vn[obj->vn_nb_item - 1] = vn;
 	return (TRUE);
 }
