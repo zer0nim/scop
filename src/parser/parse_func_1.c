@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/29 16:12:37 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/16 14:52:56 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/16 15:32:48 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,15 +167,43 @@ void	init_v(t_vertex *v)
 	v->t.y = 0;
 }
 
+// verts:
+// positions		normals		texture coords
+int8_t	fill_obj_verts(t_obj *obj, t_vertex *v)
+{
+	int	start_id;
+
+	printf("p{%.2f, %.2f, %.2f}, n{%.2f, %.2f, %.2f}, t{%.2f, %.2f}\n", \
+	v->p.x, v->p.y, v->p.z, v->n.x, v->n.y, v->n.z, v->t.x, v->t.y);
+
+	++(obj->verts_nb_item);
+	if (obj->verts_nb_item > obj->verts_max_size)
+	{
+		obj->verts_max_size *= 2;
+		if (!(obj->verts = (float *)realloc(obj->verts, sizeof(float) * \
+		obj->verts_max_size * V_STEP)))
+			return (FALSE);
+	}
+	start_id = (obj->verts_nb_item - 1) * V_STEP;
+	obj->verts[start_id] = v->p.x;
+	obj->verts[start_id + 1] = v->p.y;
+	obj->verts[start_id + 2] = v->p.z;
+\
+	obj->verts[start_id + 3] = v->n.x;
+	obj->verts[start_id + 4] = v->n.y;
+	obj->verts[start_id + 5] = v->n.z;
+\
+	obj->verts[start_id + 6] = v->t.x;
+	obj->verts[start_id + 7] = v->t.y;
+	return (TRUE);
+}
+
 // id start at 1 not 0
 //
 // type 0:	1
 // type 1:	1/2
 // type 2:	1/2/3
 // type 3:	1//3
-//
-// verts:
-// positions		normals		texture coords
 int8_t	add_vertex(t_obj *obj, int type, char *v_str)
 {
 	char		*pos;
@@ -198,10 +226,8 @@ int8_t	add_vertex(t_obj *obj, int type, char *v_str)
 		if (!(fill_vertex(obj, &v, atof(pos + 1), e_vn)))
 			return (FALSE);
 	}
-
-	printf("p{%.2f, %.2f, %.2f}, n{%.2f, %.2f, %.2f}, t{%.2f, %.2f}\n", \
-	v.p.x, v.p.y, v.p.z, v.n.x, v.n.y, v.n.z, v.t.x, v.t.y);
-
+	if (!(fill_obj_verts(obj, &v)))
+		return (FALSE);
 	return (TRUE);
 }
 
