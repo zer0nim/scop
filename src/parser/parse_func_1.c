@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/29 16:12:37 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/16 11:45:33 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/16 13:26:52 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,52 +117,45 @@ int8_t	parse_vert(t_token_l *lst, t_obj *obj)
 	return (TRUE);
 }
 
-/*
-* f v1/vt1/vn1 v2/vt2/vn2 v3/vt3/vn3
-*
-* id start at 1 not 0
-*
-* v_id + '/' + vt_id + '/' + vn_id
-*
-* 1
-* 1/2
-* 1/2/3
-* 1//3
-*
-* need to loop through vertices to generate triangles
-*
-* if there is more than 3 vertices, create the followings triangles:
-* 0 1 2, 0 2 3, 0 3 4, ... (like triangle fan)
-*
-* type 0:	1
-* type 1:	1/2
-* type 2:	1/2/3
-* type 3:	1//3
-*
-* number of verticies is stored in count
-*/
+// id start at 1 not 0
+//
+// type 0:	1
+// type 1:	1/2
+// type 2:	1/2/3
+// type 3:	1//3
+int8_t	register_face(t_obj *obj, int type, t_token_l *a, t_token_l *b, \
+t_token_l *c)
+{
+	(void)obj;
+	(void)type;
+	printf("a: \"%s\"\n", a->data);
+	printf("b: \"%s\"\n", b->data);
+	printf("c: \"%s\"\n", c->data);
+	printf("_____\n");
+	return (TRUE);
+}
+
 int8_t	parse_face(t_token_l *lst, t_obj *obj)
 {
 	t_token_l	*crnt;
 	int			count;
 	int			type;
+	int			i;
 
-	printf("face\n");
-	(void)obj;
 	count = 0;
 	type = 0;
 	if (!(check_grammar(lst, &count))
 	|| !(check_face_grammar(lst, &type)))
 		return (FALSE);
-	printf("-----------------type: %d\n", type);
-
+	i = 0;
 	crnt = lst->next;
-	while (crnt && crnt->type != e_comments_t)
+	while (i + 2 < count)
 	{
-		printf("crnt->data: \"%s\"\n", crnt->data);
 		crnt = crnt->next;
+		if (!(register_face(obj, type, lst->next, crnt, crnt->next)))
+			return (FALSE);
+		++i;
 	}
-	printf("___________\n");
 	return (TRUE);
 }
 
