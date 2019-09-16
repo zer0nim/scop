@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:49:38 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/30 16:43:24 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/16 14:25:08 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,24 @@ typedef struct				s_obj
 	int		vt_nb_item;
 	int		vn_max_size;
 	int		vn_nb_item;
+	float	*verts;
+	int		verts_max_size;
+	int		verts_nb_item;
 }							t_obj;
+
+typedef enum				e_vert_type
+{
+	e_vp,
+	e_vn,
+	e_vt
+}							t_vert_type;
+
+typedef struct				s_vertex
+{
+	t_vect3	p;
+	t_vect3	n;
+	t_vect2	t;
+}							t_vertex;
 
 typedef struct				s_token_l
 {
