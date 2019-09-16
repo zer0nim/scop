@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/30 16:32:38 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/16 15:56:26 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -308,10 +308,28 @@ int		main(int argc, char const *argv[])
 	// glDeleteVertexArrays(2, vao_obj_light);
 	// glfwTerminate();
 
+	t_obj	obj;
 	if (argc > 1)
 	{
-		if (!parse_obj(argv[1]))
+		if (!parse_obj(argv[1], &obj))
 			return (1);
+
+		printf("nb_items: %d, max_items: %d\n", obj.verts_nb_item, obj.verts_max_size);
+		int	i;
+		i = -1;
+		while (++i < obj.verts_nb_item)
+		{
+			printf("{ %f, %f, %f,  %f, %f, %f,  %f, %f }\n", \
+			obj.verts[i * V_STEP],
+			obj.verts[i * V_STEP + 1],
+			obj.verts[i * V_STEP + 2],
+			obj.verts[i * V_STEP + 3],
+			obj.verts[i * V_STEP + 4],
+			obj.verts[i * V_STEP + 5],
+			obj.verts[i * V_STEP + 6],
+			obj.verts[i * V_STEP + 7]);
+		}
+		free_obj(&obj);
 	}
 	else
 		printf("usage: ./scop file.obj\n");

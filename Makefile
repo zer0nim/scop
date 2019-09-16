@@ -6,7 +6,7 @@
 #    By: emarin <emarin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/06 15:40:25 by emarin            #+#    #+#              #
-#    Updated: 2019/08/29 16:13:41 by emarin           ###   ########.fr        #
+#    Updated: 2019/09/16 15:49:22 by emarin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,8 @@ SRC		=	main.c \
 			parser/token_list.c \
 			parser/regex.c \
 			parser/parse_func_1.c \
-			parser/parse_func_2.c
+			parser/parse_func_2.c \
+			parser/obj.c
 
 HEAD	=	define.h \
 			scop.h \

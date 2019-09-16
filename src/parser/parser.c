@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:47:54 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/16 15:37:49 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/16 15:53:12 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,46 +46,22 @@ int8_t	init_obj(t_obj *obj)
 	return (TRUE);
 }
 
-int8_t	parse_obj(const char *filename)
+int8_t	parse_obj(const char *filename, t_obj *obj)
 {
 	t_token_l	*lst;
-	t_obj		obj;
 	int			res_size;
 
 	res_size = 32;
 	lst = NULL;
 	if (!lexer(filename, &lst, &res_size))
 		return (FALSE);
-	if (!init_obj(&obj))
+	if (!init_obj(obj))
 		return (FALSE);
-	if (!(parser(lst, res_size, &obj)))
+	if (!(parser(lst, res_size, obj)))
 	{
-		free(obj.v);
-		free(obj.vt);
-		free(obj.vn);
-		free(obj.verts);
+		free_obj(obj);
 		return (FALSE);
 	}
-	printf("nb_items: %d, max_items: %d\n", obj.verts_nb_item, obj.verts_max_size);
-	int	i;
-	i = -1;
-	while (++i < obj.verts_nb_item)
-	{
-		printf("{ %f, %f, %f,  %f, %f, %f,  %f, %f }\n", \
-		obj.verts[i * V_STEP],
-		obj.verts[i * V_STEP + 1],
-		obj.verts[i * V_STEP + 2],
-		obj.verts[i * V_STEP + 3],
-		obj.verts[i * V_STEP + 4],
-		obj.verts[i * V_STEP + 5],
-		obj.verts[i * V_STEP + 6],
-		obj.verts[i * V_STEP + 7]);
-	}
-
-	free(obj.v);
-	free(obj.vt);
-	free(obj.vn);
-	free(obj.verts);
 	free_token_list(&lst, res_size);
 	return (TRUE);
 }

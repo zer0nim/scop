@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:49:38 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/16 15:26:37 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/16 15:52:51 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ static const t_token_func	g_token_func[] =
 
 
 
-int8_t						parse_obj(const char *filename);
+int8_t						parse_obj(const char *filename, t_obj *obj);
 int8_t						lexer(const char *filename, t_token_l **lst, int \
 *res_size);
 void						free_reg(regex_t *regex, int nb_reg);
@@ -140,6 +140,7 @@ void						init_token_l(t_token_l *lst, int res_size);
 int8_t						realloc_tokens(t_token_l **lst, int *res_size);
 void						free_token_list(t_token_l **lst, int res_size);
 void						print_token_list(t_token_l *lst, int res_size);
+void						free_obj(t_obj *obj);
 
 int8_t						check_grammar(t_token_l *lst, int *count);
 
