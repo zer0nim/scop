@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/29 16:12:37 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/16 13:26:52 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/16 14:52:56 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,21 +117,103 @@ int8_t	parse_vert(t_token_l *lst, t_obj *obj)
 	return (TRUE);
 }
 
+int8_t	fill_vertex(t_obj *obj, t_vertex *v, int id, t_vert_type v_type)
+{
+	if (id != 0)
+	{
+		if (v_type == e_vp)
+		{
+			if (id - 1 >= obj->v_nb_item || id < 0)
+			{
+				fprintf(stderr, "invalid face index\n");
+				return (FALSE);
+			}
+			v->p = obj->v[id - 1];
+		}
+		if (v_type == e_vn)
+		{
+			if (id - 1 >= obj->vn_nb_item || id < 0)
+			{
+				fprintf(stderr, "invalid face index\n");
+				return (FALSE);
+			}
+			v->n = obj->vn[id - 1];
+		}
+		if (v_type == e_vt)
+		{
+			if (id - 1 >= obj->vt_nb_item || id < 0)
+			{
+				fprintf(stderr, "invalid face index\n");
+				return (FALSE);
+			}
+			v->t = obj->vt[id - 1];
+		}
+	}
+	return (TRUE);
+}
+
+// wich value to init ?
+void	init_v(t_vertex *v)
+{
+	v->p.x = 0;
+	v->p.y = 0;
+	v->p.z = 0;
+\
+	v->n.x = 0;
+	v->n.y = 0;
+	v->n.z = 0;
+\
+	v->t.x = 0;
+	v->t.y = 0;
+}
+
 // id start at 1 not 0
 //
 // type 0:	1
 // type 1:	1/2
 // type 2:	1/2/3
 // type 3:	1//3
-int8_t	register_face(t_obj *obj, int type, t_token_l *a, t_token_l *b, \
+//
+// verts:
+// positions		normals		texture coords
+int8_t	add_vertex(t_obj *obj, int type, char *v_str)
+{
+	char		*pos;
+	t_vertex	v;
+
+	init_v(&v);
+	if (!(fill_vertex(obj, &v, atof(v_str), e_vp)))
+		return (FALSE);
+	if (type >= 1)
+	{
+		if (!(pos = strchr(v_str, '/')))
+			return (FALSE);
+		if (!(fill_vertex(obj, &v, atof(pos + 1), e_vt)))
+			return (FALSE);
+	}
+	if (type >= 2)
+	{
+		if (!(pos = strchr(pos + 1, '/')))
+			return (FALSE);
+		if (!(fill_vertex(obj, &v, atof(pos + 1), e_vn)))
+			return (FALSE);
+	}
+
+	printf("p{%.2f, %.2f, %.2f}, n{%.2f, %.2f, %.2f}, t{%.2f, %.2f}\n", \
+	v.p.x, v.p.y, v.p.z, v.n.x, v.n.y, v.n.z, v.t.x, v.t.y);
+
+	return (TRUE);
+}
+
+int8_t	register_triangle(t_obj *obj, int type, t_token_l *a, t_token_l *b, \
 t_token_l *c)
 {
-	(void)obj;
-	(void)type;
-	printf("a: \"%s\"\n", a->data);
-	printf("b: \"%s\"\n", b->data);
-	printf("c: \"%s\"\n", c->data);
-	printf("_____\n");
+	printf("___\n");
+
+	if (!(add_vertex(obj, type, a->data))
+	|| !(add_vertex(obj, type, b->data))
+	|| !(add_vertex(obj, type, c->data)))
+		return (FALSE);
 	return (TRUE);
 }
 
@@ -152,7 +234,7 @@ int8_t	parse_face(t_token_l *lst, t_obj *obj)
 	while (i + 2 < count)
 	{
 		crnt = crnt->next;
-		if (!(register_face(obj, type, lst->next, crnt, crnt->next)))
+		if (!(register_triangle(obj, type, lst->next, crnt, crnt->next)))
 			return (FALSE);
 		++i;
 	}
