@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:49:38 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/16 14:25:08 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/16 15:26:37 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ typedef struct				s_token
 	int8_t		need_data;
 	const char	*name;
 }							t_token;
+
+# define V_STEP 8
 
 typedef struct				s_obj
 {
