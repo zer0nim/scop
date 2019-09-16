@@ -6,39 +6,35 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/29 16:12:37 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/30 16:29:37 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/16 11:45:33 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-// When you are using a series of triplets, you must be consistent in the
-// way you reference the vertex data. For example, it is illegal to give
-// vertex normals for some vertices, but not all.
-// The following is an example of an illegal statement.
-// f 1/1/1 2/2/2 3//3 4//4
-//
-// type 0:	1
-// type 1:	1/2
-// type 2:	1/2/3
-// type 3:	1//3
-int8_t	check_face_grammar(t_token_l *lst)
+/*
+* When you are using a series of triplets, you must be consistent in the
+* way you reference the vertex data. For example, it is illegal to give
+* vertex normals for some vertices, but not all.
+* The following is an example of an illegal statement.
+* f 1/1/1 2/2/2 3//3 4//4
+*/
+int8_t	check_face_grammar(t_token_l *lst, int *type)
 {
 	t_token_l	*crnt;
 	int			id;
 	int			i;
-	int			type;
+	int8_t		empty;
+	int			last_type;
 
-	printf("check_face_grammar\n");
+	last_type = -1;
 	id = 0;
 	crnt = lst->next;
 	while (crnt && crnt->type != e_comments_t)
 	{
-		type = 0;
-		printf("crnt->data: \"%s\"\n", crnt->data);
+		*type = 0;
+		empty = FALSE;
 		id = atoi(crnt->data);
-		printf("id's: {%d", id);
-
 		i = 0;
 		while (crnt->data[i])
 		{
@@ -47,26 +43,22 @@ int8_t	check_face_grammar(t_token_l *lst)
 			if (crnt->data[i] == '/')
 			{
 				++i;
-				++type;
+				++(*type);
+				if (*type == 2 && empty)
+					*type = 3;
 				id = atoi(crnt->data + i);
-				printf(", %d", id);
+				empty = !id;
 			}
 		}
-		printf("} type: %d\n", type);
-
-		printf("__\n");
+		if (last_type != -1 && last_type != *type)
+		{
+			fprintf(stderr, "instr %s, inconsitent vertice declaration\n", \
+			g_token_reg[lst->type].name);
+			return (FALSE);
+		}
+		last_type = *type;
 		crnt = crnt->next;
 	}
-	printf("___________\n");
-
-	// if ()
-	// {
-	// 	fprintf(stderr, "instr %s, inconsitent vertice declaration\n", \
-	// 	g_token_reg[lst->type].name);
-	// 	return (FALSE);
-	// }
-
-	// check indices here or in parse_face ?
 	return (TRUE);
 }
 
@@ -93,8 +85,6 @@ int8_t	check_grammar(t_token_l *lst, int *count)
 		(f_infos.accept_more ? "or more " : ""));
 		return (FALSE);
 	}
-	if (lst->type == e_face_t)
-		return (check_face_grammar(lst));
 	return (TRUE);
 }
 
@@ -127,37 +117,45 @@ int8_t	parse_vert(t_token_l *lst, t_obj *obj)
 	return (TRUE);
 }
 
-// f v1/vt1/vn1 v2/vt2/vn2 v3/vt3/vn3
-//
-// id start at 1 not 0
-//
-// v_id + '/' + vt_id + '/' + vn_id
-//
-// 1
-// 1/2
-// 1/2/3
-// 1//3
-//
-// need to loop through vertices to generate triangles
-//
-// if there is more than 3 vertices, create the followings triangles:
-// 0 1 2, 0 2 3, 0 3 4, ... (like triangle fan)
+/*
+* f v1/vt1/vn1 v2/vt2/vn2 v3/vt3/vn3
+*
+* id start at 1 not 0
+*
+* v_id + '/' + vt_id + '/' + vn_id
+*
+* 1
+* 1/2
+* 1/2/3
+* 1//3
+*
+* need to loop through vertices to generate triangles
+*
+* if there is more than 3 vertices, create the followings triangles:
+* 0 1 2, 0 2 3, 0 3 4, ... (like triangle fan)
+*
+* type 0:	1
+* type 1:	1/2
+* type 2:	1/2/3
+* type 3:	1//3
+*
+* number of verticies is stored in count
+*/
 int8_t	parse_face(t_token_l *lst, t_obj *obj)
 {
 	t_token_l	*crnt;
 	int			count;
+	int			type;
 
 	printf("face\n");
 	(void)obj;
 	count = 0;
-	if (!(check_grammar(lst, &count)))
+	type = 0;
+	if (!(check_grammar(lst, &count))
+	|| !(check_face_grammar(lst, &type)))
 		return (FALSE);
+	printf("-----------------type: %d\n", type);
 
-	// number of verticies is stored in count
-	// need to know the number of args per verticies (0 || 1 || 2) ?
-	// -> just count the number of '/'
-
-	// in progress
 	crnt = lst->next;
 	while (crnt && crnt->type != e_comments_t)
 	{
