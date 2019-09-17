@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:49:38 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/16 15:52:51 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/17 16:42:55 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ int8_t						realloc_tokens(t_token_l **lst, int *res_size);
 void						free_token_list(t_token_l **lst, int res_size);
 void						print_token_list(t_token_l *lst, int res_size);
 void						free_obj(t_obj *obj);
-
+void						norm_device_coord(t_obj *obj);
 int8_t						check_grammar(t_token_l *lst, int *count);
 
 #endif

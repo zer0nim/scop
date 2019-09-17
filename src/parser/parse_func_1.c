@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/29 16:12:37 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/16 15:32:48 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/17 18:26:25 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,9 +173,6 @@ int8_t	fill_obj_verts(t_obj *obj, t_vertex *v)
 {
 	int	start_id;
 
-	printf("p{%.2f, %.2f, %.2f}, n{%.2f, %.2f, %.2f}, t{%.2f, %.2f}\n", \
-	v->p.x, v->p.y, v->p.z, v->n.x, v->n.y, v->n.z, v->t.x, v->t.y);
-
 	++(obj->verts_nb_item);
 	if (obj->verts_nb_item > obj->verts_max_size)
 	{
@@ -234,8 +231,6 @@ int8_t	add_vertex(t_obj *obj, int type, char *v_str)
 int8_t	register_triangle(t_obj *obj, int type, t_token_l *a, t_token_l *b, \
 t_token_l *c)
 {
-	printf("___\n");
-
 	if (!(add_vertex(obj, type, a->data))
 	|| !(add_vertex(obj, type, b->data))
 	|| !(add_vertex(obj, type, c->data)))
