@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/16 15:56:26 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/17 18:21:51 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,16 @@ const float		g_verts[] = {
 	-0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f
 };
 
-void	init_vao(unsigned int *vao_ol)
+void	init_vao(unsigned int *vao_ol, t_obj *obj)
 {
-	unsigned int vbo;
+	unsigned int	vbo;
 
 	glGenVertexArrays(2, vao_ol);
 	glBindVertexArray(vao_ol[0]);
 \
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_verts), g_verts, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * obj->verts_nb_item * V_STEP, obj->verts, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo);
 \
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_TRUE, 8 * sizeof(float), \
@@ -92,7 +92,7 @@ void	init_vao(unsigned int *vao_ol)
 }
 
 void	draw_cube(unsigned int shader, t_vect3 pos, t_vect3 scale, \
-float angle, t_vect3 axis_v)
+float angle, t_vect3 axis_v, t_obj *obj)
 {
 	t_matrix		*mt_id;
 	t_matrix		*trans_m;
@@ -108,7 +108,7 @@ float angle, t_vect3 axis_v)
 	mt_free(&trans_m2);
 	glUniformMatrix4fv(glGetUniformLocation(shader, "model"), 1, GL_TRUE, \
 	model->cont);
-	glDrawArrays(GL_TRIANGLES, 0, 36);
+	glDrawArrays(GL_TRIANGLES, 0, obj->verts_nb_item);
 	mt_free(&model);
 	mt_free(&mt_id);
 }
@@ -129,28 +129,28 @@ void	set_shader_mt(unsigned int shader, t_camera *cam)
 	mt_free(&mt);
 }
 
-void	draw_cubes(unsigned int *shader_ol)
-{
-	int				i;
-	t_vect3			cube_pos[7];
+// void	draw_cubes(unsigned int *shader_ol)
+// {
+// 	int				i;
+// 	t_vect3			cube_pos[7];
 
-	cube_pos[0] = vect3(0.0f, 0.0f, 0.0f);
-	cube_pos[1] = vect3(2.0f, 5.0f, -15.0f);
-	cube_pos[2] = vect3(-1.5f, -2.2f, -2.5f);
-	cube_pos[3] = vect3(-3.8f, -2.0f, -12.3f);
-	cube_pos[4] = vect3(2.4f, -0.4f, -3.5f);
-	cube_pos[5] = vect3(-1.7f, 3.0f, -7.5f);
-	cube_pos[6] = vect3(1.3f, -2.0f, -2.5f);
-	i = -1;
-	while (++i < 7)
-	{
-		draw_cube(shader_ol[0], cube_pos[i], vect3(1.0f, 1.0f, 1.0f), \
-		20.0f * i, vect3(1.0f, 0.3f, 0.5f));
-	}
-}
+// 	cube_pos[0] = vect3(0.0f, 0.0f, 0.0f);
+// 	cube_pos[1] = vect3(2.0f, 5.0f, -15.0f);
+// 	cube_pos[2] = vect3(-1.5f, -2.2f, -2.5f);
+// 	cube_pos[3] = vect3(-3.8f, -2.0f, -12.3f);
+// 	cube_pos[4] = vect3(2.4f, -0.4f, -3.5f);
+// 	cube_pos[5] = vect3(-1.7f, 3.0f, -7.5f);
+// 	cube_pos[6] = vect3(1.3f, -2.0f, -2.5f);
+// 	i = -1;
+// 	while (++i < 7)
+// 	{
+// 		draw_cube(shader_ol[0], cube_pos[i], vect3(1.0f, 1.0f, 1.0f), \
+// 		20.0f * i, vect3(1.0f, 0.3f, 0.5f));
+// 	}
+// }
 
 void	loop_body(GLFWwindow *window, unsigned int *shader_ol, \
-unsigned int *vao_ol, unsigned int *dif_spec_map)
+unsigned int *vao_ol, unsigned int *dif_spec_map, t_obj *obj)
 {
 	t_camera		*cam;
 	int				i;
@@ -235,7 +235,11 @@ unsigned int *vao_ol, unsigned int *dif_spec_map)
 	// glBindTexture(GL_TEXTURE_2D, dif_spec_map[2]);
 \
 	set_shader_mt(shader_ol[0], cam);
-	draw_cubes(shader_ol);
+
+	// draw_cubes(shader_ol);
+	draw_cube(shader_ol[0], vect3(0.0f, 0.0f, 0.0f), vect3(1.0f, 1.0f, 1.0f), \
+	0.0f, vect3(1.0f, 0.0f, 0.0f), obj);
+
 	glUseProgram(shader_ol[1]);
 	glBindVertexArray(vao_ol[1]);
 	set_shader_mt(shader_ol[1], cam);
@@ -245,7 +249,7 @@ unsigned int *vao_ol, unsigned int *dif_spec_map)
 		glUniform3fv(glGetUniformLocation(shader_ol[1], "color"), 1, \
 		&(point_light_color[i].x));
 		draw_cube(shader_ol[1], point_light_pos[i], vect3(0.2f, 0.2f, 0.2f), 0, \
-		vect3(1.0f, 0.0f, 0.0f));
+		vect3(1.0f, 0.0f, 0.0f), obj);
 	}
 \
 	glBindVertexArray(0);
@@ -254,10 +258,13 @@ unsigned int *vao_ol, unsigned int *dif_spec_map)
 }
 
 int8_t	init(GLFWwindow *window, unsigned int *shader_ol, \
-unsigned int *vao_ol, unsigned int *dif_spec_map)
+unsigned int *vao_ol, unsigned int *dif_spec_map, const char *argv[], t_obj *obj)
 {
-	t_win_user		*win_u;
+	t_win_user	*win_u;
 
+	if (!parse_obj(argv[1], obj))
+		return (FALSE);
+	// exit(0);
 	win_u = (t_win_user *)glfwGetWindowUserPointer(window);
 	cam_init(&(win_u->cam));
 	win_u->dt_time = 0.0f;
@@ -268,7 +275,8 @@ unsigned int *vao_ol, unsigned int *dif_spec_map)
 	if (!create_shader(shader_ol + 1, "../src/shader/light_vs.glsl", \
 	"../src/shader/light_fs.glsl"))
 		return (FALSE);
-	init_vao(vao_ol);
+	init_vao(vao_ol, obj);
+	free_obj(obj);
 	if (!(load_texture("/Users/emarin/Downloads/container2.tga", dif_spec_map)))
 		return (FALSE);
 	if (!(load_texture("/Users/emarin/Downloads/container2_specular.tga", \
@@ -284,54 +292,36 @@ unsigned int *vao_ol, unsigned int *dif_spec_map)
 	return (TRUE);
 }
 
-int		main(int argc, char const *argv[])
+int		main(int argc, const char *argv[])
 {
-	// unsigned int	vao_obj_light[2];
-	// t_win_user		win_u;
-	// GLFWwindow		*window;
-	// unsigned int	shader_ol[2];
-	// unsigned int	dif_spec_map[3];
+	unsigned int	vao_obj_light[2];
+	t_win_user		win_u;
+	GLFWwindow		*window;
+	unsigned int	shader_ol[2];
+	unsigned int	dif_spec_map[3];
+	t_obj			obj;
 
-	// if (!init_window(&window, "Scop"))
-	// 	return (FALSE);
-	// glfwSetWindowUserPointer(window, &win_u);
-	// if (!init(window, shader_ol, vao_obj_light, dif_spec_map))
-	// 	return (1);
-	// glClearColor(0.15f, 0.16f, 0.21f, 1.0f);
-	// while (!glfwWindowShouldClose(window))
-	// {
-	// 	process_input(window);
-	// 	loop_body(window, shader_ol, vao_obj_light, dif_spec_map);
-	// }
-	// glDeleteProgram(shader_ol[0]);
-	// glDeleteProgram(shader_ol[1]);
-	// glDeleteVertexArrays(2, vao_obj_light);
-	// glfwTerminate();
-
-	t_obj	obj;
-	if (argc > 1)
+	if (argc != 2)
 	{
-		if (!parse_obj(argv[1], &obj))
-			return (1);
-
-		printf("nb_items: %d, max_items: %d\n", obj.verts_nb_item, obj.verts_max_size);
-		int	i;
-		i = -1;
-		while (++i < obj.verts_nb_item)
-		{
-			printf("{ %f, %f, %f,  %f, %f, %f,  %f, %f }\n", \
-			obj.verts[i * V_STEP],
-			obj.verts[i * V_STEP + 1],
-			obj.verts[i * V_STEP + 2],
-			obj.verts[i * V_STEP + 3],
-			obj.verts[i * V_STEP + 4],
-			obj.verts[i * V_STEP + 5],
-			obj.verts[i * V_STEP + 6],
-			obj.verts[i * V_STEP + 7]);
-		}
-		free_obj(&obj);
-	}
-	else
 		printf("usage: ./scop file.obj\n");
+		return (1);
+	}
+
+	if (!init_window(&window, "Scop"))
+		return (FALSE);
+
+	glfwSetWindowUserPointer(window, &win_u);
+	if (!init(window, shader_ol, vao_obj_light, dif_spec_map, argv, &obj))
+		return (1);
+	glClearColor(0.15f, 0.16f, 0.21f, 1.0f);
+	while (!glfwWindowShouldClose(window))
+	{
+		process_input(window);
+		loop_body(window, shader_ol, vao_obj_light, dif_spec_map, &obj);
+	}
+	glDeleteProgram(shader_ol[0]);
+	glDeleteProgram(shader_ol[1]);
+	glDeleteVertexArrays(2, vao_obj_light);
+	glfwTerminate();
 	return (0);
 }
