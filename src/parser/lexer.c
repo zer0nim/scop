@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:47:48 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/29 12:25:02 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/17 11:16:20 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,9 @@ int8_t	fill_tokens(char *line, t_token_l **lst, int line_nb, regex_t *regex)
 	int			s;
 	int			e;
 	char		word_end;
+	int8_t		empty;
 
+	empty = TRUE;
 	e = 0;
 	while (line[e])
 	{
@@ -76,6 +78,7 @@ int8_t	fill_tokens(char *line, t_token_l **lst, int line_nb, regex_t *regex)
 			++e;
 		if (s != e)
 		{
+			empty = FALSE;
 			word_end = line[e];
 			line[e] = '\0';
 			if (!(reg_tk(lst, line + s, regex, line_nb)))
@@ -83,6 +86,8 @@ int8_t	fill_tokens(char *line, t_token_l **lst, int line_nb, regex_t *regex)
 			line[e] = word_end;
 		}
 	}
+	if (empty && !(add_token(*lst + line_nb, NULL, FALSE, e_comments_t)))
+		return (FALSE);
 	return (TRUE);
 }
 
