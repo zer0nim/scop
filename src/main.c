@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/17 18:21:51 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/18 13:52:33 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,7 +264,6 @@ unsigned int *vao_ol, unsigned int *dif_spec_map, const char *argv[], t_obj *obj
 
 	if (!parse_obj(argv[1], obj))
 		return (FALSE);
-	// exit(0);
 	win_u = (t_win_user *)glfwGetWindowUserPointer(window);
 	cam_init(&(win_u->cam));
 	win_u->dt_time = 0.0f;

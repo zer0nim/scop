@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/29 16:12:37 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/17 18:26:25 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/18 13:57:25 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,16 +152,15 @@ int8_t	fill_vertex(t_obj *obj, t_vertex *v, int id, t_vert_type v_type)
 	return (TRUE);
 }
 
-// wich value to init ?
 void	init_v(t_vertex *v)
 {
 	v->p.x = 0;
 	v->p.y = 0;
 	v->p.z = 0;
 \
-	v->n.x = 0;
-	v->n.y = 0;
-	v->n.z = 0;
+	v->n.x = FLT_MAX;
+	v->n.y = FLT_MAX;
+	v->n.z = FLT_MAX;
 \
 	v->t.x = 0;
 	v->t.y = 0;
@@ -193,6 +192,16 @@ int8_t	fill_obj_verts(t_obj *obj, t_vertex *v)
 	obj->verts[start_id + 6] = v->t.x;
 	obj->verts[start_id + 7] = v->t.y;
 	return (TRUE);
+}
+
+t_vect3	calc_face_norm(t_vect3 p1, t_vect3 p2, t_vect3 p3)
+{
+	t_vect3	u;
+	t_vect3	v;
+
+	u = v3_sub(p2, p1);
+	v = v3_sub(p3, p1);
+	return (v3_normalize(v3_cross(u, v)));
 }
 
 // id start at 1 not 0
@@ -231,10 +240,34 @@ int8_t	add_vertex(t_obj *obj, int type, char *v_str)
 int8_t	register_triangle(t_obj *obj, int type, t_token_l *a, t_token_l *b, \
 t_token_l *c)
 {
+	int	start_id;
+
 	if (!(add_vertex(obj, type, a->data))
 	|| !(add_vertex(obj, type, b->data))
 	|| !(add_vertex(obj, type, c->data)))
 		return (FALSE);
+
+	start_id = (obj->verts_nb_item - 3) * V_STEP;
+	// if the normals are not defined
+	if (obj->verts[start_id + 3] == FLT_MAX)
+	{
+		t_vect3	n = calc_face_norm(\
+		*((t_vect3 *)(obj->verts + ((obj->verts_nb_item - 3) * V_STEP))), \
+		*((t_vect3 *)(obj->verts + ((obj->verts_nb_item - 2) * V_STEP))), \
+		*((t_vect3 *)(obj->verts + ((obj->verts_nb_item - 1) * V_STEP))));
+\
+		obj->verts[start_id + 3] = n.x;
+		obj->verts[start_id + 4] = n.y;
+		obj->verts[start_id + 5] = n.z;
+		start_id = (obj->verts_nb_item - 2) * V_STEP;
+		obj->verts[start_id + 3] = n.x;
+		obj->verts[start_id + 4] = n.y;
+		obj->verts[start_id + 5] = n.z;
+		start_id = (obj->verts_nb_item - 1) * V_STEP;
+		obj->verts[start_id + 3] = n.x;
+		obj->verts[start_id + 4] = n.y;
+		obj->verts[start_id + 5] = n.z;
+	}
 	return (TRUE);
 }
 

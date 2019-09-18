@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:47:54 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/17 18:12:11 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/18 13:22:46 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,13 @@ void	normalize_coord(t_obj *obj, t_vect3 min, t_vect3 max)
 	float		max_diff;
 	int			i;
 
-	// printf("min: { %f, %f, %f }\n", min.x, min.y, min.z);
-	// printf("max: { %f, %f, %f }\n", max.x, max.y, max.z);
-
 	max_diff = ((max.x - min.x) > (max.y - min.y)) \
 	? (((max.x - min.x) > (max.z - min.z)) ? (max.x - min.x) : (max.z - min.z)) \
 	: (((max.y - min.y) > (max.z - min.z)) ? (max.y - min.y) : (max.z - min.z));
-
+\
 	i = -1;
 	while (++i < obj->verts_nb_item)
 	{
-		// printf("____________\n");
-		// printf("{ %f, %f, %f }\n", \
-		// obj->verts[i * V_STEP], \
-		// obj->verts[i * V_STEP + 1], \
-		// obj->verts[i * V_STEP + 2]);
-
 		obj->verts[i * V_STEP] += -(max.x + min.x) / 2.0f;
 		obj->verts[i * V_STEP + 1] += -(max.y + min.y) / 2.0f;
 		obj->verts[i * V_STEP + 2] += -(max.z + min.z) / 2.0f;
@@ -40,11 +31,6 @@ void	normalize_coord(t_obj *obj, t_vect3 min, t_vect3 max)
 		obj->verts[i * V_STEP] /= max_diff;
 		obj->verts[i * V_STEP + 1] /= max_diff;
 		obj->verts[i * V_STEP + 2] /= max_diff;
-
-		printf("{ %f, %f, %f }\n", \
-		obj->verts[i * V_STEP], \
-		obj->verts[i * V_STEP + 1], \
-		obj->verts[i * V_STEP + 2]);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 20:25:56 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/26 17:32:32 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/18 13:54:55 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	cam_process_move(t_camera *cam, t_cam_mov_e mov, float dt_time)
 {
 	float	speed;
 
-	speed = 10.0f * dt_time;
+	speed = 2.0f * dt_time;
 	if (mov == e_forward)
 		cam->pos = v3_add(cam->pos, v3_scal_mul(cam->front, speed));
 	if (mov == e_backward)
