@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/29 16:12:37 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/18 13:57:25 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/18 14:15:10 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,8 +162,8 @@ void	init_v(t_vertex *v)
 	v->n.y = FLT_MAX;
 	v->n.z = FLT_MAX;
 \
-	v->t.x = 0;
-	v->t.y = 0;
+	v->t.x = FLT_MAX;
+	v->t.y = FLT_MAX;
 }
 
 // verts:
@@ -232,6 +232,13 @@ int8_t	add_vertex(t_obj *obj, int type, char *v_str)
 		if (!(fill_vertex(obj, &v, atof(pos + 1), e_vn)))
 			return (FALSE);
 	}
+
+	if (type == 0 || type == 3)
+	{
+		v.t.x = v.p.x;
+		v.t.y = v.p.y;
+	}
+
 	if (!(fill_obj_verts(obj, &v)))
 		return (FALSE);
 	return (TRUE);
