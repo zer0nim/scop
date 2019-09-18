@@ -6,11 +6,37 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 16:14:20 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/28 16:25:04 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/18 15:16:29 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+int8_t	add_token(t_token_l *crnt, const char *word, int reti, int t)
+{
+	if (!reti)
+	{
+		if (crnt->next || crnt->type != e_empty_t)
+		{
+			while (crnt->next)
+				crnt = crnt->next;
+			if (!(crnt->next = (t_token_l *)malloc(sizeof(t_token_l))))
+				return (FALSE);
+			crnt = crnt->next;
+		}
+		crnt->next = NULL;
+		crnt->type = t;
+		crnt->data = NULL;
+		if (g_token_reg[t].need_data)
+			crnt->data = strdup(word);
+	}
+	else
+	{
+		fprintf(stderr, "Unrecognized token \"%s\"\n", word);
+		return (FALSE);
+	}
+	return (TRUE);
+}
 
 void	init_token_l(t_token_l *lst, int res_size)
 {

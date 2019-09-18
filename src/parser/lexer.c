@@ -6,37 +6,11 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:47:48 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/17 11:16:20 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/18 15:16:25 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
-int8_t	add_token(t_token_l *crnt, const char *word, int reti, int t)
-{
-	if (!reti)
-	{
-		if (crnt->next || crnt->type != e_empty_t)
-		{
-			while (crnt->next)
-				crnt = crnt->next;
-			if (!(crnt->next = (t_token_l *)malloc(sizeof(t_token_l))))
-				return (FALSE);
-			crnt = crnt->next;
-		}
-		crnt->next = NULL;
-		crnt->type = t;
-		crnt->data = NULL;
-		if (g_token_reg[t].need_data)
-			crnt->data = strdup(word);
-	}
-	else
-	{
-		fprintf(stderr, "Unrecognized token \"%s\"\n", word);
-		return (FALSE);
-	}
-	return (TRUE);
-}
 
 int8_t	reg_tk(t_token_l **lst, const char *word, regex_t *regex, int line_nb)
 {
@@ -57,6 +31,18 @@ int8_t	reg_tk(t_token_l **lst, const char *word, regex_t *regex, int line_nb)
 	return (TRUE);
 }
 
+void	next_word(char *line, int *s, int *e)
+{
+	*s = *e;
+	while (line[*s] && (line[*s] == ' ' || line[*s] == '\t' \
+	|| line[*s] == '\n'))
+		++(*s);
+	*e = (line[*s] != '#') ? *s : strlen(line);
+	while (line[*e] && (line[*e] != ' ' && line[*e] != '\t' \
+	&& line[*e] != '\n' && line[*e] != '#'))
+		++(*e);
+}
+
 int8_t	fill_tokens(char *line, t_token_l **lst, int line_nb, regex_t *regex)
 {
 	int			s;
@@ -68,14 +54,7 @@ int8_t	fill_tokens(char *line, t_token_l **lst, int line_nb, regex_t *regex)
 	e = 0;
 	while (line[e])
 	{
-		s = e;
-		while (line[s] && (line[s] == ' ' || line[s] == '\t' \
-		|| line[s] == '\n'))
-			++s;
-		e = (line[s] != '#') ? s : strlen(line);
-		while (line[e] && (line[e] != ' ' && line[e] != '\t' \
-		&& line[e] != '\n' && line[e] != '#'))
-			++e;
+		next_word(line, &s, &e);
 		if (s != e)
 		{
 			empty = FALSE;

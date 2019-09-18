@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:47:54 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/18 13:22:46 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/18 15:22:07 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,12 @@ void	normalize_coord(t_obj *obj, t_vect3 min, t_vect3 max)
 	float		max_diff;
 	int			i;
 
-	max_diff = ((max.x - min.x) > (max.y - min.y)) \
-	? (((max.x - min.x) > (max.z - min.z)) ? (max.x - min.x) : (max.z - min.z)) \
-	: (((max.y - min.y) > (max.z - min.z)) ? (max.y - min.y) : (max.z - min.z));
+	if ((max.x - min.x) > (max.y - min.y))
+		max_diff = ((max.x - min.x) > (max.z - min.z)) ? (max.x - min.x) \
+		: (max.z - min.z);
+	else
+		max_diff = ((max.y - min.y) > (max.z - min.z)) ? (max.y - min.y) \
+		: (max.z - min.z);
 \
 	i = -1;
 	while (++i < obj->verts_nb_item)

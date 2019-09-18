@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:49:38 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/18 12:14:25 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/18 16:59:46 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct				s_obj
 	int		vt_nb_item;
 	int		vn_max_size;
 	int		vn_nb_item;
+	int		f_type;
 	float	*verts;
 	int		verts_max_size;
 	int		verts_nb_item;
@@ -130,13 +131,13 @@ static const t_token_func	g_token_func[] =
 	{NULL, e_empty_t, 0, FALSE}
 };
 
-
-
 int8_t						parse_obj(const char *filename, t_obj *obj);
 int8_t						lexer(const char *filename, t_token_l **lst, int \
 *res_size);
 void						free_reg(regex_t *regex, int nb_reg);
 int8_t						compile_reg(regex_t *regex, int nb_reg);
+int8_t						add_token(t_token_l *crnt, const char *word, \
+int reti, int t);
 void						init_token_l(t_token_l *lst, int res_size);
 int8_t						realloc_tokens(t_token_l **lst, int *res_size);
 void						free_token_list(t_token_l **lst, int res_size);
@@ -144,5 +145,16 @@ void						print_token_list(t_token_l *lst, int res_size);
 void						free_obj(t_obj *obj);
 void						norm_device_coord(t_obj *obj);
 int8_t						check_grammar(t_token_l *lst, int *count);
+int8_t						fill_vertex(t_obj *obj, t_vertex *v, int id, \
+t_vert_type v_type);
+void						init_v(t_vertex *v);
+int8_t						fill_obj_verts(t_obj *obj, t_vertex *v);
+void						check_type(int *type, t_token_l *crnt);
+int8_t						check_face_grammar(t_token_l *lst, t_obj *obj);
+t_vect3						calc_face_norm(t_vect3 p1, t_vect3 p2, t_vect3 p3);
+int8_t						add_vt(t_obj *obj, char *v_str);
+int8_t						register_triangle(t_obj *obj, t_token_l *a, \
+t_token_l *b, t_token_l *c);
+
 
 #endif
