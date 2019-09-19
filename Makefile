@@ -6,7 +6,7 @@
 #    By: emarin <emarin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/06 15:40:25 by emarin            #+#    #+#              #
-#    Updated: 2019/09/19 14:35:29 by emarin           ###   ########.fr        #
+#    Updated: 2019/09/19 17:40:26 by emarin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,10 @@ OBJ_PATH	= obj
 
 SRC		=	main.c \
 			opengl_tools.c \
+			transform_tools.c \
+			lighting_tools.c \
+			lighting.c \
+			drawing_loop.c \
 \
 			geometry/matrix.c \
 			geometry/matrix_op.c \
