@@ -6,13 +6,13 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/19 12:59:13 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/19 14:29:49 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.h"
 
-void	init_vao(t_data_3d	*data_3d)
+void	init_vao(t_data_3d *data_3d)
 {
 	glGenVertexArrays(2, &(data_3d->vao_obj));
 	glBindVertexArray(data_3d->vao_obj);
@@ -38,7 +38,8 @@ void	init_vao(t_data_3d	*data_3d)
 	glEnableVertexAttribArray(0);
 }
 
-void	draw_obj(u_int32_t vbo, u_int32_t shader, t_vect3 pos, t_vect3 scale, float angle)
+void	draw_obj(u_int32_t vbo, u_int32_t shader, t_vect3 pos, t_vect3 scale, \
+float angle)
 {
 	t_matrix		*mt_id;
 	t_matrix		*trans_m;
@@ -53,8 +54,7 @@ void	draw_obj(u_int32_t vbo, u_int32_t shader, t_vect3 pos, t_vect3 scale, float
 	mt_free(&trans_m);
 	model = mt_scale(trans_m2, scale);
 	mt_free(&trans_m2);
-	glUniformMatrix4fv(glGetUniformLocation(shader, "model"), 1, GL_TRUE, \
-	model->cont);
+	set_mat4_sh(shader, "model", model);
 	buff_size = 0;
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glGetBufferParameteriv(GL_ARRAY_BUFFER, GL_BUFFER_SIZE, &buff_size);
@@ -69,13 +69,11 @@ void	set_shader_mt(u_int32_t shader, t_camera *cam)
 
 	glUseProgram(shader);
 	mt = mt_look_at(cam->pos, v3_add(cam->pos, cam->front), cam->up);
-	glUniformMatrix4fv(glGetUniformLocation(shader, "view"), 1, GL_TRUE, \
-	mt->cont);
+	set_mat4_sh(shader, "view", mt);
 	mt_free(&mt);
 	mt = mt_perspective(radians(45.0f), (float)SCREEN_W / \
 	(float)SCREEN_H, 0.1f, 100.0f);
-	glUniformMatrix4fv(glGetUniformLocation(shader, "projection"), 1, GL_TRUE, \
-	mt->cont);
+	set_mat4_sh(shader, "projection", mt);
 	mt_free(&mt);
 }
 
@@ -99,82 +97,54 @@ void	loop_body(t_data_3d *data_3d, GLFWwindow *window)
 
 	cam = &(((t_win_user *)glfwGetWindowUserPointer(window))->cam);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glUseProgram(data_3d->shader_obj);
+	glUseProgram(data_3d->shad_obj);
 	glBindVertexArray(data_3d->vao_obj);
-	glUniform3fv(glGetUniformLocation(data_3d->shader_obj, "viewPos"), 1, \
-	&(cam->pos.x));
+	set_vec3_sh(data_3d->shad_obj, "viewPos", cam->pos);
 
-	glUniform1f(glGetUniformLocation(data_3d->shader_obj, "material.shininess"), \
-	32.0f);
+	set_float_sh(data_3d->shad_obj, "material.shininess", 32.0f);
 
-	glUniform3f(glGetUniformLocation(data_3d->shader_obj, "dirLight.direction"), \
-	-0.2f, -1.0f, -0.3f);
-	glUniform3f(glGetUniformLocation(data_3d->shader_obj, "dirLight.ambient"), \
-	0.05, 0.05, 0.05);
-	glUniform3f(glGetUniformLocation(data_3d->shader_obj, "dirLight.diffuse"), \
-	0.8f, 0.8f, 0.8f);
-	glUniform3f(glGetUniformLocation(data_3d->shader_obj, "dirLight.specular"), \
-	1.0f, 1.0f, 1.0f);
+	set_vec3_sh(data_3d->shad_obj, "dirLight.direction", vect3(-0.2f, -1.0f, -0.3f));
+	set_vec3_sh(data_3d->shad_obj, "dirLight.ambient", vect3(0.05, 0.05, 0.05));
+	set_vec3_sh(data_3d->shad_obj, "dirLight.diffuse", vect3(0.8f, 0.8f, 0.8f));
+	set_vec3_sh(data_3d->shad_obj, "dirLight.specular", vect3(1.0f, 1.0f, 1.0f));
 
 	i = -1;
 	while (++i < 4)
 	{
 		snprintf(buff, sizeof(buff), "pointLights[%d].position", i);
-		glUniform3fv(glGetUniformLocation(data_3d->shader_obj, buff), 1, \
-		&(point_light_pos[i].x));
+		set_vec3_sh(data_3d->shad_obj, buff, point_light_pos[i]);
 		snprintf(buff, sizeof(buff), "pointLights[%d].constant", i);
-		glUniform1f(glGetUniformLocation(data_3d->shader_obj, buff), 1.0f);
+		set_float_sh(data_3d->shad_obj, buff, 1.0f);
 		snprintf(buff, sizeof(buff), "pointLights[%d].linear", i);
-		glUniform1f(glGetUniformLocation(data_3d->shader_obj, buff), 0.045f);
+		set_float_sh(data_3d->shad_obj, buff, 0.045f);
 		snprintf(buff, sizeof(buff), "pointLights[%d].quadratic", i);
-		glUniform1f(glGetUniformLocation(data_3d->shader_obj, buff), 0.0075f);
+		set_float_sh(data_3d->shad_obj, buff, 0.0075f);
 		snprintf(buff, sizeof(buff), "pointLights[%d].ambient", i);
-		glUniform3f(glGetUniformLocation(data_3d->shader_obj, buff), 0.05, 0.05, 0.05);
+		set_vec3_sh(data_3d->shad_obj, buff, vect3(0.05, 0.05, 0.05));
 		snprintf(buff, sizeof(buff), "pointLights[%d].diffuse", i);
-		glUniform3fv(glGetUniformLocation(data_3d->shader_obj, buff), 1, \
-		&(point_light_color[i].x));
+		set_vec3_sh(data_3d->shad_obj, buff, point_light_color[i]);
 		snprintf(buff, sizeof(buff), "pointLights[%d].specular", i);
-		glUniform3f(glGetUniformLocation(data_3d->shader_obj, buff), 1.0f, 1.0f, 1.0f);
+		set_vec3_sh(data_3d->shad_obj, buff, vect3(1.0f, 1.0f, 1.0f));
 	}
-
-	glUniform3fv(glGetUniformLocation(data_3d->shader_obj, "spotLight.position"), 1, \
-	&(cam->pos.x));
-	glUniform3fv(glGetUniformLocation(data_3d->shader_obj, "spotLight.direction"), 1, \
-	&(cam->front.x));
-	glUniform1f(glGetUniformLocation(data_3d->shader_obj, "spotLight.cutOff"), \
-	cos(radians(12.5f)));
-	glUniform1f(glGetUniformLocation(data_3d->shader_obj, "spotLight.outerCutOff"), \
-	cos(radians(15.0f)));
-	glUniform1f(glGetUniformLocation(data_3d->shader_obj, "spotLight.constant"), 1.0f);
-	glUniform1f(glGetUniformLocation(data_3d->shader_obj, "spotLight.linear"), 0.045f);
-	glUniform1f(glGetUniformLocation(data_3d->shader_obj, "spotLight.quadratic"), \
-	0.0075f);
-	glUniform3f(glGetUniformLocation(data_3d->shader_obj, "spotLight.ambient"), \
-	0.05, 0.05, 0.05);
-	glUniform3f(glGetUniformLocation(data_3d->shader_obj, "spotLight.diffuse"), \
-	0.8f, 0.8f, 0.8f);
-	glUniform3f(glGetUniformLocation(data_3d->shader_obj, "spotLight.specular"), \
-	1.0f, 1.0f, 1.0f);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, data_3d->text_diff);
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, data_3d->text_spec);
 
-	set_shader_mt(data_3d->shader_obj, cam);
+	set_shader_mt(data_3d->shad_obj, cam);
 
-	draw_obj(data_3d->vbo, data_3d->shader_obj, vect3(0.0f, 0.0f, 0.0f), \
+	draw_obj(data_3d->vbo, data_3d->shad_obj, vect3(0.0f, 0.0f, 0.0f), \
 	vect3(1.0f, 1.0f, 1.0f), 0.0f);
 
-	glUseProgram(data_3d->shader_light);
+	glUseProgram(data_3d->shad_light);
 	glBindVertexArray(data_3d->vao_light);
-	set_shader_mt(data_3d->shader_light, cam);
+	set_shader_mt(data_3d->shad_light, cam);
 	i = -1;
 	while (++i < 4)
 	{
-		glUniform3fv(glGetUniformLocation(data_3d->shader_light, "color"), 1, \
-		&(point_light_color[i].x));
-		draw_obj(data_3d->vbo, data_3d->shader_light, point_light_pos[i], \
+		set_vec3_sh(data_3d->shad_light, "color", point_light_color[i]);
+		draw_obj(data_3d->vbo, data_3d->shad_light, point_light_pos[i], \
 		vect3(0.2f, 0.2f, 0.2f), 0.0f);
 	}
 
@@ -183,7 +153,7 @@ void	loop_body(t_data_3d *data_3d, GLFWwindow *window)
 	glfwPollEvents();
 }
 
-int8_t	init(t_data_3d	*data_3d, GLFWwindow *window, const char *obj_name)
+int8_t	init(t_data_3d *data_3d, GLFWwindow *window, const char *obj_name)
 {
 	t_win_user	*win_u;
 
@@ -193,10 +163,10 @@ int8_t	init(t_data_3d	*data_3d, GLFWwindow *window, const char *obj_name)
 	cam_init(&(win_u->cam));
 	win_u->dt_time = 0.0f;
 	win_u->last_frame = 0.0f;
-	if (!create_shader(&(data_3d->shader_obj), "../src/shader/obj_vs.glsl", \
+	if (!create_shader(&(data_3d->shad_obj), "../src/shader/obj_vs.glsl", \
 	"../src/shader/obj_fs.glsl"))
 		return (FALSE);
-	if (!create_shader(&(data_3d->shader_light), "../src/shader/light_vs.glsl", \
+	if (!create_shader(&(data_3d->shad_light), "../src/shader/light_vs.glsl", \
 	"../src/shader/light_fs.glsl"))
 		return (FALSE);
 	init_vao(data_3d);
@@ -207,16 +177,23 @@ int8_t	init(t_data_3d	*data_3d, GLFWwindow *window, const char *obj_name)
 	if (!(load_texture("/Users/emarin/Downloads/container2_specular.tga", \
 	&(data_3d->text_spec))))
 		return (FALSE);
-	glUseProgram(data_3d->shader_obj);
-	glUniform1i(glGetUniformLocation(data_3d->shader_obj, "material.diffuse"), 0);
-	glUniform1i(glGetUniformLocation(data_3d->shader_obj, "material.specular"), 1);
+	glUseProgram(data_3d->shad_obj);
+	set_int_sh(data_3d->shad_obj, "material.diffuse", 0);
+	set_int_sh(data_3d->shad_obj, "material.specular", 1);
 	return (TRUE);
+}
+
+void	free_t_data_3d(t_data_3d *data_3d)
+{
+	glDeleteProgram(data_3d->shad_obj);
+	glDeleteProgram(data_3d->shad_light);
+	glDeleteVertexArrays(2, &(data_3d->vao_obj));
+	glDeleteTextures(2, &(data_3d->text_diff));
 }
 
 int		main(int argc, const char *argv[])
 {
 	t_data_3d	data_3d;
-
 	t_win_user	win_u;
 	GLFWwindow	*window;
 
@@ -225,10 +202,9 @@ int		main(int argc, const char *argv[])
 		printf("usage: ./scop file.obj\n");
 		return (1);
 	}
-
 	if (!init_window(&window, "Scop"))
 		return (FALSE);
-
+\
 	glfwSetWindowUserPointer(window, &win_u);
 	if (!init(&data_3d, window, argv[1]))
 		return (1);
@@ -238,10 +214,7 @@ int		main(int argc, const char *argv[])
 		process_input(window);
 		loop_body(&data_3d, window);
 	}
-	glDeleteProgram(data_3d.shader_obj);
-	glDeleteProgram(data_3d.shader_light);
-	glDeleteVertexArrays(2, &(data_3d.vao_obj));
-	glDeleteTextures(2, &(data_3d.text_diff));
+	free_t_data_3d(&data_3d);
 	glfwTerminate();
 	return (0);
 }
