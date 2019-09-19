@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 20:28:11 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/26 17:01:27 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/19 11:46:16 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,20 @@ typedef struct	s_win_user
 	float		dt_time;
 	float		last_frame;
 }				t_win_user;
+
+# pragma pack(push, 1)
+
+typedef struct	s_data_3d
+{
+	u_int32_t	vbo;
+	u_int32_t	vao_obj;
+	u_int32_t	vao_light;
+	u_int32_t	shader_obj;
+	u_int32_t	shader_light;
+	u_int32_t	text_diff;
+	u_int32_t	text_spec;
+	t_obj		obj;
+}				t_data_3d;
+# pragma pack(pop)
 
 #endif
