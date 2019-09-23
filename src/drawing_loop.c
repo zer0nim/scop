@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/23 17:33:57 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/23 17:53:40 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	loop_body(t_data_3d *data_3d, GLFWwindow *window, t_light *lights)
 	glBindTexture(GL_TEXTURE_2D, data_3d->text_spec);
 	set_shader_mt(data_3d->shad_obj, cam);
 	draw_obj(data_3d->vbo, data_3d->shad_obj, transform(vect3(0.0f, 0.0f, 0.0f)\
-	, vect3(1.0f, 1.0f, 1.0f), vect3(0.0f, 1.0f, 0.0f), 0.0f));
+	, vect3(1.0f, 1.0f, 1.0f), vect3(0.0f, 1.0f, 0.0f), -90.0f));
 \
 	glUseProgram(data_3d->shad_light);
 	glBindVertexArray(data_3d->vao_light);
