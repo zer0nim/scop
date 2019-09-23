@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/19 17:42:02 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/23 17:37:31 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,15 @@ void	static_lighting(t_data_3d *data_3d, t_light *lights)
 {
 	int		i;
 	float	angle;
+	float	r;
 
+	r = 2.5f;
 	i = -1;
 	while (++i < NB_POINT_LIGHT)
 	{
 		angle = i * (360 / NB_POINT_LIGHT);
-		lights[i].pos = vect3(cos(radians(angle)), 0.5f, sin(radians(angle)));
+		lights[i].pos = vect3(r * cos(radians(angle)), 0.5f, r * \
+		sin(radians(angle)));
 	}
 	lights[0].color = vect3(0.0f, 0.0f, 1.0f);
 	lights[1].color = vect3(1.0f, 0.0f, 0.0f);

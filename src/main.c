@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/23 14:02:08 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/23 17:35:26 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,8 @@ int8_t	init(t_data_3d *data_3d, GLFWwindow *window, const char *obj_name)
 		return (FALSE);
 	init_vao(data_3d);
 	free_obj(&(data_3d->obj));
-	if (!(load_texture("/Users/emarin/Downloads/container2.tga", \
-	&(data_3d->text_diff))) \
-	|| !(load_texture("/Users/emarin/Downloads/container2_specular.tga", \
-	&(data_3d->text_spec))))
+	if (!(load_texture("../resources/unicorn.tga", &(data_3d->text_diff))) \
+	|| !(load_texture("../resources/unicorn_spec.tga", &(data_3d->text_spec))))
 		return (FALSE);
 	glUseProgram(data_3d->shad_obj);
 	set_int_sh(data_3d->shad_obj, "material.diffuse", 0);

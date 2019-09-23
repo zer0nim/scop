@@ -128,5 +128,5 @@ void main() {
 	// phase 3: Spot light
 	result += calcSpotLight(spotLight, norm, fragPos, viewDir);
 
-	fragColor = mix(vec4(result, 1.0), vec4(color / 255, 1.0), 1);
+	fragColor = mix(vec4(result, 1.0), vec4(color / 255, 1.0), 0);
 }
