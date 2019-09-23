@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 15:09:07 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/21 16:27:07 by emarin           ###   ########.fr       */
+/*   Updated: 2019/08/30 14:43:30 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,24 @@
 # include <stdio.h>
 # include <math.h>
 
+# pragma pack(push, 1)
+
 typedef struct	s_matrix
 {
 	int		w;
 	int		h;
 	float	*cont;
 }				t_matrix;
+# pragma pack(pop)
+
+# pragma pack(push, 1)
 
 typedef struct	s_vect2
 {
 	float	x;
 	float	y;
 }				t_vect2;
+# pragma pack(pop)
 
 # pragma pack(push, 1)
 
@@ -41,6 +47,8 @@ typedef struct	s_vect3
 }				t_vect3;
 # pragma pack(pop)
 
+# pragma pack(push, 1)
+
 typedef struct	s_vect4
 {
 	float	x;
@@ -48,6 +56,7 @@ typedef struct	s_vect4
 	float	z;
 	float	w;
 }				t_vect4;
+# pragma pack(pop)
 
 typedef struct	s_camera
 {
@@ -64,7 +73,7 @@ typedef enum	e_cam_mov
 	e_backward,
 	e_left,
 	e_right
-}				t_cam_mov;
+}				t_cam_mov_e;
 
 t_matrix		*mt_new(int h, int w, int8_t is_identity);
 void			mt_print(t_matrix *mt);
@@ -99,7 +108,7 @@ t_matrix		*vect3_m(float x, float y, float z);
 t_matrix		*vect4_m(float x, float y, float z, float w);
 
 void			cam_init(t_camera *cam);
-void			cam_process_move(t_camera *cam, t_cam_mov mov, float dt_time);
+void			cam_process_move(t_camera *cam, t_cam_mov_e mov, float dt_time);
 void			cam_process_mouse(t_camera *cam, float x_offset
 , float y_offset);
 
