@@ -55,6 +55,7 @@ uniform DirLight	dirLight;
 uniform int			nbPointLight;
 uniform PointLight	pointLights[MAX_POINT_LIGHTS];
 uniform SpotLight	spotLight;
+uniform float		mix_val;
 
 vec3 calcDirLight(DirLight light, vec3 norm, vec3 viewDir) {
 	vec3	lightDir = normalize(-light.direction);
@@ -128,5 +129,5 @@ void main() {
 	// phase 3: Spot light
 	result += calcSpotLight(spotLight, norm, fragPos, viewDir);
 
-	fragColor = mix(vec4(result, 1.0), vec4(color / 255, 1.0), 0);
+	fragColor = mix(vec4(result, 1.0), vec4(color / 255, 1.0), mix_val);
 }

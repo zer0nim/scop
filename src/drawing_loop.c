@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/23 17:53:40 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/23 18:28:36 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,41 @@ void	set_shader_mt(u_int32_t shader, t_camera *cam)
 	mt_free(&mt);
 }
 
+void	draw_lights(t_data_3d *data_3d, t_camera *cam, t_light *lights)
+{
+	int	i;
+
+	glUseProgram(data_3d->shad_light);
+	glBindVertexArray(data_3d->vao_light);
+	set_shader_mt(data_3d->shad_light, cam);
+	i = -1;
+	while (++i < NB_POINT_LIGHT)
+	{
+		set_vec3_sh(data_3d->shad_light, "color", lights[i].color);
+		draw_obj(data_3d->vbo, data_3d->shad_light, transform(lights[i].pos, \
+		vect3(0.2f, 0.2f, 0.2f), vect3(0.0f, 1.0f, 0.0f), 0.0f));
+	}
+}
+
+void	texture_mix(t_data_3d *data_3d, GLFWwindow *window)
+{
+	t_win_user	*win_u;
+	float		mix_val;
+
+	win_u = (t_win_user *)glfwGetWindowUserPointer(window);
+
+	// printf("win_u->dt_time: %f\n", win_u->dt_time);
+
+	// printf("time: %f\n", glfwGetTime());
+    const float frequency = .2;
+    mix_val = 0.5f * (1 + sin(2 * M_PI * frequency * glfwGetTime()));
+	set_float_sh(data_3d->shad_obj, "mix_val", mix_val);
+	// printf("mix_val: %f\n", mix_val);
+}
+
 void	loop_body(t_data_3d *data_3d, GLFWwindow *window, t_light *lights)
 {
 	t_camera	*cam;
-	int			i;
 
 	cam = &(((t_win_user *)glfwGetWindowUserPointer(window))->cam);
 	glUseProgram(data_3d->shad_obj);
@@ -67,16 +98,8 @@ void	loop_body(t_data_3d *data_3d, GLFWwindow *window, t_light *lights)
 	draw_obj(data_3d->vbo, data_3d->shad_obj, transform(vect3(0.0f, 0.0f, 0.0f)\
 	, vect3(1.0f, 1.0f, 1.0f), vect3(0.0f, 1.0f, 0.0f), -90.0f));
 \
-	glUseProgram(data_3d->shad_light);
-	glBindVertexArray(data_3d->vao_light);
-	set_shader_mt(data_3d->shad_light, cam);
-	i = -1;
-	while (++i < NB_POINT_LIGHT)
-	{
-		set_vec3_sh(data_3d->shad_light, "color", lights[i].color);
-		draw_obj(data_3d->vbo, data_3d->shad_light, transform(lights[i].pos, \
-		vect3(0.2f, 0.2f, 0.2f), vect3(0.0f, 1.0f, 0.0f), 0.0f));
-	}
+	texture_mix(data_3d, window);
+	draw_lights(data_3d, cam, lights);
 }
 
 void	drawing_loop(t_data_3d *data_3d, GLFWwindow *window, t_light *lights)
