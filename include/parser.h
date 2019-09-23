@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:49:38 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/19 14:36:33 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/23 12:08:10 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct				s_token
 	const char	*name;
 }							t_token;
 
-# define V_STEP 8
+# define V_STEP 11
 
 typedef struct				s_obj
 {
@@ -155,5 +155,6 @@ t_vect3						calc_face_norm(t_vect3 p1, t_vect3 p2, t_vect3 p3);
 int8_t						add_vt(t_obj *obj, char *v_str);
 int8_t						register_triangle(t_obj *obj, t_token_l *a, \
 t_token_l *b, t_token_l *c);
+void						register_color(t_obj *obj, int grayscale);
 
 #endif

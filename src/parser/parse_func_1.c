@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/29 16:12:37 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/18 16:56:28 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/23 12:06:42 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int8_t	parse_face(t_token_l *lst, t_obj *obj)
 	t_token_l	*crnt;
 	int			count;
 	int			i;
+	int			grayscale;
 
 	count = 0;
 	if (!(check_grammar(lst, &count))
@@ -79,11 +80,13 @@ int8_t	parse_face(t_token_l *lst, t_obj *obj)
 		return (FALSE);
 	i = 0;
 	crnt = lst->next;
+	grayscale = rand() % 255;
 	while (i + 2 < count)
 	{
 		crnt = crnt->next;
 		if (!(register_triangle(obj, lst->next, crnt, crnt->next)))
 			return (FALSE);
+		register_color(obj, grayscale);
 		++i;
 	}
 	return (TRUE);

@@ -47,6 +47,7 @@ struct SpotLight {
 in vec3				fragPos;
 in vec3				normal;
 in vec2				texCoords;
+in vec3				color;
 
 uniform vec3        viewPos;
 uniform Material    material;
@@ -127,5 +128,5 @@ void main() {
 	// phase 3: Spot light
 	result += calcSpotLight(spotLight, norm, fragPos, viewDir);
 
-	fragColor = vec4(result, 1.0);
+	fragColor = mix(vec4(result, 1.0), vec4(color / 255, 1.0), 1);
 }
