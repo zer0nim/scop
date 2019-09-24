@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/23 18:28:36 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/24 12:55:14 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,28 +78,27 @@ void	texture_mix(t_data_3d *data_3d, GLFWwindow *window)
 	// printf("time: %f\n", glfwGetTime());
     const float frequency = .2;
     mix_val = 0.5f * (1 + sin(2 * M_PI * frequency * glfwGetTime()));
-	set_float_sh(data_3d->shad_obj, "mix_val", mix_val);
+	set_float_sh(data_3d->shad_obj, "mix_val", 0);
 	// printf("mix_val: %f\n", mix_val);
 }
 
 void	loop_body(t_data_3d *data_3d, GLFWwindow *window, t_light *lights)
 {
-	t_camera	*cam;
+	t_win_user	*win_u;
 
-	cam = &(((t_win_user *)glfwGetWindowUserPointer(window))->cam);
+	win_u = (t_win_user *)glfwGetWindowUserPointer(window);
 	glUseProgram(data_3d->shad_obj);
 	glBindVertexArray(data_3d->vao_obj);
-	set_vec3_sh(data_3d->shad_obj, "viewPos", cam->pos);
+	set_vec3_sh(data_3d->shad_obj, "viewPos", win_u->cam.pos);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, data_3d->text_diff);
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, data_3d->text_spec);
-	set_shader_mt(data_3d->shad_obj, cam);
-	draw_obj(data_3d->vbo, data_3d->shad_obj, transform(vect3(0.0f, 0.0f, 0.0f)\
-	, vect3(1.0f, 1.0f, 1.0f), vect3(0.0f, 1.0f, 0.0f), -90.0f));
+	set_shader_mt(data_3d->shad_obj, &(win_u->cam));
+	draw_obj(data_3d->vbo, data_3d->shad_obj, win_u->settings.transform);
 \
 	texture_mix(data_3d, window);
-	draw_lights(data_3d, cam, lights);
+	draw_lights(data_3d,  &(win_u->cam), lights);
 }
 
 void	drawing_loop(t_data_3d *data_3d, GLFWwindow *window, t_light *lights)

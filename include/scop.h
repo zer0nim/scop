@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 20:28:11 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/23 12:26:32 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/24 12:55:56 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,6 @@
 # include <time.h>
 
 # define NB_POINT_LIGHT 3
-
-typedef struct	s_win_user
-{
-	t_camera	cam;
-	float		dt_time;
-	float		last_frame;
-}				t_win_user;
 
 # pragma pack(push, 1)
 
@@ -54,6 +47,22 @@ typedef struct	s_transform
 	t_vect3	axis;
 	float	angle;
 }				t_transform;
+
+typedef struct	s_setting
+{
+	t_transform	transform;
+	int8_t		texture_mode;
+	int8_t		rotate_mode;
+	int8_t		fps_mode;
+}				t_setting;
+
+typedef struct	s_win_user
+{
+	t_camera	cam;
+	float		dt_time;
+	float		last_frame;
+	t_setting	settings;
+}				t_win_user;
 
 typedef struct	s_light
 {
