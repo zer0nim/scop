@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 20:28:11 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/24 17:17:29 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/24 18:13:07 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ typedef struct	s_transform
 
 typedef struct	s_setting
 {
-	t_transform	transform;
 	int8_t		texture_mode;
 	int8_t		rotate_mode;
 	int8_t		fps_mode;
@@ -62,6 +61,7 @@ typedef struct	s_win_user
 	float		dt_time;
 	float		last_frame;
 	float		mix_val;
+	t_transform	transform;
 	t_setting	settings;
 }				t_win_user;
 
@@ -99,6 +99,8 @@ void			fps_input(GLFWwindow *window, t_win_user *win_u, t_camera *cam);
 void			key_callback(GLFWwindow *window, int key, int scancode, \
 int action);
 void			update_win_title(GLFWwindow *window);
+void			rotate_model(t_win_user *win_u);
+void			init_win_u(t_win_user *win_u, int8_t set_dt);
 
 t_transform		transform(t_vect3 pos, t_vect3 scale, t_vect3 axis, \
 float angle);

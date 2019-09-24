@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/24 17:17:56 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/24 17:34:51 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ void	loop_body(t_data_3d *data_3d, GLFWwindow *window, t_light *lights)
 	t_win_user	*win_u;
 
 	win_u = (t_win_user *)glfwGetWindowUserPointer(window);
+	if (win_u->settings.rotate_mode)
+		rotate_model(win_u);
 	glUseProgram(data_3d->shad_obj);
 	glBindVertexArray(data_3d->vao_obj);
 	set_vec3_sh(data_3d->shad_obj, "viewPos", win_u->cam.pos);
@@ -79,9 +81,9 @@ void	loop_body(t_data_3d *data_3d, GLFWwindow *window, t_light *lights)
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, data_3d->text_spec);
 	set_shader_mt(data_3d->shad_obj, &(win_u->cam));
-	draw_obj(data_3d->vbo, data_3d->shad_obj, win_u->settings.transform);
-\
 	texture_mix(data_3d, window);
+	draw_obj(data_3d->vbo, data_3d->shad_obj, win_u->transform);
+\
 	draw_lights(data_3d, &(win_u->cam), lights);
 }
 

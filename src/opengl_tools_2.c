@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 14:17:33 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/24 17:17:31 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/24 18:12:52 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,6 @@ void	key_callback(GLFWwindow *window, int key, int scancode, int action)
 	if (key == GLFW_KEY_F && action == GLFW_PRESS)
 		win_u->settings.fps_mode = !win_u->settings.fps_mode;
 	if (key == GLFW_KEY_DELETE && action == GLFW_PRESS)
-		printf("need to reset\n");
+		init_win_u(win_u, FALSE);
 	update_win_title(window);
 }
