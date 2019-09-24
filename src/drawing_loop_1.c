@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/24 16:35:58 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/24 17:17:56 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void	loop_body(t_data_3d *data_3d, GLFWwindow *window, t_light *lights)
 
 void	drawing_loop(t_data_3d *data_3d, GLFWwindow *window, t_light *lights)
 {
+	update_win_title(window);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	static_lighting(data_3d, lights);
 	while (!glfwWindowShouldClose(window))

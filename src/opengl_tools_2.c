@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 14:17:33 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/24 16:55:26 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/24 17:17:31 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,20 @@ void	fps_input(GLFWwindow *window, t_win_user *win_u, t_camera *cam)
 		cam_process_move(cam, e_right, win_u->dt_time);
 }
 
+void	update_win_title(GLFWwindow *window)
+{
+	t_win_user	*win_u;
+	char		buff[128];
+
+	win_u = (t_win_user *)glfwGetWindowUserPointer(window);
+	snprintf(buff, sizeof(buff), \
+	"Scop		rotate: %s | texture_mode: %s | fps_mode: %s\n", \
+	((win_u->settings.rotate_mode) ? "on" : "off"), \
+	((win_u->settings.texture_mode) ? "texture" : "color"), \
+	((win_u->settings.fps_mode) ? "on" : "off"));
+	glfwSetWindowTitle(window, buff);
+}
+
 void	key_callback(GLFWwindow *window, int key, int scancode, int action)
 {
 	t_win_user	*win_u;
@@ -40,4 +54,5 @@ void	key_callback(GLFWwindow *window, int key, int scancode, int action)
 		win_u->settings.fps_mode = !win_u->settings.fps_mode;
 	if (key == GLFW_KEY_DELETE && action == GLFW_PRESS)
 		printf("need to reset\n");
+	update_win_title(window);
 }
