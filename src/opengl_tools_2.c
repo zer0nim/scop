@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 14:17:33 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/24 18:12:52 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/24 18:42:27 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,25 @@ void	fps_input(GLFWwindow *window, t_win_user *win_u, t_camera *cam)
 		cam_process_move(cam, e_left, win_u->dt_time);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		cam_process_move(cam, e_right, win_u->dt_time);
+}
+
+void	translate_input(GLFWwindow *window, t_win_user *win_u)
+{
+	float	speed;
+
+	speed = 0.5f;
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		win_u->transform.pos.z -= speed * win_u->dt_time;
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		win_u->transform.pos.z += speed * win_u->dt_time;
+	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+		win_u->transform.pos.y += speed * win_u->dt_time;
+	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+		win_u->transform.pos.y -= speed * win_u->dt_time;
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		win_u->transform.pos.x -= speed * win_u->dt_time;
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		win_u->transform.pos.x += speed * win_u->dt_time;
 }
 
 void	update_win_title(GLFWwindow *window)
@@ -51,7 +70,10 @@ void	key_callback(GLFWwindow *window, int key, int scancode, int action)
 	if (key == GLFW_KEY_R && action == GLFW_PRESS)
 		win_u->settings.rotate_mode = !win_u->settings.rotate_mode;
 	if (key == GLFW_KEY_F && action == GLFW_PRESS)
+	{
+		cam_init(&(win_u->cam));
 		win_u->settings.fps_mode = !win_u->settings.fps_mode;
+	}
 	if (key == GLFW_KEY_DELETE && action == GLFW_PRESS)
 		init_win_u(win_u, FALSE);
 	update_win_title(window);

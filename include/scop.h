@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 20:28:11 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/24 18:13:07 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/24 18:25:21 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ t_light *lights);
 void			static_lighting(t_data_3d *data_3d, t_light *lights);
 void			texture_mix(t_data_3d *data_3d, GLFWwindow *window);
 void			fps_input(GLFWwindow *window, t_win_user *win_u, t_camera *cam);
+void			translate_input(GLFWwindow *window, t_win_user *win_u);
 void			key_callback(GLFWwindow *window, int key, int scancode, \
 int action);
 void			update_win_title(GLFWwindow *window);

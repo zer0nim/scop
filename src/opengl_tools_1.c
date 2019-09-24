@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 14:17:33 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/24 16:57:15 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/24 18:38:38 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	process_input(GLFWwindow *window)
 \
 	if (win_u->settings.fps_mode)
 		fps_input(window, win_u, cam);
+	else
+		translate_input(window, win_u);
 }
 
 void	mouse_cb(GLFWwindow *window, double x_pos, double y_pos)
@@ -36,16 +38,17 @@ void	mouse_cb(GLFWwindow *window, double x_pos, double y_pos)
 	static float	last_x = SCREEN_W / 2.0;
 	static float	last_y = SCREEN_H / 2.0;
 	static int8_t	first_mouse = TRUE;
-	t_camera		*cam;
+	t_win_user		*win_u;
 
-	cam = &(((t_win_user *)glfwGetWindowUserPointer(window))->cam);
+	win_u = (t_win_user *)glfwGetWindowUserPointer(window);
 	if (first_mouse)
 	{
 		last_x = x_pos;
 		last_y = y_pos;
 		first_mouse = FALSE;
 	}
-	cam_process_mouse(cam, x_pos - last_x, last_y - y_pos);
+	if (win_u->settings.fps_mode)
+		cam_process_mouse(&(win_u->cam), x_pos - last_x, last_y - y_pos);
 	last_x = x_pos;
 	last_y = y_pos;
 }
