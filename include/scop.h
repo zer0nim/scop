@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 20:28:11 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/24 12:55:56 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/24 16:55:13 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct	s_win_user
 	t_camera	cam;
 	float		dt_time;
 	float		last_frame;
+	float		mix_val;
 	t_setting	settings;
 }				t_win_user;
 
@@ -93,6 +94,10 @@ void			process_input(GLFWwindow *window);
 void			drawing_loop(t_data_3d *data_3d, GLFWwindow *window, \
 t_light *lights);
 void			static_lighting(t_data_3d *data_3d, t_light *lights);
+void			texture_mix(t_data_3d *data_3d, GLFWwindow *window);
+void			fps_input(GLFWwindow *window, t_win_user *win_u, t_camera *cam);
+void			key_callback(GLFWwindow *window, int key, int scancode, \
+int action);
 
 t_transform		transform(t_vect3 pos, t_vect3 scale, t_vect3 axis, \
 float angle);

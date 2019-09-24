@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/24 12:53:08 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/24 16:23:35 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,16 @@ void	init_vao(t_data_3d *data_3d)
 	glEnableVertexAttribArray(0);
 }
 
-void	init_settings(t_setting *settings)
+void	init_win_u(t_win_user *win_u)
 {
+	t_setting	*settings;
+
+	cam_init(&(win_u->cam));
+	win_u->dt_time = 0.0f;
+	win_u->last_frame = 0.0f;
+	win_u->mix_val = 0.0f;
+\
+	settings = &(win_u->settings);
 	settings->fps_mode = FALSE;
 	settings->rotate_mode = TRUE;
 	settings->texture_mode = FALSE;
@@ -57,10 +65,7 @@ int8_t	init(t_data_3d *data_3d, GLFWwindow *window, const char *obj_name)
 	if (!parse_obj(obj_name, &(data_3d->obj)))
 		return (FALSE);
 	win_u = (t_win_user *)glfwGetWindowUserPointer(window);
-	cam_init(&(win_u->cam));
-	win_u->dt_time = 0.0f;
-	win_u->last_frame = 0.0f;
-	init_settings(&(win_u->settings));
+	init_win_u(win_u);
 	if (!create_shader(&(data_3d->shad_obj), "../src/shader/obj_vs.glsl", \
 	"../src/shader/obj_fs.glsl") \
 	|| !create_shader(&(data_3d->shad_light), "../src/shader/light_vs.glsl", \

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   drawing_loop.c                                     :+:      :+:    :+:   */
+/*   drawing_loop_1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/24 12:55:14 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/24 16:35:58 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,22 +66,6 @@ void	draw_lights(t_data_3d *data_3d, t_camera *cam, t_light *lights)
 	}
 }
 
-void	texture_mix(t_data_3d *data_3d, GLFWwindow *window)
-{
-	t_win_user	*win_u;
-	float		mix_val;
-
-	win_u = (t_win_user *)glfwGetWindowUserPointer(window);
-
-	// printf("win_u->dt_time: %f\n", win_u->dt_time);
-
-	// printf("time: %f\n", glfwGetTime());
-    const float frequency = .2;
-    mix_val = 0.5f * (1 + sin(2 * M_PI * frequency * glfwGetTime()));
-	set_float_sh(data_3d->shad_obj, "mix_val", 0);
-	// printf("mix_val: %f\n", mix_val);
-}
-
 void	loop_body(t_data_3d *data_3d, GLFWwindow *window, t_light *lights)
 {
 	t_win_user	*win_u;
@@ -98,7 +82,7 @@ void	loop_body(t_data_3d *data_3d, GLFWwindow *window, t_light *lights)
 	draw_obj(data_3d->vbo, data_3d->shad_obj, win_u->settings.transform);
 \
 	texture_mix(data_3d, window);
-	draw_lights(data_3d,  &(win_u->cam), lights);
+	draw_lights(data_3d, &(win_u->cam), lights);
 }
 
 void	drawing_loop(t_data_3d *data_3d, GLFWwindow *window, t_light *lights)

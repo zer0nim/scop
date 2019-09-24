@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/29 16:12:37 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/23 12:06:42 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/24 16:20:02 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int8_t	parse_face(t_token_l *lst, t_obj *obj)
 		return (FALSE);
 	i = 0;
 	crnt = lst->next;
-	grayscale = rand() % 255;
+	grayscale = 50 + rand() % 205;
 	while (i + 2 < count)
 	{
 		crnt = crnt->next;

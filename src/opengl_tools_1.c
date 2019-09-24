@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   opengl_tools.c                                     :+:      :+:    :+:   */
+/*   opengl_tools_1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 14:17:33 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/20 14:41:31 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/24 16:57:15 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,9 @@ void	process_input(GLFWwindow *window)
 	crnt_frame = glfwGetTime();
 	win_u->dt_time = crnt_frame - win_u->last_frame;
 	win_u->last_frame = crnt_frame;
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		cam_process_move(cam, e_forward, win_u->dt_time);
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		cam_process_move(cam, e_backward, win_u->dt_time);
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		cam_process_move(cam, e_left, win_u->dt_time);
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		cam_process_move(cam, e_right, win_u->dt_time);
+\
+	if (win_u->settings.fps_mode)
+		fps_input(window, win_u, cam);
 }
 
 void	mouse_cb(GLFWwindow *window, double x_pos, double y_pos)
@@ -82,6 +77,8 @@ int8_t	init_window(GLFWwindow **window, const char *name)
 	glfwMakeContextCurrent(*window);
 	glfwSetFramebufferSizeCallback(*window, frambuff_resize_cb);
 	glfwSetCursorPosCallback(*window, mouse_cb);
+	glfwSetKeyCallback(*window, (void(*)(GLFWwindow *, int, int, int, int))\
+	(size_t)&key_callback);
 	glfwSetInputMode(*window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glEnable(GL_DEPTH_TEST);
 	return (TRUE);
