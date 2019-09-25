@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:47:48 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/18 15:16:25 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/25 15:06:26 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,12 +102,19 @@ int8_t	lexer_loop(FILE *fp, t_token_l **lst, int *res_size)
 int8_t	lexer(const char *filename, t_token_l **lst, int *res_size)
 {
 	FILE		*fp;
+	char		*full_name;
 
-	if (!(fp = fopen(filename, "r")))
+	if (!(full_name = (char *)malloc(sizeof(char) * strlen(filename) + 4)))
+		return (FALSE);
+	strcpy(full_name, "../");
+	strcat(full_name, filename);
+	if (!(fp = fopen(full_name, "r")))
 	{
-		fprintf(stderr, "Error while opening \"%s\"\n", filename);
+		fprintf(stderr, "Error while opening \"%s\"\n", full_name);
+		free(full_name);
 		return (FALSE);
 	}
+	free(full_name);
 	if (!(*lst = (t_token_l *)malloc(sizeof(t_token_l) * *res_size)))
 		return (FALSE);
 	init_token_l(*lst, *res_size);
