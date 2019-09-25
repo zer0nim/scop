@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 14:17:33 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/25 13:47:42 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/25 17:28:48 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,24 @@ void	update_win_title(GLFWwindow *window)
 
 	win_u = (t_win_user *)glfwGetWindowUserPointer(window);
 	snprintf(buff, sizeof(buff), \
-	"Scop		rotate[R]: %s | texture_mode[T]: %s | fps_mode[F]: %s | "\
-	"move[wasd, ctrl, shift] | reset[del]\n", \
-	((win_u->settings.rotate_mode) ? "on" : "off"), \
-	((win_u->settings.texture_mode) ? "texture" : "color"), \
-	((win_u->settings.fps_mode) ? "on" : "off"));
+	"SCOP.	%sRotate R  %sTexture T  %sFps F  %sWire Z  %sPointL 1  "\
+	"%sTorchL 2  %sSphereUV 3      Reset del\n", \
+	((win_u->settings.rotate_mode) ? "✅" : "❌"), \
+	((win_u->settings.texture_mode) ? "✅" : "❌"), \
+	((win_u->settings.fps_mode) ? "✅" : "❌"), \
+	((win_u->settings.wireframe_mode) ? "✅" : "❌"), \
+	((win_u->settings.point_light) ? "✅" : "❌"), \
+	((win_u->settings.torch_light) ? "✅" : "❌"), \
+	((win_u->settings.sphere_uv) ? "✅" : "❌"));
 	glfwSetWindowTitle(window, buff);
+}
+
+void	fps_mode(GLFWwindow *window, t_win_user *win_u)
+{
+	cam_init(&(win_u->cam));
+	win_u->settings.fps_mode = !win_u->settings.fps_mode;
+	glfwSetInputMode(window, GLFW_CURSOR, ((win_u->settings.fps_mode) \
+	? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL));
 }
 
 void	key_callback(GLFWwindow *window, int key, int scancode, int action)
@@ -65,18 +77,20 @@ void	key_callback(GLFWwindow *window, int key, int scancode, int action)
 
 	(void)scancode;
 	win_u = (t_win_user *)glfwGetWindowUserPointer(window);
-\
 	if (key == GLFW_KEY_T && action == GLFW_PRESS)
 		win_u->settings.texture_mode = !win_u->settings.texture_mode;
 	if (key == GLFW_KEY_R && action == GLFW_PRESS)
 		win_u->settings.rotate_mode = !win_u->settings.rotate_mode;
 	if (key == GLFW_KEY_F && action == GLFW_PRESS)
-	{
-		cam_init(&(win_u->cam));
-		win_u->settings.fps_mode = !win_u->settings.fps_mode;
-		glfwSetInputMode(window, GLFW_CURSOR, ((win_u->settings.fps_mode) \
-		? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL));
-	}
+		fps_mode(window, win_u);
+	if (key == GLFW_KEY_Z && action == GLFW_PRESS)
+		win_u->settings.wireframe_mode = !win_u->settings.wireframe_mode;
+	if (key == GLFW_KEY_1 && action == GLFW_PRESS)
+		win_u->settings.point_light = !win_u->settings.point_light;
+	if (key == GLFW_KEY_2 && action == GLFW_PRESS)
+		win_u->settings.torch_light = !win_u->settings.torch_light;
+	if (key == GLFW_KEY_3 && action == GLFW_PRESS)
+		win_u->settings.sphere_uv = !win_u->settings.sphere_uv;
 	if (key == GLFW_KEY_DELETE && action == GLFW_PRESS)
 		init_win_u(win_u, FALSE);
 	update_win_title(window);

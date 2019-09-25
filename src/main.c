@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/25 15:21:51 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/25 17:01:29 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,10 @@ void	init_win_u(t_win_user *win_u, int8_t first_call)
 	settings->fps_mode = FALSE;
 	settings->rotate_mode = TRUE;
 	settings->texture_mode = FALSE;
+	settings->wireframe_mode = FALSE;
+	settings->point_light = FALSE;
+	settings->torch_light = FALSE;
+	settings->sphere_uv = FALSE;
 }
 
 int8_t	init(t_data_3d *data_3d, GLFWwindow *window, const char *obj_name)

@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 20:28:11 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/25 14:11:32 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/25 16:25:52 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,10 @@ typedef struct	s_setting
 	int8_t		texture_mode;
 	int8_t		rotate_mode;
 	int8_t		fps_mode;
+	int8_t		wireframe_mode;
+	int8_t		point_light;
+	int8_t		torch_light;
+	int8_t		sphere_uv;
 }				t_setting;
 
 typedef struct	s_win_user
