@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   drawing_loop.c                                     :+:      :+:    :+:   */
+/*   drawing_loop_1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/19 17:42:04 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/25 14:15:34 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	draw_obj(u_int32_t vbo, u_int32_t shader, t_transform transform)
 	mt_free(&mt_id);
 }
 
-void	set_shader_mt(u_int32_t shader, t_camera *cam)
+void	set_shader_mt(t_win_user *win_u, u_int32_t shader, t_camera *cam)
 {
 	t_matrix		*mt;
 
@@ -44,32 +44,20 @@ void	set_shader_mt(u_int32_t shader, t_camera *cam)
 	mt = mt_look_at(cam->pos, v3_add(cam->pos, cam->front), cam->up);
 	set_mat4_sh(shader, "view", mt);
 	mt_free(&mt);
-	mt = mt_perspective(radians(45.0f), (float)SCREEN_W / \
-	(float)SCREEN_H, 0.1f, 100.0f);
+	mt = mt_perspective(radians(45.0f), win_u->width / win_u->height, 0.1f, \
+	100.0f);
 	set_mat4_sh(shader, "projection", mt);
 	mt_free(&mt);
 }
 
-void	loop_body(t_data_3d *data_3d, GLFWwindow *window, t_light *lights)
+void	draw_lights(t_win_user *win_u, t_data_3d *data_3d, t_camera *cam, \
+t_light *lights)
 {
-	t_camera	*cam;
-	int			i;
+	int	i;
 
-	cam = &(((t_win_user *)glfwGetWindowUserPointer(window))->cam);
-	glUseProgram(data_3d->shad_obj);
-	glBindVertexArray(data_3d->vao_obj);
-	set_vec3_sh(data_3d->shad_obj, "viewPos", cam->pos);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, data_3d->text_diff);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, data_3d->text_spec);
-	set_shader_mt(data_3d->shad_obj, cam);
-	draw_obj(data_3d->vbo, data_3d->shad_obj, transform(vect3(0.0f, 0.0f, 0.0f)\
-	, vect3(1.0f, 1.0f, 1.0f), vect3(0.0f, 1.0f, 0.0f), 0.0f));
-\
 	glUseProgram(data_3d->shad_light);
 	glBindVertexArray(data_3d->vao_light);
-	set_shader_mt(data_3d->shad_light, cam);
+	set_shader_mt(win_u, data_3d->shad_light, cam);
 	i = -1;
 	while (++i < NB_POINT_LIGHT)
 	{
@@ -79,9 +67,31 @@ void	loop_body(t_data_3d *data_3d, GLFWwindow *window, t_light *lights)
 	}
 }
 
+void	loop_body(t_data_3d *data_3d, GLFWwindow *window, t_light *lights)
+{
+	t_win_user	*win_u;
+
+	win_u = (t_win_user *)glfwGetWindowUserPointer(window);
+	if (win_u->settings.rotate_mode)
+		rotate_model(win_u);
+	glUseProgram(data_3d->shad_obj);
+	glBindVertexArray(data_3d->vao_obj);
+	set_vec3_sh(data_3d->shad_obj, "viewPos", win_u->cam.pos);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, data_3d->text_diff);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, data_3d->text_spec);
+	set_shader_mt(win_u, data_3d->shad_obj, &(win_u->cam));
+	texture_mix(data_3d, window);
+	draw_obj(data_3d->vbo, data_3d->shad_obj, win_u->transform);
+\
+	draw_lights(win_u, data_3d, &(win_u->cam), lights);
+}
+
 void	drawing_loop(t_data_3d *data_3d, GLFWwindow *window, t_light *lights)
 {
-	glClearColor(0.15f, 0.16f, 0.21f, 1.0f);
+	update_win_title(window);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	static_lighting(data_3d, lights);
 	while (!glfwWindowShouldClose(window))
 	{

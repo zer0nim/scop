@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 20:28:11 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/19 17:44:00 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/25 14:11:32 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,9 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <math.h>
+# include <time.h>
 
 # define NB_POINT_LIGHT 3
-
-typedef struct	s_win_user
-{
-	t_camera	cam;
-	float		dt_time;
-	float		last_frame;
-}				t_win_user;
 
 # pragma pack(push, 1)
 
@@ -53,6 +47,25 @@ typedef struct	s_transform
 	t_vect3	axis;
 	float	angle;
 }				t_transform;
+
+typedef struct	s_setting
+{
+	int8_t		texture_mode;
+	int8_t		rotate_mode;
+	int8_t		fps_mode;
+}				t_setting;
+
+typedef struct	s_win_user
+{
+	t_camera	cam;
+	float		dt_time;
+	float		last_frame;
+	float		mix_val;
+	t_transform	transform;
+	t_setting	settings;
+	float		width;
+	float		height;
+}				t_win_user;
 
 typedef struct	s_light
 {
@@ -83,11 +96,17 @@ void			process_input(GLFWwindow *window);
 void			drawing_loop(t_data_3d *data_3d, GLFWwindow *window, \
 t_light *lights);
 void			static_lighting(t_data_3d *data_3d, t_light *lights);
+void			texture_mix(t_data_3d *data_3d, GLFWwindow *window);
+void			fps_input(GLFWwindow *window, t_win_user *win_u, t_camera *cam);
+void			translate_input(GLFWwindow *window, t_win_user *win_u);
+void			key_callback(GLFWwindow *window, int key, int scancode, \
+int action);
+void			update_win_title(GLFWwindow *window);
+void			rotate_model(t_win_user *win_u);
+void			init_win_u(t_win_user *win_u, int8_t first_call);
 
 t_transform		transform(t_vect3 pos, t_vect3 scale, t_vect3 axis, \
 float angle);
 t_light			light(t_vect3 pos, t_vect3 color);
-float			radians(float degree_angle);
-float			degrees(float radian_angle);
 
 #endif

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   opengl_tools.c                                     :+:      :+:    :+:   */
+/*   opengl_tools_1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 14:17:33 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/20 14:41:31 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/25 14:23:40 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,11 @@ void	process_input(GLFWwindow *window)
 	crnt_frame = glfwGetTime();
 	win_u->dt_time = crnt_frame - win_u->last_frame;
 	win_u->last_frame = crnt_frame;
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		cam_process_move(cam, e_forward, win_u->dt_time);
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		cam_process_move(cam, e_backward, win_u->dt_time);
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		cam_process_move(cam, e_left, win_u->dt_time);
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		cam_process_move(cam, e_right, win_u->dt_time);
+\
+	if (win_u->settings.fps_mode)
+		fps_input(window, win_u, cam);
+	else
+		translate_input(window, win_u);
 }
 
 void	mouse_cb(GLFWwindow *window, double x_pos, double y_pos)
@@ -41,23 +38,28 @@ void	mouse_cb(GLFWwindow *window, double x_pos, double y_pos)
 	static float	last_x = SCREEN_W / 2.0;
 	static float	last_y = SCREEN_H / 2.0;
 	static int8_t	first_mouse = TRUE;
-	t_camera		*cam;
+	t_win_user		*win_u;
 
-	cam = &(((t_win_user *)glfwGetWindowUserPointer(window))->cam);
+	win_u = (t_win_user *)glfwGetWindowUserPointer(window);
 	if (first_mouse)
 	{
 		last_x = x_pos;
 		last_y = y_pos;
 		first_mouse = FALSE;
 	}
-	cam_process_mouse(cam, x_pos - last_x, last_y - y_pos);
+	if (win_u->settings.fps_mode)
+		cam_process_mouse(&(win_u->cam), x_pos - last_x, last_y - y_pos);
 	last_x = x_pos;
 	last_y = y_pos;
 }
 
 void	frambuff_resize_cb(GLFWwindow *window, int width, int height)
 {
-	(void)window;
+	t_win_user	*win_u;
+
+	win_u = (t_win_user *)glfwGetWindowUserPointer(window);
+	win_u->width = width;
+	win_u->height = height;
 	glViewport(0, 0, width, height);
 }
 
@@ -82,7 +84,8 @@ int8_t	init_window(GLFWwindow **window, const char *name)
 	glfwMakeContextCurrent(*window);
 	glfwSetFramebufferSizeCallback(*window, frambuff_resize_cb);
 	glfwSetCursorPosCallback(*window, mouse_cb);
-	glfwSetInputMode(*window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetKeyCallback(*window, (void(*)(GLFWwindow *, int, int, int, int))\
+	(size_t)&key_callback);
 	glEnable(GL_DEPTH_TEST);
 	return (TRUE);
 }

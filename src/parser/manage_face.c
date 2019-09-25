@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 16:55:33 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/18 16:56:34 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/25 11:57:35 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ int8_t	add_vt(t_obj *obj, char *v_str)
 	init_v(&v);
 	if (!(fill_vertex(obj, &v, atof(v_str), e_vp)))
 		return (FALSE);
+	set_vt(&v);
 	if (obj->f_type >= 1)
 	{
 		if (!(pos = strchr(v_str, '/')))
@@ -95,8 +96,6 @@ int8_t	add_vt(t_obj *obj, char *v_str)
 		if (!(fill_vertex(obj, &v, atof(pos + 1), e_vt)))
 			return (FALSE);
 	}
-	v.t.x = v.p.x;
-	v.t.y = v.p.y;
 	if (obj->f_type >= 2)
 	{
 		if (!(pos = strchr(pos + 1, '/')))
