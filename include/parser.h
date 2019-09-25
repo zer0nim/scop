@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 14:49:38 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/23 12:08:10 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/25 11:57:53 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,5 +156,6 @@ int8_t						add_vt(t_obj *obj, char *v_str);
 int8_t						register_triangle(t_obj *obj, t_token_l *a, \
 t_token_l *b, t_token_l *c);
 void						register_color(t_obj *obj, int grayscale);
+void						set_vt(t_vertex *v);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 15:09:07 by emarin            #+#    #+#             */
-/*   Updated: 2019/08/30 14:43:30 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/25 11:36:41 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,9 @@ typedef enum	e_cam_mov
 	e_left,
 	e_right
 }				t_cam_mov_e;
+
+float			radians(float degree_angle);
+float			degrees(float radian_angle);
 
 t_matrix		*mt_new(int h, int w, int8_t is_identity);
 void			mt_print(t_matrix *mt);

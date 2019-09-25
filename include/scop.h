@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 20:28:11 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/24 18:25:21 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/25 11:36:30 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,5 @@ void			init_win_u(t_win_user *win_u, int8_t set_dt);
 t_transform		transform(t_vect3 pos, t_vect3 scale, t_vect3 axis, \
 float angle);
 t_light			light(t_vect3 pos, t_vect3 color);
-float			radians(float degree_angle);
-float			degrees(float radian_angle);
 
 #endif

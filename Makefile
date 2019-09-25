@@ -6,7 +6,7 @@
 #    By: emarin <emarin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/06 15:40:25 by emarin            #+#    #+#              #
-#    Updated: 2019/09/24 16:42:13 by emarin           ###   ########.fr        #
+#    Updated: 2019/09/25 11:58:44 by emarin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,6 +54,7 @@ SRC		=	main.c \
 			parser/parse_func_1.c \
 			parser/parse_func_2.c \
 			parser/manage_face.c \
+			parser/vertex_texture.c \
 			parser/color.c \
 			parser/obj.c
 
