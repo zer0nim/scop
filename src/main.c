@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/24 18:12:25 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/25 14:12:00 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,16 @@ void	init_vao(t_data_3d *data_3d)
 	glEnableVertexAttribArray(0);
 }
 
-void	init_win_u(t_win_user *win_u, int8_t set_dt)
+void	init_win_u(t_win_user *win_u, int8_t first_call)
 {
 	t_setting	*settings;
 
-	if (set_dt)
+	if (first_call)
 	{
 		win_u->dt_time = 0.0f;
 		win_u->last_frame = 0.0f;
+		win_u->width = SCREEN_W;
+		win_u->height = SCREEN_H;
 	}
 \
 	cam_init(&(win_u->cam));

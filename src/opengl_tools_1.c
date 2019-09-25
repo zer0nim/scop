@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 14:17:33 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/25 13:44:03 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/25 14:23:40 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,11 @@ void	mouse_cb(GLFWwindow *window, double x_pos, double y_pos)
 
 void	frambuff_resize_cb(GLFWwindow *window, int width, int height)
 {
-	(void)window;
+	t_win_user	*win_u;
+
+	win_u = (t_win_user *)glfwGetWindowUserPointer(window);
+	win_u->width = width;
+	win_u->height = height;
 	glViewport(0, 0, width, height);
 }
 

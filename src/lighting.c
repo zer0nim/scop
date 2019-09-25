@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/25 12:41:07 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/25 14:23:11 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ void	static_lighting_uniform(t_data_3d *data_3d, t_light *lights)
 	set_vec3_sh(data_3d->shad_obj, "dirLight.direction", \
 	vect3(-0.2f, -0.8f, -0.6f));
 	set_vec3_sh(data_3d->shad_obj, "dirLight.ambient", vect3(0.15, 0.15, 0.15));
-	set_vec3_sh(data_3d->shad_obj, "dirLight.diffuse", vect3(0.99f, 0.98f, 0.94f));
+	set_vec3_sh(data_3d->shad_obj, "dirLight.diffuse", \
+	vect3(0.99f, 0.98f, 0.94f));
 	set_vec3_sh(data_3d->shad_obj, "dirLight.specular", \
 	vect3(1.0f, 1.0f, 1.0f));
 \

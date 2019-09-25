@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 20:28:11 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/25 11:36:30 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/25 14:11:32 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ typedef struct	s_win_user
 	float		mix_val;
 	t_transform	transform;
 	t_setting	settings;
+	float		width;
+	float		height;
 }				t_win_user;
 
 typedef struct	s_light
@@ -101,7 +103,7 @@ void			key_callback(GLFWwindow *window, int key, int scancode, \
 int action);
 void			update_win_title(GLFWwindow *window);
 void			rotate_model(t_win_user *win_u);
-void			init_win_u(t_win_user *win_u, int8_t set_dt);
+void			init_win_u(t_win_user *win_u, int8_t first_call);
 
 t_transform		transform(t_vect3 pos, t_vect3 scale, t_vect3 axis, \
 float angle);
