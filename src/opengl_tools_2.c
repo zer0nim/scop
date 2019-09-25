@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 14:17:33 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/24 18:42:27 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/25 11:08:04 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ void	update_win_title(GLFWwindow *window)
 
 	win_u = (t_win_user *)glfwGetWindowUserPointer(window);
 	snprintf(buff, sizeof(buff), \
-	"Scop		rotate: %s | texture_mode: %s | fps_mode: %s\n", \
+	"Scop		rotate[R]: %s | texture_mode[T]: %s | fps_mode[F]: %s | "\
+	"move[wasd, ctrl, shift] | reset[del]\n", \
 	((win_u->settings.rotate_mode) ? "on" : "off"), \
 	((win_u->settings.texture_mode) ? "texture" : "color"), \
 	((win_u->settings.fps_mode) ? "on" : "off"));
