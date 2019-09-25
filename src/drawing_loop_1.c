@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/25 14:15:34 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/25 18:22:52 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,13 @@ void	loop_body(t_data_3d *data_3d, GLFWwindow *window, t_light *lights)
 	texture_mix(data_3d, window);
 	draw_obj(data_3d->vbo, data_3d->shad_obj, win_u->transform);
 \
-	draw_lights(win_u, data_3d, &(win_u->cam), lights);
+	if (win_u->settings.point_light)
+	{
+		set_int_sh(data_3d->shad_obj, "enablePointL", TRUE);
+		draw_lights(win_u, data_3d, &(win_u->cam), lights);
+	}
+	else
+		set_int_sh(data_3d->shad_obj, "enablePointL", FALSE);
 }
 
 void	drawing_loop(t_data_3d *data_3d, GLFWwindow *window, t_light *lights)
