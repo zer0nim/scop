@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 20:28:11 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/25 16:25:52 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/25 17:42:46 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,8 @@ void			init_win_u(t_win_user *win_u, int8_t first_call);
 t_transform		transform(t_vect3 pos, t_vect3 scale, t_vect3 axis, \
 float angle);
 t_light			light(t_vect3 pos, t_vect3 color);
+
+void			fps_mode(GLFWwindow *window, t_win_user *win_u);
+void			wireframe_mode(t_win_user *win_u);
 
 #endif

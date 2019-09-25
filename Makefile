@@ -6,7 +6,7 @@
 #    By: emarin <emarin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/06 15:40:25 by emarin            #+#    #+#              #
-#    Updated: 2019/09/25 11:58:44 by emarin           ###   ########.fr        #
+#    Updated: 2019/09/25 17:37:35 by emarin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ OBJ_PATH	= obj
 SRC		=	main.c \
 			opengl_tools_1.c \
 			opengl_tools_2.c \
+			key_actions.c \
 			transform_tools.c \
 			lighting_tools.c \
 			lighting.c \

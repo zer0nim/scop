@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 14:17:33 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/25 17:28:48 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/25 17:42:58 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,6 @@ void	update_win_title(GLFWwindow *window)
 	glfwSetWindowTitle(window, buff);
 }
 
-void	fps_mode(GLFWwindow *window, t_win_user *win_u)
-{
-	cam_init(&(win_u->cam));
-	win_u->settings.fps_mode = !win_u->settings.fps_mode;
-	glfwSetInputMode(window, GLFW_CURSOR, ((win_u->settings.fps_mode) \
-	? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL));
-}
-
 void	key_callback(GLFWwindow *window, int key, int scancode, int action)
 {
 	t_win_user	*win_u;
@@ -84,7 +76,7 @@ void	key_callback(GLFWwindow *window, int key, int scancode, int action)
 	if (key == GLFW_KEY_F && action == GLFW_PRESS)
 		fps_mode(window, win_u);
 	if (key == GLFW_KEY_Z && action == GLFW_PRESS)
-		win_u->settings.wireframe_mode = !win_u->settings.wireframe_mode;
+		wireframe_mode(win_u);
 	if (key == GLFW_KEY_1 && action == GLFW_PRESS)
 		win_u->settings.point_light = !win_u->settings.point_light;
 	if (key == GLFW_KEY_2 && action == GLFW_PRESS)
