@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 20:25:56 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/18 13:54:55 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/25 12:11:58 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void	cam_init(t_camera *cam)
 {
-	cam->pos = vect3(0.0f, 0.0f, 3.0f);
+	cam->pos = vect3(0.0f, 0.0f, 1.8f);
 	cam->front = vect3(0.0f, 0.0f, -1.0f);
 	cam->up = vect3(0.0f, 1.0f, 0.0f);
 	cam->yaw = -90.0f;
