@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/25 14:12:00 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/25 15:21:51 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,12 @@ int8_t	init(t_data_3d *data_3d, GLFWwindow *window, const char *obj_name)
 {
 	t_win_user	*win_u;
 
-	if (!parse_obj(obj_name, &(data_3d->obj)))
+	if (!parse_obj(obj_name, &(data_3d->obj)) || !(data_3d->obj.verts_nb_item))
+	{
+		if (!(data_3d->obj.verts_nb_item))
+			fprintf(stderr, "Need face data !\n");
 		return (FALSE);
+	}
 	win_u = (t_win_user *)glfwGetWindowUserPointer(window);
 	init_win_u(win_u, TRUE);
 	if (!create_shader(&(data_3d->shad_obj), "../src/shader/obj_vs.glsl", \
