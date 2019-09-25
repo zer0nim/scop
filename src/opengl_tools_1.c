@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 14:17:33 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/24 18:38:38 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/25 13:44:03 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ int8_t	init_window(GLFWwindow **window, const char *name)
 	glfwSetCursorPosCallback(*window, mouse_cb);
 	glfwSetKeyCallback(*window, (void(*)(GLFWwindow *, int, int, int, int))\
 	(size_t)&key_callback);
-	glfwSetInputMode(*window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glEnable(GL_DEPTH_TEST);
 	return (TRUE);
 }

@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 14:17:33 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/25 11:08:04 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/25 13:47:42 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ void	key_callback(GLFWwindow *window, int key, int scancode, int action)
 	{
 		cam_init(&(win_u->cam));
 		win_u->settings.fps_mode = !win_u->settings.fps_mode;
+		glfwSetInputMode(window, GLFW_CURSOR, ((win_u->settings.fps_mode) \
+		? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL));
 	}
 	if (key == GLFW_KEY_DELETE && action == GLFW_PRESS)
 		init_win_u(win_u, FALSE);
