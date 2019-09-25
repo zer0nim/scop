@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/20 14:17:33 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/25 17:42:58 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/25 18:04:05 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,13 @@ void	update_win_title(GLFWwindow *window)
 	win_u = (t_win_user *)glfwGetWindowUserPointer(window);
 	snprintf(buff, sizeof(buff), \
 	"SCOP.	%sRotate R  %sTexture T  %sFps F  %sWire Z  %sPointL 1  "\
-	"%sTorchL 2  %sSphereUV 3      Reset del\n", \
+	"%sTorchL 2      Reset del\n", \
 	((win_u->settings.rotate_mode) ? "✅" : "❌"), \
 	((win_u->settings.texture_mode) ? "✅" : "❌"), \
 	((win_u->settings.fps_mode) ? "✅" : "❌"), \
 	((win_u->settings.wireframe_mode) ? "✅" : "❌"), \
 	((win_u->settings.point_light) ? "✅" : "❌"), \
-	((win_u->settings.torch_light) ? "✅" : "❌"), \
-	((win_u->settings.sphere_uv) ? "✅" : "❌"));
+	((win_u->settings.torch_light) ? "✅" : "❌"));
 	glfwSetWindowTitle(window, buff);
 }
 
@@ -81,8 +80,6 @@ void	key_callback(GLFWwindow *window, int key, int scancode, int action)
 		win_u->settings.point_light = !win_u->settings.point_light;
 	if (key == GLFW_KEY_2 && action == GLFW_PRESS)
 		win_u->settings.torch_light = !win_u->settings.torch_light;
-	if (key == GLFW_KEY_3 && action == GLFW_PRESS)
-		win_u->settings.sphere_uv = !win_u->settings.sphere_uv;
 	if (key == GLFW_KEY_DELETE && action == GLFW_PRESS)
 		init_win_u(win_u, FALSE);
 	update_win_title(window);
