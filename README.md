@@ -28,12 +28,15 @@ A first introduction to OpenGL Programming
 ## Exemples
 
 42 obj:
+
 ![42.png](../media/42.png?raw=true)
 
 cube with uv mapping and diffuse map:
+
 ![cube.png](../media/cube.png?raw=true)
 
 platform obj:
+
 ![platform.png](../media/platform.png?raw=true)
 
 ---
