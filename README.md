@@ -7,9 +7,9 @@ A first introduction to OpenGL Programming.
 
 My first modern `OpenGL 4.1` project 😀.
 
-I used `glfw3` API for creating windows and manage windows input and events.
+I used `glfw3` API for creating windows and manage input and events.
 
-No library was allowed so I have implemented a simple `.obj` parser and `.tga` parser.
+No library was allowed so I have implemented a simple `.obj` and `.tga` parser.
 
 I followed the awesome tutorial of Joey de Vries ([learnopengl.com](https://learnopengl.com)) to get started with OpenGL programming.
 
@@ -29,13 +29,13 @@ I followed the awesome tutorial of Joey de Vries ([learnopengl.com](https://lear
 ## Controls
 
 - use `wasd` and `shift` / `ctrl` to move
-- use `F` to switch between object move and fps camera
-- use `T` to switch between color mode or texture mode
-- use `R` to stop/start rotation
-- use `Z` to switch between wireframe and face rendering
-- use `1` to show point light demo
-- use `2` to activate the torch light
-- use `del` to reset all settings
+- use `F` to switch between **object move** and **fps camera**
+- use `T` to switch between **color** mode or **texture** mode
+- use `R` to stop/start **rotation**
+- use `Z` to switch between **wireframe** and **face** rendering
+- use `1` to show **point light** demo
+- use `2` to activate the **torch light**
+- use `del` to **reset** all settings
 
 ## Exemples
 
