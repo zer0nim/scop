@@ -6,11 +6,29 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/25 14:23:11 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/26 12:16:10 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.h"
+
+void	torch_lighting_uniform(t_data_3d *data_3d, t_win_user *win_u)
+{
+	set_vec3_sh(data_3d->shad_obj, "spotLight.position", win_u->cam.pos);
+	set_vec3_sh(data_3d->shad_obj, "spotLight.direction", win_u->cam.front);
+	set_float_sh(data_3d->shad_obj, "spotLight.cutOff", cos(radians(12.5f)));
+	set_float_sh(data_3d->shad_obj, "spotLight.outerCutOff", \
+	cos(radians(15.0f)));
+	set_float_sh(data_3d->shad_obj, "spotLight.constant", 1.0f);
+	set_float_sh(data_3d->shad_obj, "spotLight.linear", 0.045f);
+	set_float_sh(data_3d->shad_obj, "spotLight.quadratic", 0.0075f);
+	set_vec3_sh(data_3d->shad_obj, "spotLight.ambient", \
+	vect3(0.05f, 0.05f, 0.05f));
+	set_vec3_sh(data_3d->shad_obj, "spotLight.diffuse", \
+	vect3(0.8f, 0.8f, 0.8f));
+	set_vec3_sh(data_3d->shad_obj, "spotLight.specular", \
+	vect3(1.0f, 1.0f, 1.0f));
+}
 
 void	static_lighting_point_light(t_data_3d *data_3d, t_light *lights)
 {

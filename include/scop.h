@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/08 20:28:11 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/25 18:03:19 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/25 18:41:32 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,5 +114,6 @@ t_light			light(t_vect3 pos, t_vect3 color);
 
 void			fps_mode(GLFWwindow *window, t_win_user *win_u);
 void			wireframe_mode(t_win_user *win_u);
+void			torch_lighting_uniform(t_data_3d *data_3d, t_win_user *win_u);
 
 #endif

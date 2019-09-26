@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/25 18:22:52 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/26 12:14:17 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,15 +83,13 @@ void	loop_body(t_data_3d *data_3d, GLFWwindow *window, t_light *lights)
 	glBindTexture(GL_TEXTURE_2D, data_3d->text_spec);
 	set_shader_mt(win_u, data_3d->shad_obj, &(win_u->cam));
 	texture_mix(data_3d, window);
+	torch_lighting_uniform(data_3d, win_u);
+	set_int_sh(data_3d->shad_obj, "enableSpotL", win_u->settings.torch_light);
 	draw_obj(data_3d->vbo, data_3d->shad_obj, win_u->transform);
 \
+	set_int_sh(data_3d->shad_obj, "enablePointL", win_u->settings.point_light);
 	if (win_u->settings.point_light)
-	{
-		set_int_sh(data_3d->shad_obj, "enablePointL", TRUE);
 		draw_lights(win_u, data_3d, &(win_u->cam), lights);
-	}
-	else
-		set_int_sh(data_3d->shad_obj, "enablePointL", FALSE);
 }
 
 void	drawing_loop(t_data_3d *data_3d, GLFWwindow *window, t_light *lights)
