@@ -3,16 +3,28 @@
 ![](../media/scop_demo.gif?raw=true)
 
 ## Project
-A first introduction to OpenGL Programming
+A first introduction to OpenGL Programming.
+
+My first modern `OpenGL 4.1` project 😀.
+
+I used `glfw3` API for creating windows and manage windows input and events.
+
+No library was allowed so I have implemented a simple `.obj` parser and `.tga` parser.
+
+I followed the awesome tutorial of Joey de Vries ([learnopengl.com](https://learnopengl.com)) to get started with OpenGL programming.
+
 
 ## Installation
 
 - Install `glfw` with brew
-`brew install glfw3`
+
+	```brew install glfw3```
 - Compile the project
-`make -j8`
+
+	```make -j8```
 - Run the project
-`./scop resource/cube.obj`
+
+	```./scop resource/cube.obj```
 
 ## Controls
 
