@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/26 14:05:05 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/26 14:24:03 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,16 +67,10 @@ void	init_win_u(t_win_user *win_u, int8_t first_call)
 	settings->torch_light = FALSE;
 }
 
-int8_t	init(t_data_3d *data_3d, GLFWwindow *window, const char *obj_name)
+int8_t	init(t_data_3d *data_3d, GLFWwindow *window)
 {
 	t_win_user	*win_u;
 
-	if (!parse_obj(obj_name, &(data_3d->obj)) || !(data_3d->obj.verts_nb_item))
-	{
-		if (!(data_3d->obj.verts_nb_item))
-			fprintf(stderr, "Need face data !\n");
-		return (FALSE);
-	}
 	win_u = (t_win_user *)glfwGetWindowUserPointer(window);
 	init_win_u(win_u, TRUE);
 	if (!create_shader(&(data_3d->shad_obj), "src/shader/obj_vs.glsl", \
@@ -117,11 +111,13 @@ int		main(int argc, const char *argv[])
 		printf("usage: ./scop file.obj\n");
 		return (1);
 	}
+\
+	if (!parse_obj(argv[1], &(data_3d.obj)) || !(data_3d.obj.verts_nb_item))
+		return (FALSE);
 	if (!init_window(&window, "Scop"))
 		return (FALSE);
-\
 	glfwSetWindowUserPointer(window, &win_u);
-	if (!init(&data_3d, window, argv[1]))
+	if (!init(&data_3d, window))
 		return (1);
 \
 	drawing_loop(&data_3d, window, lights);
