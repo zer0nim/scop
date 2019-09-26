@@ -6,7 +6,7 @@
 /*   By: emarin <emarin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:55:36 by emarin            #+#    #+#             */
-/*   Updated: 2019/09/25 18:04:19 by emarin           ###   ########.fr       */
+/*   Updated: 2019/09/26 14:05:05 by emarin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,15 +79,15 @@ int8_t	init(t_data_3d *data_3d, GLFWwindow *window, const char *obj_name)
 	}
 	win_u = (t_win_user *)glfwGetWindowUserPointer(window);
 	init_win_u(win_u, TRUE);
-	if (!create_shader(&(data_3d->shad_obj), "../src/shader/obj_vs.glsl", \
-	"../src/shader/obj_fs.glsl") \
-	|| !create_shader(&(data_3d->shad_light), "../src/shader/light_vs.glsl", \
-	"../src/shader/light_fs.glsl"))
+	if (!create_shader(&(data_3d->shad_obj), "src/shader/obj_vs.glsl", \
+	"src/shader/obj_fs.glsl") \
+	|| !create_shader(&(data_3d->shad_light), "src/shader/light_vs.glsl", \
+	"src/shader/light_fs.glsl"))
 		return (FALSE);
 	init_vao(data_3d);
 	free_obj(&(data_3d->obj));
-	if (!(load_texture("../resources/unicorn.tga", &(data_3d->text_diff))) \
-	|| !(load_texture("../resources/unicorn_spec.tga", &(data_3d->text_spec))))
+	if (!(load_texture("resource/unicorn.tga", &(data_3d->text_diff))) \
+	|| !(load_texture("resource/unicorn_spec.tga", &(data_3d->text_spec))))
 		return (FALSE);
 	glUseProgram(data_3d->shad_obj);
 	set_int_sh(data_3d->shad_obj, "material.diffuse", 0);
