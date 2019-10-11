@@ -6,14 +6,14 @@
 #    By: emarin <emarin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/08/06 15:40:25 by emarin            #+#    #+#              #
-#    Updated: 2019/09/25 17:37:35 by emarin           ###   ########.fr        #
+#    Updated: 2019/10/07 13:56:22 by emarin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= scop
 C		= gcc
 
-FLAGS	= -Wall -Wextra -Werror
+FLAGS	= -Wno-deprecated -Wall -Wextra -Werror
 
 SRC_PATH	= src
 INC_PATH	= include
